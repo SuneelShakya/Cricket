@@ -1,0 +1,60 @@
+<div class="demo" id="myTopnav">
+  <a href="javascript:void(0)"></a>
+  
+  <a href="javascript:void(0)"  routerLink="/TeamPlayer" class="hide">
+    <button mat-button class="btn-sm">
+      TeamPlayer
+    </button>
+  </a>
+  <a href="javascript:void(0)"  routerLink="/StructureofTeamPlayer" class="hide">
+    <button mat-button class="btn-sm">
+      Player History
+    </button>
+  </a>
+  
+  
+  <a href="javascript:void(0)" id="floatclass" class="icon" routerLink="/counter" class="hide" >
+    <button mat-button class="btn-sm">
+      <fa-icon [icon]="['fas', 'sign-out-alt']"></fa-icon> Log Out
+    </button>
+  </a>
+  <a href="javascript:void(0)" id="floatclass" class="hide" style="position: relative;" >
+    <!-- <mat-form-field> -->
+     
+  <!-- <button mat-icon-button class="btn-sm">  -->
+    <select [(ngModel)]="_objService.timezone" class="form-control" style=" width: 18vw;
+      position: absolute;
+      top: 0;
+      cursor: pointer;
+      height: 35px;
+      opacity: 0;"
+        (change)="SetTimeZone($event.target)" placeholder="Select Zone">
+        <option [value]="item.value" *ngFor="let item of _objService.TimeZones; let i = index">
+          {{item.name}}</option>
+      </select>
+    <fa-icon  [icon]="['fas', 'clock']" aria-hidden="true" style="position: relative;line-height: 35px;" >
+      &nbsp;
+      
+    </fa-icon > <span><small class="timetext" style="font-size: 100%;" >{{_objService.time}}</small ></span>
+
+    
+  <!-- </button> -->
+    <!-- </mat-form-field> -->
+  </a>
+
+  <!-- <a href="javascript:void(0)" id="floatclass" >
+    <button mat-button class="btn-sm">
+      {{_objService.time}}
+    </button>
+  </a> -->
+
+  <a href="javascript:void(0);" class="icon" (click)="myFunction()">
+    <button mat-button>
+      <fa-icon [icon]="['fas', 'bars']"></fa-icon>
+    </button>
+  </a>
+
+
+
+  
+</div>

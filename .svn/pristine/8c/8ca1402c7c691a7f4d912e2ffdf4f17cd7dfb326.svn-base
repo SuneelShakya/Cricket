@@ -1,0 +1,94 @@
+<app-nav-menu></app-nav-menu>
+
+<mat-expansion-panel  style="margin-top: 2vh;background: #ffffff;" [disabled]="true" [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <div class="container-fluid table-management pt20">
+        <div class="header-top">
+              <div class="">
+      <div class="row" style="background-color: #274b7d;" >
+        <div class="col-md-6 hearder-right-agile" style="color: white;" >
+                     <div class="d-flex ">
+                         <div class="login-wthree my-auto1">
+                            <span class="top-heading">Inspector Management</span>
+                         </div>
+                     </div>
+                 </div>
+               
+             </div>
+             </div>
+             </div>
+             </div>
+    </mat-panel-title>
+    
+  </mat-expansion-panel-header>
+  <div class="col-md-12" style="display: flex;margin: 2vh 0;">
+    <div class="col-md-9">
+  
+    <a href="javascript:void(0)">
+      <button class="button tv-btn" (click)="openDialog()"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Create New</button>
+    </a>
+    </div>
+    <div class="col-md-3">
+
+    <div id="custom-search-input">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText">
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="button"> <i class="fa fa-search"></i>
+          </button>
+        </div>
+    </div>
+  </div>
+</div>
+  </div>
+    <!-- <button  type="button" class="btn btn-success"  (click)="openDialog()" style="margin-right: 1vw">Create New</button> -->
+    <!-- <button mat-raised-button color="primary"  (click)="checkinspectorstatus()" style="margin-right: 1vw">Edit</button>
+    <button mat-raised-button color="accent"  (click)="checkinspectorstatus()">Clone</button> -->
+  
+  
+  <div class="panel-body" style="max-height: 64vh;overflow: auto;margin: 0 24px 16px">
+  <table class="table table-bordered table-hover specialCollapse" >
+    <thead>
+      <tr>
+        <th class="col-md-1 col-sm-1 col-xs-1" style="width: 2%;position: sticky;top: 0;background-color: #274b7d;color: aliceblue;"><small style="font-size: 100%;">Sno</small></th>
+        <th class="col-md-1" style="width: 10%;position: sticky;top: 0;background-color: #274b7d;color: aliceblue;" ><small style="font-size: 100%;">Name</small></th>
+        <th class="col-md-2"style="width: 10%;position: sticky;top: 0;background-color: #274b7d;color: aliceblue;" ><small style="font-size: 100%;">Binary Name</small></th>
+        <th class="col-md-2" style="width: 10%;position: sticky;top: 0;background-color: #274b7d;color: aliceblue;" ><small style="font-size: 100%;">System IP</small></th>
+        <th class="col-md-5" style="width: 10%;position: sticky;top: 0;background-color: #274b7d;color: aliceblue;" ><small style="font-size: 100%;">Recieve Port</small></th>
+        <th class="col-md-1" style="width: 10%;position: sticky;top: 0;background-color: #274b7d;color: aliceblue;" ><small style="font-size: 100%;">Transfer Port</small></th>
+        <th class="col-md-1" style="width: 7%;position: sticky;top: 0;background-color: #274b7d;color: aliceblue;" ><small style="font-size: 100%;">Version</small></th>
+        <th class="col-md-1"style="width: 5%;position: sticky;top: 0;background-color: #274b7d;color: aliceblue;" ><small style="font-size: 100%;">Status</small></th>
+        <th class="col-md-1"style="width: 8%;position: sticky;top: 0;background-color: #274b7d;color: aliceblue;" ><small style="font-size: 100%;">Active Status</small></th>
+        <th class="col-md-1"style="width: 7%;position: sticky;top: 0;background-color: #274b7d;color: aliceblue;" ><small style="font-size: 100%;">OS Type</small></th>
+        <!-- <th class="col-md-1"style="width: 7%;position: sticky;top: 0;background-color: #274b7d;color: aliceblue;" ><small style="font-size: 100%;">Remarks</small></th> -->
+        <th class="col-md-2"style="width: 10%;position: sticky;top: 0;background-color: #274b7d;color: aliceblue;" ><small style="font-size: 100%;">Action</small></th>
+
+
+      </tr>
+    </thead>
+    <tbody style="font-size: 16px;">
+      <tr *ngFor="let item of inspectordata | searchFilter : searchText; let i = index">
+        <td><small>{{i+1}}</small></td>
+        <td ><small>{{item.Name | NullValues }}</small></td>
+        <td><small>{{item.BinaryName | NullValues }}</small></td>
+        <td><small>{{item.SystemIP | NullValues }}</small></td>
+        <td><small>{{item.PortRx | NullValues }}</small></td>
+        <td><small>{{item.PortTx | NullValues }}</small></td>
+        <td><small>{{item.Version| NullValues }}</small></td>
+        <td style="text-align: center;" ><small><img src="../../assets/{{item.status}}.svg" style="height: 2vh;"></small></td>
+        <td><small>{{item.IsActive| NullValues }}</small></td>
+        <td><small>{{item.OSType| NullValues }}</small></td>
+        <!-- <td><small>{{item.Remark| NullValues }}</small></td> -->
+        <td>
+          	<a title="Edit" class="btn-table" (click)="openeditDialog(i)" style="padding-right: 10px;cursor: pointer;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+          <a title="Clone" class="btn-table" (click)="clone(i)" style="padding-right: 10px;cursor: pointer;" ><i class="fa fa-clone" aria-hidden="true"></i></a>
+          <a title="Delete" class="btn-table" (click)="delete(i)" style="cursor: pointer;" ><i class="fa fa-trash" aria-hidden="true"></i></a>
+        </td>
+
+      </tr>
+              
+    </tbody>
+  </table>
+  </div>
+</mat-expansion-panel>

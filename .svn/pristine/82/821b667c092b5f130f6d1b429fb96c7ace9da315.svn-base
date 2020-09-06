@@ -1,0 +1,276 @@
+import { Component, OnInit } from '@angular/core';
+import { GenericService } from '../services/Generic.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+//import * as $ from 'jquery';
+@Component({
+  selector: 'app-workflow',
+  templateUrl: './workflow.component.html',
+  styleUrls: ['./workflow.component.css']
+
+})
+export class WorkflowComponent implements OnInit {
+  EditIndex = "-1";
+  objCls: WorflowProperties = new WorflowProperties();
+  Component = "";
+  Profile = "";
+  Sequence = "";
+  Folder = "";
+  PartialActive = "";
+  componentdata: any = [];
+  detaildata: any = [];
+  popup: any = "";
+  BtnText: any = "";
+  inspectordata: any;
+  datacomponent: any;
+  flowdata: any;
+  profiledata: any = [];
+  EditMainIndex: any;
+  deleteuid: any;
+  isLoading: boolean;
+  OsTypeForComponennt: any;
+  deleteuidPartial: any;
+  constructor(
+    public objService: GenericService, private _snackBar: MatSnackBar) { }
+  ngOnInit() {
+    this.GetComponent();
+    this.GetInspector();
+    this.GetProfiledata();
+    this.fetchflowdatadata();
+  };
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
+  onInpectorChange(obj) {
+    let index1 = this.inspectordata.findIndex((record: any) => record.UID == obj.value);
+    this.OsTypeForComponennt = this.inspectordata[index1].OSType;
+    this.Component = "";
+  }
+  Reset() {
+    this.CancelEditPartial();
+    this.detaildata = [];
+    this.objCls = new WorflowProperties();
+    this.popup = "";
+    this.BtnText = "";
+    this.fetchflowdatadata();
+  }
+  GetProfiledata() {
+    this.objService.fetchprofiledata().subscribe((datas: any) => {
+      //var x = JSON.parse(datas);
+      if (datas.ResultData.length > 0)
+        this.profiledata = datas.ResultData;
+    });
+  }
+  GetInspector() {
+    this.objService.fetchinspectordata().subscribe((datas: any) => {
+      if (datas.result.length > 0) {
+        this.inspectordata = JSON.parse(datas.result).ResultData;
+      }
+    });
+  }
+  GetComponent() {
+    this.objService.fetchComponentdata().subscribe((datas: any) => {
+      if (datas.result.length > 0) {
+        this.datacomponent = JSON.parse(datas.result).ResultData
+      }
+    });
+  }
+  AddPartial() {
+    let ind = this.detaildata.findIndex((record: any) => record.Component == this.Component && record.Profile == this.Profile && record.Sequence == this.Sequence && record.Folder == this.Folder);
+    if (ind == -1) {
+      let index = this.datacomponent.findIndex((record: any) => record.UID == this.Component);
+      let index1 = this.profiledata.findIndex((record: any) => record.UID == this.Profile);
+      this.detaildata.push(
+        {
+          Component: this.Component,
+          Profile: this.Profile,
+          Sequence: this.Sequence,
+          Folder: this.Folder,
+          PartialActive: this.PartialActive,
+          ComponentName: this.datacomponent[index].name,
+          ProfileName: this.profiledata[index1].Name
+        }
+      )
+      this.CancelEditPartial();
+    }
+    else {
+      this.openSnackBar("Record already exists!!", "Warning");
+      return;
+    }
+  }
+  UpdatePartial() {
+    let ind = this.detaildata.findIndex((record: any) => record.Component == this.Component && record.Profile == this.Profile && record.Sequence == this.Sequence && record.Folder == this.Folder);
+    if (ind == this.EditIndex) {
+      this.openSnackBar("Record already exists!!", "Warning");
+      return;
+    }
+    else {
+      if (ind == -1) {
+        let index1 = this.profiledata.findIndex((record: any) => record.UID == this.Profile);
+        let index = this.datacomponent.findIndex((record: any) => record.UID == this.Component);
+        this.detaildata[parseInt(this.EditIndex)].Component = this.Component;
+        this.detaildata[parseInt(this.EditIndex)].ComponentName = this.datacomponent[index].name;
+        this.detaildata[parseInt(this.EditIndex)].Profile = this.Profile;
+        this.detaildata[parseInt(this.EditIndex)].ProfileName = this.profiledata[index1].Name;
+        this.detaildata[parseInt(this.EditIndex)].Sequence = this.Sequence;
+        this.detaildata[parseInt(this.EditIndex)].Folder = this.Folder;
+        this.detaildata[parseInt(this.EditIndex)].PartialActive = this.PartialActive;
+        this.CancelEditPartial();
+      }
+    }
+  }
+
+  DeletePartial(i) {
+    this.deleteuidPartial = i;
+    var modal = document.getElementById("deletePartialModal");
+    modal.style.display = "block";
+  }
+  HideDeletePartial() {
+    var modal = document.getElementById("deletePartialModal");
+    modal.style.display = "none";
+  }
+  ActualDeletePartial() {
+    this.detaildata.splice(parseInt(this.deleteuidPartial), 1);
+    this.HideDeletePartial();
+  }
+
+  CancelEditPartial() {
+    this.Component = "";
+    this.Profile = "";
+    this.Sequence = "";
+    this.Folder = "";
+    this.PartialActive = "";
+    this.EditIndex = "-1";
+  }
+  EditPartial(obj, i) {
+    this.EditIndex = i;
+    this.Component = obj.Component;
+    this.Profile = obj.Profile;
+    this.Sequence = obj.Sequence;
+    this.Folder = obj.Folder;
+    this.PartialActive = obj.PartialActive;
+  }
+  fetchflowdatadata() {
+    this.objService.fetchflowdata().subscribe((datas: any) => {
+      //var x = JSON.parse(datas);
+      if (datas.ResultData.length > 0)
+        this.flowdata = datas.ResultData;
+    });
+  }
+  Editmain(obj, i) {
+    this.EditMainIndex = i;
+    this.objCls.UID = obj.UID;
+    this.objCls.Name = obj.Name;
+    this.objCls.SystemIP = obj.SystemIP;
+    this.objCls.Version = obj.Version;
+    this.objCls.Inspector = obj.InspectorUID;
+    let inx = this.inspectordata.findIndex((record: any) => record.UID == obj.InspectorUID);
+    this.OsTypeForComponennt = this.inspectordata[inx].OSType;
+    this.objCls.SystemName = obj.SystemName;
+    this.objCls.Status = (obj.status == true) ? "1" : "0";
+    this.objCls.IsActive = obj.IsActive;
+    this.popup = "Edit";
+    this.BtnText = "Update";
+    this.openDialog('open');
+    this.objService.fetchflowdetails(obj.UID).subscribe((datas: any) => {
+      //var x = JSON.parse(datas);
+      if (datas.ResultData.length > 0) {
+        var x = datas.ResultData;
+        for (let ind = 0; ind < x.length; ind++) {
+          let index = this.datacomponent.findIndex((record: any) => record.UID == x[ind].Component);
+          let index1 = this.profiledata.findIndex((record: any) => record.UID == x[ind].Profile);
+          this.detaildata.push(
+            {
+              Component: x[ind].Component,
+              Profile: x[ind].Profile.toString(),
+              Sequence: x[ind].Sequence,
+              Folder: x[ind].Folder,
+              PartialActive: (x[ind].PartialActive == true) ? 1 : 0,
+              ComponentName: this.datacomponent[index].name,
+              ProfileName: this.profiledata[index1].Name
+            }
+          )
+        }
+        this.CancelEditPartial();
+      }
+    });
+  }
+  saveFlow() {
+    this.isLoading = true;
+    let index = this.inspectordata.findIndex((record: any) => record.UID == this.objCls.Inspector);
+    this.objCls.Status = "1";
+    this.objCls.SystemIP = this.inspectordata[index].SystemIP;
+    this.objCls.Version = this.inspectordata[index].Version;
+    this.objCls.SystemName = this.inspectordata[index].SystemName;
+    this.objCls.OperationName = this.BtnText;
+    this.objCls.ComponentArray = this.detaildata;
+    this.objService.Insertflowdata(this.objCls).subscribe((datas: any) => {
+      if (datas.toLowerCase() == "success") {
+        this.openSnackBar("New workflow " + this.objCls.OperationName + " successfully", "Success");
+        this.Reset();
+        this.openDialog("close");
+        this.isLoading = false;
+      }
+      else if (datas.toLowerCase() == "fail") {
+        this.openSnackBar("New workflow not " + this.objCls.OperationName + "", "Warning");
+        this.isLoading = false;
+      }
+    });
+  }
+  deleteFlow() {
+    this.isLoading = true;
+    this.objCls.OperationName = "Delete";
+    this.objCls.UID = this.deleteuid;
+    this.objCls.ComponentArray = [];
+    this.objService.Insertflowdata(this.objCls).subscribe((datas: any) => {
+      if (datas.toLowerCase() == "success") {
+        this.openSnackBar("Workflow Deleted successfully", "Success");
+        this.Reset();
+        //this.openDialog("close");
+        this.HideDialog();
+        this.isLoading = false;
+      }
+      else if (datas.toLowerCase() == "fail") {
+        this.openSnackBar("Workflow not deleted due to system error", "Error");
+        this.isLoading = false;
+      }
+    });
+  }
+  AddNew(val) {
+    this.objCls = new WorflowProperties();
+    this.popup = "Create New";
+    this.BtnText = "Save";
+    this.openDialog(val);
+  }
+
+  openDialog(val) {
+    var modal = document.getElementById("entryModal");
+    modal.style.display = val == 'open' ? "block" : "none";
+    if (val == "close") {
+      this.detaildata = [];
+    }
+  }
+  Deletemain(val) {
+    var modal = document.getElementById("deleteModal");
+    modal.style.display = "block";
+    this.deleteuid = val;
+  }
+  HideDialog() {
+    var modal = document.getElementById("deleteModal");
+    modal.style.display = "none";
+  }
+}
+
+class WorflowProperties {
+  UID: any = "0";
+  Name: any = "";
+  IsActive: any = "";
+  Status: any = "";
+  Inspector: any = "";
+  SystemIP: any = "";
+  SystemName: any = "";
+  Version: any = "";
+  ComponentArray: any = [];
+  OperationName: any = "";
+}

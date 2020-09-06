@@ -1,0 +1,72 @@
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+
+import { AppComponent } from './app.component';
+import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { HomeComponent } from './home/home.component';
+import { CounterComponent } from './counter/counter.component';
+import { FetchDataComponent, Fetchdialog, Fetcheditdialog, Fetchdeletedialog } from './fetch-data/fetch-data.component';
+import { DemoMaterialModule } from './material-module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { GenericService } from './services/Generic.service';
+import { ComponentDataComponent, Componentdialog, Componentdeletedialog, Componenteditdialog } from './Component/Component-data.component';
+import { Flowdialog, Floweditdialog, FlowDataComponent, Flowdeletedialog } from './Flow/Flow-data.component';
+import { WorkflowComponent } from './workflow/workflow.component';
+import { SearchFilterPipe, NullValues, ReplaceCommaPipe } from './app.shared.pipe';
+import { TagInputModule } from 'ngx-chips';
+import { ProfileComponent, DialogProfileCreate } from './profile/profile.component';
+
+
+@NgModule({
+  declarations: [
+    ProfileComponent,
+    DialogProfileCreate,
+    AppComponent,
+    NavMenuComponent,
+    WorkflowComponent,
+    HomeComponent,
+    CounterComponent,
+    FetchDataComponent,
+    Fetchdialog,
+    Fetcheditdialog,
+    ComponentDataComponent,
+    Componentdialog,
+    FlowDataComponent,
+    Flowdialog,
+    Floweditdialog,
+    SearchFilterPipe,
+    NullValues,
+    ReplaceCommaPipe,
+    Fetchdeletedialog,
+    Componentdeletedialog,
+    Flowdeletedialog,
+    Componenteditdialog
+
+  ],
+  imports: [
+    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    DemoMaterialModule,
+    BrowserAnimationsModule,
+    TagInputModule,
+
+
+    RouterModule.forRoot([
+      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: 'counter', component: CounterComponent },
+      { path: 'fetch-data', component: FetchDataComponent },
+      { path: 'Component-data', component: ComponentDataComponent },
+      { path: 'Flow-data', component: WorkflowComponent },
+      { path: 'profile-data', component: ProfileComponent }
+    ])
+  ],
+  entryComponents: [DialogProfileCreate, Fetchdialog, Fetcheditdialog, Componenteditdialog, Componentdialog, Flowdialog, Floweditdialog, Fetchdeletedialog, Componentdeletedialog, Flowdeletedialog],
+  providers: [GenericService, FetchDataComponent],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }

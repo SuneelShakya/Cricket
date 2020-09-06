@@ -1,0 +1,131 @@
+using System;
+using System.Net;
+using System.Text;
+using System.Linq;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System.Security.Cryptography;
+
+namespace FMDSExcel.Controllers
+{
+    public static class CommonStatic
+    {
+        private static string EncryptionKey = "QazwsxeD123!QazwsxeD123!";
+
+        public static string EncryptionKey1 { get => EncryptionKey; set => EncryptionKey = value; }
+
+        public static void Set<T>(this ISession session, string key, T value)
+        {
+            session.SetString(key, JsonConvert.SerializeObject(value));
+        }
+        public static T Get<T>(this ISession session, string key)
+        {
+            var value = session.GetString(key);
+            return value == null ? default(T) : JsonConvert.DeserializeObject<T>(value);
+        }
+
+        public static string MakeRequest(this string url, string postData = null, bool isPythonServer = false, bool isOfcom = false)
+        {
+            try
+            {
+                url = Program.ServerUrl + "/" + url;
+                HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+                if (!string.IsNullOrEmpty(postData))
+                {
+                    var data = Encoding.ASCII.GetBytes(postData);
+                    request.Method = "POST";
+                    request.ContentType = "application/x-www-form-urlencoded";
+                    request.ContentLength = data.Length;
+                    request.Proxy = null;
+                    using (var stream = request.GetRequestStream())
+                        stream.Write(data, 0, data.Length);
+                }
+
+                using (var response = (HttpWebResponse)(request.GetResponseAsync().Result))
+                {
+                    if (response.StatusCode != HttpStatusCode.OK)
+                        Console.WriteLine("Status is not ok. STATUS: " + response.StatusDescription);
+
+                    using (var stream = response.GetResponseStream())
+                    {
+                        var reader = new System.IO.StreamReader(stream, Encoding.UTF8);
+                        return reader.ReadToEndAsync().Result;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return (ex.Message);
+            }
+        }
+
+        public static string MakeRequestUTF(this string url, string postData = null, bool isPythonServer = false, bool isOfcom = false)
+        {
+            try
+            {
+                url = Program.ServerUrl + "/" + url;
+                HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+                if (!string.IsNullOrEmpty(postData))
+                {
+                    var data = Encoding.UTF8.GetBytes(postData);
+                    request.Method = "POST";
+                    request.ContentType = "application/x-www-form-urlencoded";
+                    request.ContentLength = data.Length;
+                    request.Proxy = null;
+                    using (var stream = request.GetRequestStream())
+                        stream.Write(data, 0, data.Length);
+                }
+
+                using (var response = (HttpWebResponse)(request.GetResponseAsync().Result))
+                {
+                    if (response.StatusCode != HttpStatusCode.OK)
+                        Console.WriteLine("Status is not ok. STATUS: " + response.StatusDescription);
+
+                    using (var stream = response.GetResponseStream())
+                    {
+                        var reader = new System.IO.StreamReader(stream, Encoding.UTF8);
+                        return reader.ReadToEndAsync().Result;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return (ex.Message);
+            }
+        }
+
+        public static string MD5Hash(string input)
+        {
+            StringBuilder hash = new StringBuilder();
+            MD5CryptoServiceProvider md5provider = new MD5CryptoServiceProvider();
+            byte[] bytes = md5provider.ComputeHash(new UTF8Encoding().GetBytes(input));
+            for (int i = 0; i < bytes.Length; i++)
+                hash.Append(bytes[i].ToString("x2"));
+            return hash.ToString();
+        }
+
+        public static string Base64Encode(this string plainText)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
+        }
+
+        public static string Decrypt(this string input)
+        {
+            string key = EncryptionKey;
+            byte[] inputArray = Convert.FromBase64String(input);
+            TripleDESCryptoServiceProvider tripleDES = new TripleDESCryptoServiceProvider();
+            tripleDES.Key = UTF8Encoding.UTF8.GetBytes(key);
+            tripleDES.Mode = CipherMode.ECB;
+            tripleDES.Padding = PaddingMode.PKCS7;
+            ICryptoTransform cTransform = tripleDES.CreateDecryptor();
+            byte[] resultArray = cTransform.TransformFinalBlock(inputArray, 0, inputArray.Length);
+            tripleDES.Clear();
+            return UTF8Encoding.UTF8.GetString(resultArray);
+        }
+
+
+    }
+}

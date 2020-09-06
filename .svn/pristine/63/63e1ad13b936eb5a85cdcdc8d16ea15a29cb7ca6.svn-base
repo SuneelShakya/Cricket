@@ -1,0 +1,279 @@
+<app-nav-menu></app-nav-menu>
+<br>
+<div style="width:99vw">
+    <div class="row" style="background-color: #274b7d;color:white;line-height: 50px;">
+        <div class="col-sm-9" style="margin-left: 20px;font-size: 20px;">
+            WorkFlow Management
+        </div>
+        <mat-progress-bar mode="buffer" color="warn" *ngIf=""></mat-progress-bar>
+        <!-- <div class="col-sm-2">
+        <span style="float:right;">
+            Hi.
+        </span>
+    </div> -->
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-2" style="margin-left: 40px;">
+            <button class="button tv-btn" (click)="AddNew('open')"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
+                Create New</button>
+        </div>
+        <div class="col-sm-6"></div>
+        <div class="col-sm-2" style="float:right;">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button"> <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div style="max-height: 64vh;overflow: auto;padding: 0 24px 16px;">
+        <table class="table table-bordered table-hover specialCollapse">
+            <thead>
+                <tr>
+                    <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;"><small
+                            style="font-size: 100%;">Sno</small></th>
+                    <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                        <small style="font-size: 100%;">Name</small></th>
+                    <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                        <small style="font-size: 100%;">Inspector</small></th>
+                    <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                        <small style="font-size: 100%;">System IP</small></th>
+                    <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                        <small style="font-size: 100%;">System Name</small></th>
+                    <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                        <small style="font-size: 100%;">Version</small></th>
+                    <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                        <small style="font-size: 100%;">Status</small></th>
+                    <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                        <small style="font-size: 100%;">Created Date</small></th>
+                    <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                        <small style="font-size: 100%;">Enable/Disable</small></th>
+                    <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                        <small style="font-size: 100%;">Action</small></th>
+                </tr>
+            </thead>
+            <tbody style="font-size: 16px;">
+                <tr *ngFor="let item of flowdata | searchFilter : searchText; let i = index">
+                    <td><small>{{i+1}}</small></td>
+                    <td><small>{{item.Name | NullValues }}</small></td>
+                    <td><small>{{item.inspectorname | NullValues }}</small></td>
+                    <td><small>{{item.SystemIP| NullValues }}</small></td>
+                    <td><small>{{item.SystemName | NullValues }}</small></td>
+                    <td><small>{{item.Version | NullValues }}</small></td>
+                    <td style="text-align: center;"><small><img src="../../assets/{{item.status}}.svg"
+                                style="height: 2vh;"></small></td>
+                    <td><small>{{item.Date | NullValues | date:'dd-MM-yyyy' }}</small></td>
+                    <td><small>{{(item.IsActive=='1')?'Enable':'Disable' | NullValues }}</small></td>
+                    <td>
+                        <i title="Edit" style="cursor: pointer;" class="fa fa-pencil-square-o"
+                            (click)="Editmain(item,i)"></i>&nbsp;
+                        <!-- <i title="Clone" style="cursor: pointer;" class="fa fa-clone"></i>&nbsp; -->
+                        <i title="Delete" style="cursor: pointer;" class="fa fa-trash"
+                            (click)="Deletemain(item.UID)"></i>
+                    </td>
+
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="deleteModal" class="modal" style="width:20%;margin-left:40%;padding-top: 30vh!important;">
+    <mat-card class="modal-content">
+        <mat-card-header>
+            <!-- <div mat-card-avatar class="example-header-image"></div> -->
+            <!-- <mat-card-title>Create New Inspector</mat-card-title> -->
+            <mat-card-subtitle>Delete Flow Confirmation</mat-card-subtitle>
+        </mat-card-header>
+        <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+        <mat-card-content>
+            Do You Want to Delete this Record??
+        </mat-card-content>
+        <mat-card-actions style="margin: 20px;">
+            <div style="float: right;">
+                <button class="btn btn-primary btn-sm" (click)="deleteFlow()">Yes</button>
+                &nbsp;&nbsp;
+                <button class="btn btn-danger btn-sm" (click)="HideDialog()">No</button>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+</div>
+<div id="entryModal" class="mymodal">
+    <mat-card class="modal-content">
+        <mat-card-header>
+            <!-- <div mat-card-avatar class="example-header-image"></div> -->
+            <!-- <mat-card-title>Create New Inspector</mat-card-title> -->
+            <mat-card-subtitle>{{popup}} Flow</mat-card-subtitle>
+        </mat-card-header>
+        <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+        <mat-card-content>
+            <div class="row">
+                <div class="col-sm-4">
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="objCls.Name" name="user" placeholder="Flow Name" required>
+                    </mat-form-field>
+                </div>
+                <div class=" col-sm-4" style="display: none;">
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="objCls.SystemIP" name="user" placeholder="System IP" required>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4" style="display: none;">
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="objCls.SystemName" placeholder="System Name" required>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4" style="display: none;">
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="objCls.Version" name="tx" placeholder="Version">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <mat-form-field>
+                        <mat-select [(ngModel)]="objCls.Inspector" placeholder="Select Inspector">
+                            <mat-option value="">Select</mat-option>
+                            <mat-option [value]="item.UID" *ngFor="let item of inspectordata; let i = index">
+                                {{item.Name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4" style="display: none;">
+                    <mat-form-field>
+                        <mat-select [(ngModel)]="objCls.Status" placeholder="Status">
+                            <mat-option value="">Select</mat-option>
+                            <mat-option value="1">Ok</mat-option>
+                            <mat-option value="0">Fail</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <mat-form-field>
+                        <mat-select [(ngModel)]="objCls.IsActive" placeholder="Active Status">
+                            <mat-option [value]="">Select</mat-option>
+                            <mat-option [value]="1">Enable</mat-option>
+                            <mat-option [value]="0">Disable</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <mat-form-field>
+                        <mat-select [(ngModel)]="Sequence" placeholder="Sequence No">
+                            <mat-option value="">Select</mat-option>
+                            <mat-option value="1">1</mat-option>
+                            <mat-option value="2">2</mat-option>
+                            <mat-option value="3">3</mat-option>
+                            <mat-option value="4">4</mat-option>
+                            <mat-option value="5">5</mat-option>
+                            <mat-option value="6">6</mat-option>
+                            <mat-option value="7">7</mat-option>
+                            <mat-option value="8">8</mat-option>
+                            <mat-option value="9">9</mat-option>
+                            <mat-option value="10">10</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-2">
+                    <mat-form-field>
+                        <mat-select [(ngModel)]="Component" placeholder="Select Component">
+                            <mat-option value="">Select</mat-option>
+                            <mat-option [value]="item.UID" *ngFor="let item of datacomponent; let i = index">
+                                {{item.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-2">
+                    <mat-form-field>
+                        <mat-select [(ngModel)]="Profile" placeholder="Select Profile">
+                            <mat-option [value]="">Select</mat-option>
+                            <mat-option [value]="item.UID" *ngFor="let item of profiledata; let i = index">
+                                {{item.Name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-sm-2">
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="Folder" name="tx" placeholder="Folder">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-2">
+                    <mat-form-field>
+                        <mat-select [(ngModel)]="PartialActive" placeholder="Active Status">
+                            <mat-option [value]="">Select</mat-option>
+                            <mat-option [value]="1">Enable</mat-option>
+                            <mat-option [value]="0">Disable</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-2" style="line-height: 6vh;">
+                    <button class="btn btn-sm btn-primary" (click)="AddPartial()" [hidden]="EditIndex!='-1'">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </button>
+                    <button class="btn btn-sm btn-primary" (click)="UpdatePartial()" *ngIf="EditIndex!='-1'">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    </button>
+                    &nbsp;
+                    <button class="btn btn-sm btn-danger" *ngIf="EditIndex!='-1'" (click)="CancelEditPartial()">
+                        <i class="fa fa-minus" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <table class="table table-bordered table-hover specialCollapse">
+                    <thead>
+                        <tr>
+                            <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;"><small
+                                    style="font-size: 100%;">Component</small></th>
+                            <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                                <small style="font-size: 100%;">Profile</small></th>
+                            <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                                <small style="font-size: 100%;">Sequence</small></th>
+                            <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                                <small style="font-size: 100%;">Folder</small></th>
+                            <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                                <small style="font-size: 100%;">Active Status</small></th>
+                            <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                                <small style="font-size: 100%;">Action</small></th>
+                        </tr>
+                    </thead>
+                    <tbody style="font-size: 16px;">
+                        <tr *ngFor="let item of detaildata; let i = index">
+                            <td><small>{{item.ComponentName | NullValues}}</small></td>
+                            <td><small>{{item.ProfileName | NullValues }}</small></td>
+                            <td><small>{{item.Sequence | NullValues }}</small></td>
+                            <td><small>{{item.Folder | NullValues }}</small></td>
+                            <td><small>{{(item.PartialActive=='1')?'Enable':'Disable' | NullValues }}</small></td>
+                            <td>
+                                <a title="Edit" class="btn-table" (click)="EditPartial(item,i)"
+                                    style="padding-right: 10px;cursor: pointer;"><i class="fa fa-pencil-square-o"
+                                        aria-hidden="true"></i></a>
+                                <a title="Delete" class="btn-table" (click)="DeletePartial(i)"
+                                    [hidden]="EditIndex!='-1'" style="cursor: pointer;"><i class="fa fa-trash"
+                                        aria-hidden="true"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </mat-card-content>
+        <mat-card-actions style="margin: 20px;">
+            <div style="float: right;">
+                <button class="btn btn-primary btn-sm" (click)="saveFlow()"
+                    [hidden]="EditIndex!='-1'">{{BtnText}}</button>
+                &nbsp;&nbsp;
+                <button class="btn btn-danger btn-sm" (click)="openDialog('close')">Close</button>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+</div>
+<!-- <mat-grid-list cols="3" rowHeight="30px">
+    <mat-grid-tile>WorkFlow Management</mat-grid-tile>
+    <mat-grid-tile>test</mat-grid-tile>
+    <mat-grid-tile>test</mat-grid-tile>
+</mat-grid-list> -->

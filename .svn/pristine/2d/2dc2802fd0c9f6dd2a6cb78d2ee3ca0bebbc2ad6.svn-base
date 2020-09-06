@@ -1,0 +1,32 @@
+<div id="mydiv" style="background-image: url('../images/img_avatar.png');">
+    <div class="panel-group">
+        <div class="panel panel-success">
+            <div class="panel-heading"><strong>FMDS</strong> | Logout Panel</div>
+            <div class="panel-body setbck">
+                <div class="d-flex justify-content-center">
+                    <img src="../../images/img_avatar.png" alt="Avatar" style="width:50px">
+                </div>
+                <div class="d-flex justify-content-center">
+                    &nbsp;
+                </div>
+                <div class="input-group d-flex justify-content-center">
+                    You have been successfully logged out!
+                </div>
+                <div class="d-flex justify-content-center">
+                    &nbsp;
+                </div>
+                <div class="input-group" style="visibility: hidden;">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                    <input type="password" class="form-control" [(ngModel)]="objcls.Pwd" placeholder="Password">
+                </div>
+            </div>
+            <div class="panel-heading">
+                <div class="loginbtn">
+                    <button class="btn btn-primary btn-sm" (click)="Logout()"><i class="glyphicon glyphicon-log-in"></i>
+                        Click Here to Log
+                        in</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

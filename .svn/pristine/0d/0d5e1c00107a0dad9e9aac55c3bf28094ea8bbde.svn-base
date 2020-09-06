@@ -1,0 +1,23 @@
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { GenericService } from '../../services/Generic.service';
+
+@Component({
+    selector: 'app-logout',
+    templateUrl: './logout.component.html',
+    styleUrls: ['../login.component.css']
+})
+export class LogOutComponent implements OnInit {
+    constructor(
+        public router: Router, public _objGenericService: GenericService
+    ) {
+
+    }
+    ngOnInit() {
+        this._objGenericService.IsLoginOk = false;
+        localStorage.setItem('loginsuccess', '');
+        this.router.navigateByUrl("");
+    }
+}
+
+

@@ -1,0 +1,219 @@
+/* You can add global styles to this file, and also import other style files */
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../../wwwroot/fonts/BalooDa2-Medium.ttf') format('woff2');
+}
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+body {
+  margin:0;
+  padding:0;
+  font-family: 'Material Icons';
+  background: #ffffff;
+  font-size: 16px !important;
+  /* background: linear-gradient(#141e30, #243b55); */
+}
+
+.mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-description, .mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-title {
+  color: black !important;
+}
+
+.mat-horizontal-stepper-header{
+    display: none !important;
+}
+
+.mat-horizontal-stepper-header-container {
+    display: none !important;
+}
+
+footer#footerChart {
+  padding-right: 10px;
+}
+
+
+.mat-paginator-range-label {
+  margin: 0 20px 0 0px !important;
+}
+
+button.btn-sm.mat-button {
+  font-family: 'Material Icons';
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+}
+
+
+.mat-form-field {
+    display: block !important;
+}
+
+
+th {
+  font-size: 14px;
+  color: #8c8080;
+  font-weight: 500;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  width:10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+  width:10px;
+}
+
+mat-expansion-panel-header {
+  height: 50px !important;
+}
+/* mat-expansion-panel-header#mat-expansion-panel-header-0 {
+  height: 3vh !important;
+} */
+
+.cdk-overlay-pane{
+  max-width: 58vw !important;
+}
+
+button.button.tv-btn {
+  color: white;
+  background-color: #206de0;
+  box-shadow: 0 4px 15px 0 rgba(85,143,239,0.44);
+  border: none;
+  padding: 9px 35px;
+  outline: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer !important;
+  /* border-radius: 20px; */
+  border-radius: 25px;
+  box-shadow: 0 4px 15px 0 rgba(36, 50, 111, 0.36);
+}
+.mat-expansion-panel-body{
+  padding: 0 !important;
+}
+.mat-expansion-panel-header{
+  padding: 0 !important;
+}
+
+.mat-expansion-panel-header-description, .mat-expansion-panel-header-title{
+  margin-left: 16px !important;
+}
+
+.bootstrap.ng2-tag-input {
+  border-bottom: 2px solid #c5c4c4 !important;
+}
+.mat-form-field {
+  padding-right: 1vw;
+}
+
+mat-horizontal-stepper.mat-stepper-horizontal.ng-tns-c1-0.mat-stepper-label-position-end {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 10px;
+}
+
+mat-horizontal-stepper.mat-stepper-horizontal.ng-tns-c1-6.mat-stepper-label-position-end {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 10px;
+}
+
+.progress-striped.active .progress-bar {
+  -webkit-animation: progress-bar-stripes 2s linear infinite !important;
+  -o-animation: progress-bar-stripes 2s linear infinite !important;
+  animation: progress-bar-stripes 2s linear infinite !important;
+}
+
+.progress-bar.progress-bar-striped.active{
+  -webkit-animation: progress-bar-stripes 2s linear infinite !important;
+  -o-animation: progress-bar-stripes 2s linear infinite !important;
+  animation: progress-bar-stripes 2s linear infinite !important;
+}
+
+button.mat-stroked-button {
+  border: none !important;
+}
+
+.mat-sort-header-arrow.ng-trigger.ng-trigger-arrowPosition.ng-star-inserted {
+  color: white !important;
+  /* opacity: 1; */
+}
+
+button.mat-sort-header-button {
+  outline: none !important;
+}
+
+.mat-tab-label {
+  height: 40px !important;
+}
+
+
+.example-tooltip-red{
+  font-size: 2vh;
+  /* height: 5vh !important; */
+  /* widows: 8vw !important; */
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.main-container {
+  padding: 10vh 20vw;
+  background-color: #dedddd;
+  height: 100vh;
+}

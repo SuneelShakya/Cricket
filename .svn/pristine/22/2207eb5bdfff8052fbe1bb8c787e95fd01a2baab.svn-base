@@ -1,0 +1,17 @@
+========================================= Mam UI 2.0 ===============================================
+## version 20.20.07.01 ## [07 Jul, 2020] - By manu - #5350
+1. Changes in WorkFlow
+2. Changes in Profile
+3. Changes in Inspector
+4. Changes in Component
+5. Css.,Coding,DB mgmt
+*Note : All the Done are done till now Requirement
+
+=====================================================================================================
+
+## version 20.20.07.01 ## [07 Jul, 2020] - By Ashwani - #5350
+1. Changed inspector insert method to post type.
+2. Added reference pop up 
+3. flow name in ref and inspector name is hyperlink now.
+4. Changed Css according to requirement
+

@@ -1,0 +1,167 @@
+
+    <!-- <div mat-card-avatar class="example-header-image"></div> -->
+    <!-- <mat-card-title>Create New Inspector</mat-card-title> -->
+    <div class="container">
+    <h1 mat-dialog-title >Create New Inspector</h1>
+
+  
+  <div mat-dialog-content style="margin-left: -0.5vw;">
+    <div class="row">
+      <div class="col-md-4">
+
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput [(ngModel)]="Inspectorname" name="ip" placeholder="" required>
+    </mat-form-field>
+    </div>
+    <div class="col-md-4">
+
+    <mat-form-field>
+      <mat-label>Binary Name</mat-label>
+      <input matInput [(ngModel)]="Binaryname" name="port" placeholder="" required>
+    </mat-form-field>
+    </div>
+    <div class="col-md-4">
+
+    <mat-form-field>
+      <mat-label>Path</mat-label>
+      <input matInput [(ngModel)]="Path" name="dbname" placeholder="" required>
+    </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+
+    <mat-form-field>
+      <mat-label>System IP</mat-label>
+      <input matInput [(ngModel)]="SystemIP" name="user" placeholder="" required>
+    </mat-form-field>
+    </div>
+    <div class="col-md-4">
+
+    <mat-form-field>
+      <mat-label>Recieve Port</mat-label>
+      <input matInput type="number" min="0" max="99999" [(ngModel)]="Recieveport" name="pass" placeholder="" required>
+    </mat-form-field>
+    </div>
+    <div class="col-md-4">
+
+
+    <mat-form-field>
+      <mat-label>Transfer Port</mat-label>
+      <input matInput type="number" min="0" max="99999" [(ngModel)]="TXport" name="pass" placeholder="">
+    </mat-form-field>
+    </div>
+</div>
+<div class="row">
+    <!-- <mat-form-field>
+
+      <mat-label>OS Type</mat-label>
+      <input matInput [(ngModel)]="OSType" name="pass" placeholder="">
+    </mat-form-field> -->
+    <div class="col-md-4">
+
+    <mat-form-field>
+      <mat-label>OS Type</mat-label>
+      <mat-select [(value)]="OSType" name="food">
+        <mat-option value="Windows">
+          Windows
+        </mat-option>
+        <mat-option value="Linux">
+          Linux
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    </div>
+    <div class="col-md-4">
+
+    <mat-form-field>
+      <mat-label>Active Status</mat-label>
+      <mat-select [(value)]="IsActive" name="food">
+        <mat-option value="Enable">
+          Enable
+        </mat-option>
+        <mat-option value="Disable">
+          Disable
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    </div>
+    <!-- <mat-form-field>
+      <mat-label>Remarks</mat-label>
+      <input matInput [(ngModel)]="Remark" name="pass" placeholder="">
+    </mat-form-field> -->
+    </div>
+    <div class="row" style="margin-left:0.01vw">
+      <!-- <div class="col-md-4"> -->
+        <!-- (onTagEdited)="onTagEdited($event)" -->
+    <tag-input id="taginput" name="tags" [(ngModel)]="items" [editable]="true" [theme]="'bootstrap'"
+      [modelAsStrings]="true" >
+    </tag-input>
+    <!-- </div> -->
+    </div>
+  </div>
+<div mat-dialog-actions style="justify-content: center;margin: 2.5vh 0;">
+  <button  mat-raised-button color="primary" (click)="checkinspectorstatus()">Submit</button> &nbsp;&nbsp;
+  <button mat-button  style="border: 1px solid ;border-color: #9c27b0;" (click)="onNoClick()">Close</button>
+</div>
+</div>
+
+<!-- <mat-horizontal-stepper [linear]="isLinear" #stepper style="margin-top: 50px;">
+  <mat-step [stepControl]="ThirdFormGroup">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col">
+          <h1 mat-dialog-title>Create New Inspector</h1>
+          <div mat-dialog-content style="height: 60vh;">
+            <form>
+              <ng-template matStepLabel>Fill out Inspector Details</ng-template>
+              <mat-form-field>
+                <mat-label>Name</mat-label>
+                <input matInput [(ngModel)]="Inspectorname" name="ip" placeholder="" required>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Binary Name</mat-label>
+                <input matInput [(ngModel)]="Binaryname" name="port" placeholder="" required>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Path</mat-label>
+                <input matInput [(ngModel)]="Path" name="dbname" placeholder="" required>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>System IP</mat-label>
+                <input matInput [(ngModel)]="SystemIP" name="user" placeholder="" required>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Recieve Port</mat-label>
+                <input matInput type="number" min="0" max="99999" [(ngModel)]="Recieveport" name="pass" placeholder=""
+                  required>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Transfer Port</mat-label>
+                <input matInput type="number" min="0" max="99999" [(ngModel)]="TXport" name="pass" placeholder="">
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Comments</mat-label>
+                <input matInput [(ngModel)]="Comments" name="pass" placeholder="">
+              </mat-form-field>
+              <div>
+                <tag-input id="taginput" name="tags" [(ngModel)]="items" [editable]="true" [theme]="'bootstrap'"
+                  [modelAsStrings]="true" (onTagEdited)="onTagEdited($event)">
+                </tag-input>
+              </div>
+              {{items}}
+            </form>
+          </div>
+          <div mat-dialog-actions style="justify-content: center;">
+            <button mat-button style="border: 1px solid ;border-color: #9c27b0;" (click)="onNoClick()">Close</button>
+            <button mat-raised-button color="primary" (click)="checkinspectorstatus()">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper> -->

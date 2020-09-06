@@ -1,0 +1,88 @@
+<!-- <mat-horizontal-stepper [linear]="isLinear" #stepper style="margin-top: 50px;">
+
+  <mat-step [stepControl]="ThirdFormGroup">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col">
+          <h1 mat-dialog-title>Edit Inspector</h1>
+          <div mat-dialog-content style="height: 60vh;">
+
+            <form>
+              <ng-template matStepLabel>Fill out Inspector Details</ng-template>
+              <mat-form-field>
+                <mat-label>Name</mat-label>
+                <input matInput [(ngModel)]="Inspectorname" name="ip" placeholder="" required>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Binary Name</mat-label>
+                <input matInput [(ngModel)]="Binaryname" name="port" placeholder="" required>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>System IP</mat-label>
+                <input matInput [(ngModel)]="SystemIP" name="user" placeholder="" required>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Recieve Port</mat-label>
+                <input matInput type="number" min="0" max="99999" [(ngModel)]="Recieveport" name="Recieve"
+                  placeholder="" required>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Transfer Port</mat-label>
+                <input matInput type="number" min="0" max="99999" [(ngModel)]="TXport" name="tx" placeholder="">
+              </mat-form-field>
+
+
+            </form>
+          </div>
+          <div mat-dialog-actions style="justify-content: center;">
+            <button mat-button matStepperPrevious style="border: 1px solid ;border-color: #9c27b0;"
+              (click)="onNoClick()">Close</button>
+            <button mat-raised-button color="primary" (click)="checkinspectorstatus()">Update</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </mat-step>
+
+</mat-horizontal-stepper> -->
+
+<mat-card>
+  <mat-card-header>
+    <!-- <div mat-card-avatar class="example-header-image"></div> -->
+    <!-- <mat-card-title>Create New Inspector</mat-card-title> -->
+    <mat-card-subtitle>Edit Inspector</mat-card-subtitle>
+  </mat-card-header>
+  <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+  <mat-card-content>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput [(ngModel)]="Inspectorname" name="ip" placeholder="" required>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Binary Name</mat-label>
+      <input matInput [(ngModel)]="Binaryname" name="port" placeholder="" required>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>System IP</mat-label>
+      <input matInput [(ngModel)]="SystemIP" name="user" placeholder="" required>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Recieve Port</mat-label>
+      <input matInput type="number" min="0" max="99999" [(ngModel)]="Recieveport" name="Recieve" placeholder=""
+        required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Transfer Port</mat-label>
+      <input matInput type="number" min="0" max="99999" [(ngModel)]="TXport" name="tx" placeholder="">
+    </mat-form-field>
+  </mat-card-content>
+</mat-card>
+<br>
+<div style="float: right;">
+  <button class="btn btn-primary btn-sm" (click)="checkinspectorstatus()">Update</button> &nbsp;&nbsp;
+  <button class="btn btn-danger btn-sm" (click)="onNoClick()">Close</button>
+</div>

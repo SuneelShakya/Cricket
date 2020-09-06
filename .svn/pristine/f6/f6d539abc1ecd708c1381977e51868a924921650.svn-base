@@ -1,0 +1,83 @@
+<div class="demo" id="myTopnav">
+  <a href="javascript:void(0)"></a>
+  <a href="javascript:void(0)" *ngIf="_objService.inspectorread=='Y'" routerLink="/fetch-data" class="hide">
+    <button mat-button class="btn-sm">
+      Inspector
+    </button>
+  </a>
+  <a href="javascript:void(0)" *ngIf="_objService.componentread=='Y'" routerLink="/Component-data"  class="hide" >
+    <button mat-button class="btn-sm">
+      Component
+    </button>
+  </a>
+  <a href="javascript:void(0)" *ngIf="_objService.profileread=='Y'" routerLink="/profile-data" class="hide" >
+    <button mat-button class="btn-sm">
+      Profile
+    </button>
+  </a>
+  <a href="javascript:void(0)" *ngIf="_objService.workflowread=='Y'" routerLink="/Flow-data" class="hide" >
+    <button mat-button class="btn-sm">
+      Workflow
+    </button>
+  </a>
+  <a href="javascript:void(0)" routerLink="/Transaction-data" class="hide" >
+    <button mat-button class="btn-sm">
+      Transaction
+    </button>
+  </a>
+  <a href="javascript:void(0)" routerLink="/group-data" class="hide" >
+    <button mat-button class="btn-sm">
+      Group
+    </button>
+  </a>
+
+  <a href="javascript:void(0)" routerLink="/media" class="hide" >
+    <button mat-button class="btn-sm">
+      Media
+    </button>
+  </a>
+  
+  <a href="javascript:void(0)" id="floatclass" class="icon" routerLink="/counter" class="hide" >
+    <button mat-button class="btn-sm">
+      <i class="fa fa-sign-out"></i> Log Out
+    </button>
+  </a>
+  <a href="javascript:void(0)" id="floatclass" class="hide"  >
+    <!-- <mat-form-field> -->
+     
+  <!-- <button mat-icon-button class="btn-sm">  -->
+    <i class="fa fa-clock-o " aria-hidden="true" style="position: relative;line-height: 35px;" >
+      &nbsp;
+      <select [(ngModel)]="_objService.timezone" class="form-control" style="    width: 18vw;
+      position: absolute;
+      top: 0;
+      cursor: pointer;
+      height: 35px;
+      opacity: 0;"
+        (change)="SetTimeZone($event.target)" placeholder="Select Zone">
+        <option [value]="item.value" *ngFor="let item of _objService.TimeZones; let i = index">
+          {{item.name}}</option>
+      </select>
+    </i> <span><small class="timetext" style="font-size: 100%;" >{{_objService.time}}</small ></span>
+
+    
+  <!-- </button> -->
+    <!-- </mat-form-field> -->
+  </a>
+
+  <!-- <a href="javascript:void(0)" id="floatclass" >
+    <button mat-button class="btn-sm">
+      {{_objService.time}}
+    </button>
+  </a> -->
+
+  <a href="javascript:void(0);" class="icon" (click)="myFunction()">
+    <button mat-button>
+      <i class="fa fa-bars fa-2x"></i>
+    </button>
+  </a>
+
+
+
+  
+</div>

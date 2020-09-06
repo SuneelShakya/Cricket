@@ -1,0 +1,106 @@
+<app-nav-menu></app-nav-menu>
+
+<mat-expansion-panel style="margin-top: 2vh;background: #ffffff;" [disabled]="true" [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <div class="container-fluid table-management pt20">
+        <div class="header-top">
+          <div class="">
+            <div class="row" style="background-color: #274b7d;">
+              <div class="col-md-6 hearder-right-agile" style="color: white;">
+                <div class="d-flex ">
+                  <div class="login-wthree my-auto1">
+                    <span class="top-heading">Transaction</span>
+                  </div>
+                </div>
+              </div>
+              <mat-progress-bar mode="buffer" color="warn" *ngIf="isLoading"></mat-progress-bar>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </mat-panel-title>
+
+  </mat-expansion-panel-header>
+
+  <div class="col-md-12" style="display: flex;margin: 2vh 0;justify-content: flex-end;">
+    <!-- <div class="col-md-9">
+      <a href="javascript:void(0)">
+        <button class="button tv-btn" (click)="openDialog()"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Create
+          New</button>
+      </a>
+    </div> -->
+    
+      <!-- <button  type="button" class="btn btn-success"  (click)="openDialog()" style="margin-right: 1vw">Create New</button> -->
+      <!-- <button mat-raised-button color="primary"  (click)="checkinspectorstatus()" style="margin-right: 1vw">Edit</button>
+    <button mat-raised-button color="accent"  (click)="checkinspectorstatus()">Clone</button> -->
+
+
+      <div id="custom-search-input" style="margin-right: 2vw">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText">
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="button"> <i class="fa fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+
+
+  <div class="panel-body" style="max-height: 58vh;overflow: auto;margin: 0 24px 16px">
+    <table class="ResponsivetableCss">
+      <thead>
+        <tr>
+          <th style="width: 4%;position:sticky;top: 0;">Sno</th>
+          <th style="width: 10%;position:sticky;top: 0;">Inspector</th>
+          <th style="width: 10%;position:sticky;top: 0;">Component</th>
+          <th style="width: 10%;position:sticky;top: 0;">Profile</th>
+          <th style="width: 10%;position:sticky;top: 0;">Clip ID</th>
+          <th style="width: 10%;position:sticky;top: 0;">Job Status</th>
+          <th style="width: 10%;position:sticky;top: 0;">Job Start time</th>
+          <th style="width: 10%;position:sticky;top: 0;">Job End Time</th>
+          <!-- <th style="width: 10%;position:sticky;top: 0;">Trans Flag</th> -->
+          <th style="width: 10%;position:sticky;top: 0;">Directory Path</th>
+          <th style="width: 10%;position:sticky;top: 0;">Progress</th>
+          <th style="width: 10%;position:sticky;top: 0;">Remark</th>
+        </tr>
+      </thead>
+      <tbody style="font-size: 16px;">
+        <tr *ngFor="let item of componentdata | searchFilter : searchText; let i = index">
+          <td data-label="Sno">{{i+1}}</td>
+          <td data-label="Binary Name" routerLink="/fetch-data" routerLinkActive="router-link-active" style="cursor: pointer;color: blue;outline: none;"   >{{item.inspector | NullValues }}</td>
+          <td data-label="Binary Name" routerLink="/Component-data" routerLinkActive="router-link-active" style="cursor: pointer;color: blue;outline: none;" >{{item.component | NullValues }}</td>
+          <td data-label="Name">{{item.profiletype | NullValues }}</td>
+          <td data-label="Enable/Disable">{{item.Clipid | NullValues }}</td>
+          <td data-label="Reference">{{item.Jobstatus | NullValues }}</td>
+          <td data-label="Path">{{item.JobStarttime | NullValues | date:'dd-MM-yyyy HH:mm:ss' }}</td>
+          <td data-label="Type">{{item.JobEndtime | NullValues | date:'dd-MM-yyyy HH:mm:ss' }}</td>
+          <!-- <td data-label="OS Type">{{item.Transflag | NullValues }}</td> -->
+          <td data-label="Version">{{item.DirectoryPath | NullValues }}</td>
+          <td data-label="Version">{{item.Progress | NullValues }}%</td>
+            <td data-label="Version">{{item.Remarks | NullValues }}</td>
+
+          <!-- <td data-label="Action"> <a title="Edit" class="btn-table" (click)="openDialog(i,'edit')"
+              style="padding-right: 5px;cursor: pointer;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+            <a title="Clone" class="btn-table" (click)="clone(i)" style="padding-right: 10px;cursor: pointer;"><i
+                class="fa fa-clone" aria-hidden="true"></i></a>
+            <a title="Delete" class="btn-table" (click)="opendeleteDialog(i)" style="cursor: pointer;"><i
+                class="fa fa-trash" aria-hidden="true"></i></a>
+          </td> -->
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</mat-expansion-panel>
+
+
+<footer class="footer" id="footerChart">
+ 
+  <span class="float-right" id="copyright">© Planetcast Media Services Limited, 2020. All Rights Reserved. | 20.20.7.1</span>
+
+</footer>

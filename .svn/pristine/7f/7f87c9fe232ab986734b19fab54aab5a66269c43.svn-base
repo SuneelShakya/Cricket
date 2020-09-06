@@ -1,0 +1,40 @@
+import { Component } from '@angular/core';
+import { GenericService } from '../services/Generic.service';
+
+@Component({
+  selector: 'app-nav-menu',
+  templateUrl: './nav-menu.component.html',
+  styleUrls: ['./nav-menu.component.css']
+})
+export class NavMenuComponent {
+  isExpanded = false;
+  constructor(
+    public _objService: GenericService) {
+    let index1 = this._objService.TimeZones.findIndex((record: any) => record.selected == true);
+    _objService.timezone = this._objService.TimeZones[index1].value;
+  }
+  collapse() {
+    this.isExpanded = false;
+  }
+
+  toggle() {
+    this.isExpanded = !this.isExpanded;
+  }
+  SetTimeZone(obj) {
+    this._objService.timezone = obj.value;
+  }
+  openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+  }
+  myFunction() {
+    var x = document.getElementById("myTopnav");
+    if (x.className === "demo") {
+      x.className += " responsive";
+    } else {
+      x.className = "demo";
+    }
+  }
+  closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+  }
+}

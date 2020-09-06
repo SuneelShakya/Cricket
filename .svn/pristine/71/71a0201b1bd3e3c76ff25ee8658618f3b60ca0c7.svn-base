@@ -1,0 +1,122 @@
+.mymodal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 999; /* Sit on top */
+    padding-top: 50px; /* Location of the box */
+    padding-left: 20%;
+    padding-right: 20%;
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    /* overflow: auto; Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+  }
+  /* Modal Content */
+.modal-content {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.ResponsivetableCss {
+  border-collapse: collapse;
+  /* line-height: 30px; */
+  text-align: left !important;
+  font-size: 12px;
+  /* height: 30px; */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ResponsivetableCss th {
+  border-bottom: 2px solid #8691a0;
+  border-width: thin;
+  font-weight: normal;
+  font-size: 12px;
+  background-color: #274b7d;
+  color: white;
+  text-transform: capitalize;
+  border: 0.5px solid gray;
+}
+.ResponsivetableCss td {
+  border-collapse: collapse;
+  font-size: 12px;
+  color: black;
+  border: 0.5px solid gray;
+  padding: 7px;
+/* max-width: 10vw; */
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+user-select: all;
+}
+.ResponsivetableCss tr{
+  background-color: #dddddd;
+  
+}
+.ResponsivetableCss tr:nth-child(odd){
+  background-color: white;
+}
+.staticid
+{
+  max-width: 10vw;
+}
+/* .ResponsivetableCss tr:nth-child(even){background-color: transparent} */
+
+.ResponsivetableCss tr:hover {background-color: #c9b8b8;}
+
+@media screen and (max-width: 680px) {
+  .ResponsivetableCss {
+                border: 0;
+            }
+            
+                .ResponsivetableCss caption {
+                    font-size: 1em;
+                }
+                .ResponsivetableCss thead {
+                    border: none;
+                    clip: rect(0 0 0 0);
+                    height: 1px;
+                    margin: -1px;
+                    overflow: hidden;
+                    padding: 0;
+                    position: absolute;
+                    width: 1px;
+                }
+                .staticid
+{
+  max-width: 93vw;
+}
+
+                .ResponsivetableCss tr {
+                    /* border-bottom: 3px solid #ddd; */
+                    display: block;
+                    margin-bottom: .625em;
+                    align-self: auto;
+                }
+
+                .ResponsivetableCss td {
+                    /* border-bottom: 1px solid #ddd; */
+                    display: block;
+                    font-size: .9em;
+                    text-align: right;
+                    width: 100%!important;
+                }
+
+                    .ResponsivetableCss td::before {
+                        content: attr(data-label);
+                        float: left;
+                        font-weight: normal;
+                        text-transform: uppercase;
+                        vertical-align: middle;
+                        padding-right: 20px;
+                    }
+                    .ResponsivetableCss td:last-child {
+                        border-bottom: 0;
+                    }
+        }

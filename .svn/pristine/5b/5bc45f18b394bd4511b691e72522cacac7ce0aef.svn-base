@@ -1,0 +1,21 @@
+{
+  "Logging": {
+    "IncludeScopes": false,
+    "LogLevel": {
+      "Default": "Warning"
+    }
+  },
+  "Data": {
+    "Version": "20.20.6.1",
+    "ConnectionString": "server=192.168.15.88;user id=cloud_user;password=Cloud@123;persistsecurityinfo=True;port=3306;database=mamcdb_rewind;SslMode=none;",
+    "ServiceName": "FMDS",
+    "Url": "http://192.168.15.71:1100",
+    "ServerUrl": "http://192.168.15.71:5096",
+    //"DbServiceUrl": "http://192.168.15.88:4000",
+    "DBHostIP": null,
+    "DBName": null,
+    "DBPort": "",
+    "MAMDBuser": null,
+    "MAMDBPassword": null
+  }
+}

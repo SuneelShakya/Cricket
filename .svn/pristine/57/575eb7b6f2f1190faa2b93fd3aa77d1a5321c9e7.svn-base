@@ -1,0 +1,88 @@
+<app-nav-menu></app-nav-menu>
+
+<mat-expansion-panel  style="margin-top: 2vh;background: #cecbcb;" [disabled]="true" [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <div class="container-fluid table-management pt20">
+        <div class="header-top">
+              <div class="">
+      <div class="row">
+        <div class="col-md-6 hearder-right-agile">
+                     <div class="d-flex ">
+                         <div class="login-wthree my-auto1">
+                            <span class="top-heading">Component Management</span>
+                         </div>
+                     </div>
+                 </div>
+               
+             </div>
+             </div>
+             </div>
+             </div>
+    </mat-panel-title>
+    
+  </mat-expansion-panel-header>
+  <mat-panel-description style="margin-top: 2vh;margin-bottom: 2vh;">
+    <a href="javascript:void(0)">
+      <button class="button tv-btn" (click)="openDialog()"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Create New</button>
+    </a>
+    <!-- <button  type="button" class="btn btn-success"  (click)="openDialog()" style="margin-right: 1vw">Create New</button> -->
+    <!-- <button mat-raised-button color="primary"  (click)="checkinspectorstatus()" style="margin-right: 1vw">Edit</button>
+    <button mat-raised-button color="accent"  (click)="checkinspectorstatus()">Clone</button> -->
+    
+      
+        <div id="custom-search-input" style="margin-left: 128vh;">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText">
+            <div class="input-group-append">
+              <button class="btn btn-secondary" type="button"> <i class="fa fa-search"></i>
+              </button>
+            </div>
+        </div>
+      </div>
+    
+  </mat-panel-description>
+<div class="panel-body" style="max-height: 54vh;overflow: auto;">
+  <table class="table table-bordered table-hover specialCollapse">
+    <thead>
+      <tr>
+        <th class="col-md-1 col-sm-1 col-xs-1" style="width: 4%;position: sticky;top: 0;background-color: darkgrey;color: aliceblue;"><small style="font-size: 100%;">Sno</small></th>
+        <th class="col-md-1" style="width: 15%;position: sticky;top: 0;background-color: darkgrey;color: aliceblue;" ><small style="font-size: 100%;">Name</small></th>
+        <th class="col-md-2"style="width: 15%;position: sticky;top: 0;background-color: darkgrey;color: aliceblue;" ><small style="font-size: 100%;">Binary Name</small></th>
+        <th class="col-md-2" style="width: 15%;position: sticky;top: 0;background-color: darkgrey;color: aliceblue;" ><small style="font-size: 100%;">Path</small></th>
+        <th class="col-md-5" style="width: 10%;position: sticky;top: 0;background-color: darkgrey;color: aliceblue;" ><small style="font-size: 100%;">Type</small></th>
+        <th class="col-md-1" style="width: 10%;position: sticky;top: 0;background-color: darkgrey;color: aliceblue;" ><small style="font-size: 100%;">Version</small></th>
+        <th class="col-md-1" style="width: 10%;position: sticky;top: 0;background-color: darkgrey;color: aliceblue;" ><small style="font-size: 100%;">Status</small></th>
+        <th class="col-md-1" style="width: 10%;position: sticky;top: 0;background-color: darkgrey;color: aliceblue;" ><small style="font-size: 100%;">Reference</small></th>
+        <th class="col-md-1" style="width: 10%;position: sticky;top: 0;background-color: darkgrey;color: aliceblue;" ><small style="font-size: 100%;">Action</small></th>
+
+
+
+        
+
+
+      </tr>
+    </thead>
+    <tbody style="font-size: 16px;">
+      <tr *ngFor="let item of componentdata | searchFilter : searchText; let i = index" >
+        <td><small>{{i+1}}</small></td>
+        <td><small>{{item.name | NullValues }}</small></td>
+        <td><small>{{item.binaryname | NullValues }}</small></td>
+        <td><small>{{item.path | NullValues }}</small></td>
+        <td><small>{{item.Type | NullValues }}</small></td>
+        <td><small>{{item.version | NullValues }}</small></td>
+        <td><small>{{item.status | NullValues }}</small></td>
+        <td><small>{{item.Reference | NullValues }}</small></td>
+
+        <td>	<a title="Edit" class="btn-table" (click)="openDialog(i,'edit')" style="padding-right: 5px;cursor: pointer;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+          <a title="Clone" class="btn-table" (click)="clone(i)" style="padding-right: 10px;cursor: pointer;display: none;" ><i class="fa fa-clone" aria-hidden="true"></i></a>
+          <a title="Delete" class="btn-table" (click)="opendeleteDialog(i)" style="cursor: pointer;" ><i class="fa fa-trash" aria-hidden="true"></i></a>
+        </td>
+
+      </tr>
+              
+    </tbody>
+  </table>
+</div>  
+
+</mat-expansion-panel>

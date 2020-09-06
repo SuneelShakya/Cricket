@@ -1,0 +1,59 @@
+.demo {
+  cursor: pointer;
+  width: 100%;
+  background-color: #0049b0;
+  overflow: auto;
+}
+
+/* .demo {
+  background-color: #0049b0;
+  position: relative;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+} */
+
+.demo a {
+  float: left;
+  padding: 5px;
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+}
+.demo #floatclass{
+  float:right;
+}
+
+.demo a:hover {
+  color: rgba(191, 205, 211, 0.993);
+}
+.active {
+  color: gray;
+}
+.demo .icon {
+  display: none;
+}
+@media screen and (max-width: 600px) {
+  .demo a:not(:first-child) {display: none;}
+  .demo a.icon {
+    float: right;
+    display: block;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .demo.responsive {position: relative;}
+  .demo.responsive .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .demo.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+  .demo #floatclass{
+    float:left;
+  }
+}

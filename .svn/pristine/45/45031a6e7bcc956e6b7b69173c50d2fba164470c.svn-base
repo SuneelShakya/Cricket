@@ -1,0 +1,194 @@
+<app-nav-menu></app-nav-menu>
+<br>
+<div style="width:99vw;overflow: hidden;">
+    <div class="row" style="background-color: #274b7d;color:white;line-height: 50px;">
+        <div class="col-sm-9" style="margin-left: 20px;font-size: 20px;">
+            Profile Management
+        </div>
+        <mat-progress-bar mode="buffer" color="warn" *ngIf="isLoading"></mat-progress-bar>
+        <!-- <div class="col-sm-2">
+        <span style="float:right;">
+            Hi.
+        </span>
+    </div> -->
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-2" style="margin-left: 40px;">
+            <button class="button tv-btn" (click)="AddNew('open')"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
+                Create New</button>
+        </div>
+        <div class="col-sm-7"></div>
+        <div class="col-sm-2" style="float:right;">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button"> <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div style="max-height: 64vh;overflow: auto;padding: 0 24px 16px;">
+        <table class="ResponsivetableCss">
+            <thead>
+                <tr>
+                    <th>Sno</th>
+                    <th>Name</th>
+                    <th>Parameters</th>
+                    <th>Profile Type</th>
+                    <th>Input File</th>
+                    <th>Output File</th>
+                    <th>Created Date</th>
+                    <th>Enable/Disable</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody style="font-size: 16px;">
+                <tr *ngFor="let item of flowdata | searchFilter : searchText; let i = index">
+                    <td data-label="Sno">{{i+1}}</td>
+                    <td data-label="Name">{{item.Name | NullValues }}</td>
+                    <td data-label="Parameters" title="{{item.Parameters | NullValues | ReplaceComma }}"
+                        class="staticid">
+                        {{item.Parameters | NullValues | ReplaceComma }}</td>
+                    <td data-label="Profile Type">{{item.ProfileType | NullValues }}</td>
+                    <td data-label="Input File">{{item.Inputfile | NullValues }}</td>
+                    <td data-label="Output File">{{item.Outputfile | NullValues }}</td>
+                    <td data-label="Date">{{item.Date | NullValues | date:'dd-MM-yyyy HH:mm:ss' }}</td>
+                    <td data-label="Enable/Disable">{{(item.IsActive=='1')?'Enable':'Disable' | NullValues }}</td>
+                    <td data-label="Action">
+                        <i title="Edit" style="cursor: pointer;" class="fa fa-pencil-square-o"
+                            (click)="Editmain(item,i)"></i>&nbsp;
+                        <!-- <i title="Clone" style="cursor: pointer;" class="fa fa-clone"></i>&nbsp; -->
+                        <i title="Delete" style="cursor: pointer;" class="fa fa-trash"
+                            (click)="Deletemain(item.UID)"></i>
+                    </td>
+
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="deleteModal" class="mymodal">
+    <mat-card class="modal-content" style="width:30%;margin-left:35%;margin-right:30%;margin-top: 20%;">
+        <h6>Delete Profile Confirmation</h6>
+        <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+        <mat-card-content>
+            Do You Want to Delete this Record??
+        </mat-card-content>
+        <mat-card-actions style="margin: 20px;">
+            <div style="float: right;">
+                <button class="btn btn-primary btn-sm" (click)="deleteFlow()">Yes</button>
+                &nbsp;&nbsp;
+                <button class="btn btn-danger btn-sm" (click)="HideDialog()">No</button>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+</div>
+<div id="entryModal" class="mymodal">
+    <mat-card class="modal-content">
+        <h6>{{popup}} Profile</h6>
+        <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+        <mat-card-content>
+            <div class="row">
+                <div class="col-sm-2">
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="objCls.Name" placeholder="Profile Name" required>
+                    </mat-form-field>
+                </div>
+                <div class=" col-sm-2">
+                    <mat-form-field>
+                        <mat-select [(ngModel)]="objCls.ProfileType" placeholder="Profile Type">
+                            <mat-option value="TC">TC</mat-option>
+                            <mat-option value="QC">QC</mat-option>
+                            <mat-option value="Proxy">Proxy</mat-option>
+                            <mat-option value="Transfer">Transfer</mat-option>
+                            <mat-option value="Custom">Custom</mat-option>
+                        </mat-select>
+                        <!-- <input matInput [(ngModel)]="objCls.ProfileType" placeholder="Profile Type" required> -->
+                    </mat-form-field>
+                </div>
+
+                <div class="col-sm-3">
+                    <!-- <mat-form-field>
+                        <mat-chip-list #chipList label="Inputfile">
+                            <mat-chip *ngFor="let fruit of objCls.Inputfile" [selectable]="selectable"
+                                [removable]="removable" (removed)="remove(fruit,'Inputfile')">
+                                {{fruit}}
+                                <i matChipRemove class="fa fa-window-close" *ngIf="removable" style="margin-top: 5px;"
+                                    aria-hidden="true"></i>
+                            </mat-chip>
+                            <input placeholder="Input File" [matChipInputFor]="chipList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                                (matChipInputTokenEnd)="add($event,'Inputfile')">
+                        </mat-chip-list>
+                    </mat-form-field> -->
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="objCls.Inputfile" placeholder="Input file">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-3">
+                    <!-- <mat-form-field>
+                        <mat-chip-list #chipList label="Outputfile">
+                            <mat-chip *ngFor="let fruit of objCls.Outputfile" [selectable]="selectable"
+                                [removable]="removable" (removed)="remove(fruit,'Outputfile')">
+                                {{fruit}}
+                                <i matChipRemove class="fa fa-window-close" *ngIf="removable" style="margin-top: 5px;"
+                                    aria-hidden="true"></i>
+                            </mat-chip>
+                            <input placeholder="Output File" [matChipInputFor]="chipList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                                (matChipInputTokenEnd)="add($event,'Outputfile')">
+                        </mat-chip-list>
+                    </mat-form-field> -->
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="objCls.Outputfile" placeholder="Output file">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-2">
+                    <mat-form-field>
+                        <mat-select [(ngModel)]="objCls.IsActive" placeholder="Active Status">
+                            <mat-option [value]="">Select</mat-option>
+                            <mat-option [value]="1">Enable</mat-option>
+                            <mat-option [value]="0">Disable</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12">
+                    <mat-form-field>
+                        <!-- <mat-chip-list #chipList label="Parameters">
+                            <mat-chip style="background-color: #0275d8;color: white;" *ngFor="let fruit of objCls.Parameters" [selectable]="selectable"
+                                [removable]="removable" (removed)="remove(fruit,'Parameters')">
+                                {{fruit}}
+                                <i matChipRemove class="fa fa-window-close" *ngIf="removable" style="margin-top: 5px;color: white;"
+                                    aria-hidden="true" title="Remove {{fruit}} from list"></i>
+                            </mat-chip>
+                            <input placeholder="Parameters" [matChipInputFor]="chipList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                                (matChipInputTokenEnd)="add($event,'Parameters')">
+                        </mat-chip-list> -->
+                        <textarea matInput placeholder="Parameters" style="resize:none"
+                            [(ngModel)]="objCls.Parameters"></textarea>
+                    </mat-form-field>
+                    <!-- <input matInput [(ngModel)]="objCls.Parameters" placeholder="Parameters" required>
+                    </mat-form-field> -->
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions style="margin: 20px;">
+            <div style="float: right;">
+                <button class="btn btn-primary btn-sm" (click)="saveFlow()">{{BtnText}}</button>
+                &nbsp;&nbsp;
+                <button class="btn btn-danger btn-sm" (click)="openDialog('close')">Close</button>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+</div>
+
+<footer class="footer" id="footerChart">
+ 
+    <span class="float-right" id="copyright">© Planetcast Media Services Limited, 2020. All Rights Reserved. | 20.20.7.1</span>
+
+</footer>

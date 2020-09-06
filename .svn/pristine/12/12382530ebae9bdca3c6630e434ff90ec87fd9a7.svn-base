@@ -1,0 +1,91 @@
+<app-nav-menu></app-nav-menu>
+
+<mat-expansion-panel style="margin-top: 2vh;background: #ffffff;" [disabled]="true" [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <div class="container-fluid table-management pt20">
+        <div class="header-top">
+          <div class="">
+            <div class="row" style="background-color: #274b7d;">
+              <div class="col-md-6 hearder-right-agile" style="color: white;">
+                <div class="d-flex ">
+                  <div class="login-wthree my-auto1">
+                    <span class="top-heading">Component Management</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-panel-title>
+
+  </mat-expansion-panel-header>
+  <div class="col-md-12" style="display: flex;margin: 2vh 0;">
+    <div class="col-md-9">
+      <a href="javascript:void(0)">
+        <button class="button tv-btn" (click)="openDialog()"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Create
+          New</button>
+      </a>
+    </div>
+    <div class="col-md-3">
+      <!-- <button  type="button" class="btn btn-success"  (click)="openDialog()" style="margin-right: 1vw">Create New</button> -->
+      <!-- <button mat-raised-button color="primary"  (click)="checkinspectorstatus()" style="margin-right: 1vw">Edit</button>
+    <button mat-raised-button color="accent"  (click)="checkinspectorstatus()">Clone</button> -->
+
+
+      <div id="custom-search-input">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText">
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="button"> <i class="fa fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="panel-body" style="max-height: 54vh;overflow: auto;margin: 0 24px 16px">
+    <table class="ResponsivetableCss">
+      <thead>
+        <tr>
+          <th style="width: 4%;">Sno</th>
+          <th style="width: 15%;">Name</th>
+          <th style="width: 15%;">Binary Name</th>
+          <th style="width: 15%;">Path</th>
+          <th style="width: 6%;">Type</th>
+          <th style="width: 10%;">OS Type</th>
+          <th style="width: 10%;">Active Status</th>
+          <th style="width: 5%;">Version</th>
+          <th style="width: 7%;">Reference</th>
+          <th style="width: 10%;">Action</th>
+        </tr>
+      </thead>
+      <tbody style="font-size: 16px;">
+        <tr *ngFor="let item of componentdata | searchFilter : searchText; let i = index">
+          <td data-label="Sno">{{i+1}}</td>
+          <td data-label="Name">{{item.name | NullValues }}</td>
+          <td data-label="Binary Name">{{item.binaryname | NullValues }}</td>
+          <td data-label="Path">{{item.path | NullValues }}</td>
+          <td data-label="Type">{{item.Type | NullValues }}</td>
+          <td data-label="OS Type">{{item.OSType | NullValues }}</td>
+          <td data-label="Enable/Disable">{{item.IsActive | NullValues }}</td>
+          <td data-label="Version">{{item.version | NullValues }}</td>
+          <td data-label="Reference" matTooltipClass="example-tooltip-red" matTooltip="{{item.fname | NullValues}}"
+            (click)="openeditDialog(i)" style="cursor:pointer;">{{item.ref | NullValues }}</td>
+          <td data-label="Action"> <a title="Edit" class="btn-table" (click)="openDialog(i,'edit')"
+              style="padding-right: 5px;cursor: pointer;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+            <a title="Clone" class="btn-table" (click)="clone(i)" style="padding-right: 10px;cursor: pointer;"><i
+                class="fa fa-clone" aria-hidden="true"></i></a>
+            <a title="Delete" class="btn-table" (click)="opendeleteDialog(i)" style="cursor: pointer;"><i
+                class="fa fa-trash" aria-hidden="true"></i></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</mat-expansion-panel>

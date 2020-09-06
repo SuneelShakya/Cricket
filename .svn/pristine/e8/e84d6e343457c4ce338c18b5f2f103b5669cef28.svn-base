@@ -1,0 +1,135 @@
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import * as $ from 'jquery';
+import { GenericService } from '../services/Generic.service';
+
+@Component({
+    selector: 'app-excelmapping',
+    templateUrl: './excelmapping.component.html',
+    styleUrls: ['./excelmapping.component.css']
+})
+
+export class ExcelMappingComponent implements OnInit {
+    objfmdsexceldata: fmdsexceldatamapping = new fmdsexceldatamapping();
+    lstfmdsexceldatamapping: any = [];
+    filtericonclass: any = "plus";
+    BtnText: any = "Save";
+
+    constructor(
+        public _objGenericService: GenericService
+    ) { }
+    ngOnInit() {
+        $('.tgl').hide();
+        this.getallfmdsexceldatamapping();
+    }
+    editfmdsexceldatamapping(item: any) {
+        $('.tgl').show(200);
+        this.filtericonclass = "minus";
+        this.objfmdsexceldata = Object.assign({}, item);
+        this.BtnText = "Update";
+        this.objfmdsexceldata.operationname = "UPDATE";
+        //$(window).scrollTop(0);
+        $('html, body').animate({ scrollTop: 0 }, 'slow');
+        return false;
+    }
+    Addfmdsexceldatamapping(modalname: any) {
+        this.objfmdsexceldata = new fmdsexceldatamapping();
+        // $('.tgl').show(200);
+        // this.filtericonclass = "minus";
+        this.BtnText = "Save";
+        var modal = document.getElementById(modalname);
+        modal.style.display = "block";
+        // window.onclick = function (event) {
+        //     if (event.target == modal) {
+        //         modal.style.display = "none";
+        //     }
+        // }
+    }
+    sortColumn() {
+
+    }
+    sortClass() {
+
+    }
+    savefmdsexceldatamapping() {
+        if (this.objfmdsexceldata.UDPIP == '') {
+            alert('Please enter UDP IP.');
+            return;
+        }
+        if (this.objfmdsexceldata.UDPPort == '') {
+            alert('Please enter UDP port.');
+            return;
+        }
+        if (this.objfmdsexceldata.MVIP == '') {
+            alert('Please enter MV port.');
+            return;
+        }
+        if (this.objfmdsexceldata.MVPin == '') {
+            alert('Please enter MV Pin name.');
+            return;
+        }
+        this.objfmdsexceldata.operationname = (this.BtnText == "Save") ? "INSERT" : this.BtnText.toUpperCase();
+        this._objGenericService.InsertExcelMapping(this.objfmdsexceldata).subscribe(mediadata => {
+            if (JSON.parse(mediadata).ResultData != null) {
+                alert("Mapping Inserted Successfully");
+                this.getallfmdsexceldatamapping();
+                this.calcelSearch();
+            }
+        });
+    }
+    delete(item: any) {
+        var modal = document.getElementById("deleteModal");
+        modal.style.display = "block";
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        this.objfmdsexceldata = Object.assign({}, item);
+        this.objfmdsexceldata.operationname = "DELETE";
+        return false;
+    }
+    deleteafteryes() {
+        this.objfmdsexceldata.operationname = "DELETE";
+        this._objGenericService.InsertExcelMapping(this.objfmdsexceldata).subscribe(datas => {
+            if (JSON.parse(datas).ResultData.length > 0) {
+                var jData = JSON.parse(datas);
+                if (jData.ResultData[0].code == "200") {
+                    alert("Deleted Successfully");
+                    this.HidePopup("deleteModal");
+                    this.getallfmdsexceldatamapping();
+                }
+            }
+        });
+    }
+    getallfmdsexceldatamapping() {
+        this.objfmdsexceldata.operationname = "FETCH";
+        this._objGenericService.GetExcelMappingData(this.objfmdsexceldata).subscribe(datas => {
+            if (JSON.parse(datas).ResultData.length > 0) {
+                var jData = JSON.parse(datas);
+                this.lstfmdsexceldatamapping = jData.ResultData;
+            }
+        });
+    }
+    HidePopup(id) {
+        var modal = document.getElementById(id);
+        modal.style.display = "none";
+    }
+    OpenPopup(id) {
+        var modal = document.getElementById(id);
+        modal.style.display = "block";
+    }
+    calcelSearch() {
+        $('.tgl').hide(200);
+        this.filtericonclass = "plus";
+        this.objfmdsexceldata = new fmdsexceldatamapping();
+        this.BtnText = "Save";
+    }
+}
+class fmdsexceldatamapping {
+    Uid: any = "0";
+    UDPIP: any = "";
+    UDPPort: any = "";
+    MVIP: any = "";
+    MVPin: any = "";
+    operationname: any = "FETCH";
+}

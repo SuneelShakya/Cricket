@@ -1,0 +1,111 @@
+/* You can add global styles to this file, and also import other style files */
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+body {
+  margin:0;
+  padding:0;
+  font-family: sans-serif;
+  background: #ffffff;
+  font-size: 12px !important;
+  /* background: linear-gradient(#141e30, #243b55); */
+}
+
+.mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-description, .mat-expansion-panel-header[aria-disabled=true] .mat-expansion-panel-header-title {
+  color: black !important;
+}
+
+.mat-horizontal-stepper-header{
+    display: none !important;
+}
+
+.mat-horizontal-stepper-header-container {
+    display: none !important;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+}
+
+
+.mat-form-field {
+    display: block !important;
+}
+
+
+th {
+  font-size: 14px;
+  color: #8c8080;
+  font-weight: 500;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  width:10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+  width:10px;
+}
+
+button.button.tv-btn {
+  color: white;
+  background-color: #206de0;
+  box-shadow: 0 4px 15px 0 rgba(85,143,239,0.44);
+  border: none;
+  padding: 9px 35px;
+  outline: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer !important;
+  /* border-radius: 20px; */
+  border-radius: 25px;
+  box-shadow: 0 4px 15px 0 rgba(36, 50, 111, 0.36);
+}
+
+.mat-expansion-panel-header{
+  padding: 0 !important;
+}
+
+.mat-expansion-panel-header-description, .mat-expansion-panel-header-title{
+  margin-left: 16px !important;
+}
+
+.bootstrap.ng2-tag-input {
+  border-bottom: 2px solid #c5c4c4 !important;
+}
+.mat-form-field {
+  padding-right: 1vw;
+}

@@ -1,0 +1,43 @@
+import { Pipe, PipeTransform } from '@angular/core';
+
+
+
+@Pipe({
+  name: 'searchFilter'
+})
+export class SearchFilterPipe implements PipeTransform {
+
+  transform(items: Array<any>, searchText: string): any {
+    {
+      if (!items)
+        return [];
+      if (!searchText) return items;
+      if (items == null)
+        return null;
+      return items.filter(item =>
+        Object.keys(item).some(k => item[k] != null &&
+          item[k].toString().toLowerCase()
+            .includes(searchText.toLowerCase()))
+      );
+    }
+  }
+
+}
+
+@Pipe({ name: 'NullValues' })
+export class NullValues implements PipeTransform {
+  transform(value: any): any {
+    if (value === '[object Object]' || value === undefined || value === '{}' || typeof value === 'object') {
+      return '';
+    } else {
+      return value;
+    }
+  }
+}
+
+@Pipe({ name: 'ReplaceComma' })
+export class ReplaceCommaPipe implements PipeTransform {
+  transform(value: any): any {
+    return value.split(',').join(' ');
+  }
+}

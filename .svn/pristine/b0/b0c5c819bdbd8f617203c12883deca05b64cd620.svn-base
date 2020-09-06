@@ -1,0 +1,93 @@
+<mat-horizontal-stepper [linear]="isLinear" #stepper style="margin-top: 50px;">
+
+    <mat-step [stepControl]="ThirdFormGroup">
+        <div class="col-md-12">
+            <div class="row">
+                <!-- <div class="col" style="width: 30%;flex: 0 0 30%;">
+                    <img src="../../assets/originalmamc.png" style="height: 4vh; margin-bottom: 6vh;">
+                    <ul>
+                         <li style="font-size: 14px;" >Check Pre-Requisites</li> 
+                        <li style="text-decoration: solid;font-weight: 700;font-size: 14px;">Create New Inspector</li>
+                    </ul>
+                </div> -->
+                <div class="col">
+                    <h1 mat-dialog-title>Edit WorkFlow</h1>
+                    <div mat-dialog-content style="height: 60vh;">
+
+                      <form >
+                        <ng-template matStepLabel>Fill out Inspector Details</ng-template>
+                        <mat-form-field>
+                          <mat-label>Name</mat-label>
+                          <input matInput  [(ngModel)]="flowname" name="flowname" placeholder=""
+                                 required>
+                        </mat-form-field>
+                        <mat-form-field>
+                          <mat-label>Inspector</mat-label>
+                          <mat-select [(ngModel)]="selectedinspectorname" name="inspector"  >
+                            <mat-option *ngFor="let item of inspectorname" value="{{item.UID}}">
+                              {{item.Name}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        
+
+                      
+                        <mat-form-field >
+                          <mat-label>Component</mat-label>
+                          <mat-select [(ngModel)]="selectedcomponent"  disableRipple name="component"  >
+                            <mat-option *ngFor="let item of componentname" value="{{item.BinaryName}}">
+                              {{item.Name}}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Sequence No</mat-label>
+                            <input matInput  [(ngModel)]="seqno" name="sequence" placeholder=""
+                                   required>
+                          </mat-form-field>
+                        
+                          <!-- <mat-form-field>
+                            <mat-label>Component 2</mat-label>
+                            <input matInput  [(ngModel)]="component2" name="component2" placeholder=""
+                                   required>
+                          </mat-form-field>
+                          <mat-form-field>
+                            <mat-label>Component 3</mat-label>
+                            <input matInput  [(ngModel)]="component3" name="component3" placeholder=""
+                                   required>
+                          </mat-form-field> -->
+                          <mat-form-field>
+                            <mat-label>System ID</mat-label>
+                            <input matInput  [(ngModel)]="systemid" name="systemid" placeholder=""
+                                   required>
+                          </mat-form-field>
+                          <mat-form-field>
+                            <mat-label>Version</mat-label>
+                            <input matInput  [(ngModel)]="version" name="version" placeholder=""
+                                   required>
+                          </mat-form-field>
+                          <mat-form-field>
+                            <mat-label>Status</mat-label>
+                            <input matInput  [(ngModel)]="status" name="status" placeholder=""
+                                   required>
+                          </mat-form-field>
+                        
+                          
+                        
+                      </form>
+                      </div>
+                <div mat-dialog-actions style="justify-content: center;">
+                    <button mat-button matStepperPrevious style="border: 1px solid ;border-color: #9c27b0;" (click)="onNoClick()">Close</button>
+                    <!-- <button mat-raised-button color="primary" *ngIf="DBCheck=='true'" (click)="CreateDB()">Submit</button> -->
+                    <button mat-raised-button color="primary"  (click)="Updateflowdata()">Update</button>
+                  </div>
+            </div>
+        </div>
+
+        </div>
+      
+    </mat-step>
+   
+  </mat-horizontal-stepper>
+
+

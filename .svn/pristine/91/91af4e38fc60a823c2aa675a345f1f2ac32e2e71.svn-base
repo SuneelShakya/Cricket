@@ -1,0 +1,113 @@
+body{
+  font-family: 'Material Icons';
+}
+span.top-heading {
+  color: #ffffff;
+  font-size: 16px;
+  font-family: 'Material Icons'
+}
+
+.login-wthree.my-auto1 {
+  padding: 5px;
+}
+.header-top {
+  background-color: #e5e8ec;
+}
+
+.container-fluid {
+  padding: 0;
+}
+
+
+.ResponsivetableCss {
+  font-family: 'Material Icons';
+  border-collapse: collapse;
+  /* line-height: 30px; */
+  text-align: left !important;
+  font-size: 12px;
+  /* height: 30px; */
+  white-space: nowrap;
+  /* overflow: hidden; */
+  text-overflow: ellipsis;
+}
+.ResponsivetableCss th {
+  position:sticky;
+  top:0;
+  border-bottom: 2px solid #8691a0;
+  border-width: thin;
+  font-weight: normal;
+  font-size: 12px;
+  background-color: #274b7d;
+  color: white;
+  text-transform: capitalize;
+  border: 0.5px solid gray;
+}
+.ResponsivetableCss td {
+  border-collapse: collapse;
+  font-size: 12px;
+  color: black;
+  border: 0.5px solid gray;
+  padding: 7px;
+/* max-width: 10vw; */
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+user-select: all;
+}
+.ResponsivetableCss tr{
+  background-color: #dddddd;
+  
+}
+.ResponsivetableCss tr:nth-child(odd){
+  background-color: white;
+}
+
+/* .ResponsivetableCss tr:nth-child(even){background-color: transparent} */
+
+.ResponsivetableCss tr:hover {background-color: #c9b8b8;}
+
+@media screen and (max-width: 680px) {
+  .ResponsivetableCss {
+                border: 0;
+            }
+            
+                .ResponsivetableCss caption {
+                    font-size: 1em;
+                }
+                .ResponsivetableCss thead {
+                    border: none;
+                    clip: rect(0 0 0 0);
+                    height: 1px;
+                    margin: -1px;
+                    overflow: hidden;
+                    padding: 0;
+                    position: absolute;
+                    width: 1px;
+                }
+
+                .ResponsivetableCss tr {
+                    /* border-bottom: 3px solid #ddd; */
+                    display: block;
+                    margin-bottom: .625em;
+                    align-self: auto;
+                }
+
+                .ResponsivetableCss td {
+                    /* border-bottom: 1px solid #ddd; */
+                    display: block;
+                    font-size: .9em;
+                    text-align: right;
+                    width: 100%;
+                }
+
+                    .ResponsivetableCss td::before {
+                        content: attr(data-label);
+                        float: left;
+                        font-weight: normal;
+                        text-transform: uppercase;
+                        vertical-align: middle;
+                    }
+                    .ResponsivetableCss td:last-child {
+                        border-bottom: 0;
+                    }
+        }

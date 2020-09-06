@@ -1,0 +1,102 @@
+<mat-horizontal-stepper [linear]="true" #stepper>
+
+  <mat-step >
+    <h1 mat-dialog-title>Edit Inspector</h1>
+    <div mat-dialog-content style="margin-left: -0.5vw;">
+
+      <form>
+        <ng-template matStepLabel>Fill out Inspector Details</ng-template>
+        <div class="row">
+          <div class="col-md-4">
+            <mat-form-field>
+              <mat-label>Name</mat-label>
+              <input matInput [(ngModel)]="Inspectorname" name="ip" placeholder="" required>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+
+            <mat-form-field>
+              <mat-label>Binary Name</mat-label>
+              <input matInput [(ngModel)]="Binaryname" name="port" placeholder="" required>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+
+            <mat-form-field>
+
+              <mat-label>System IP</mat-label>
+              <input matInput [(ngModel)]="SystemIP" name="user" placeholder="" required>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+
+            <mat-form-field>
+              <mat-label>Recieve Port</mat-label>
+              <input matInput type="number" min="0" max="99999" [(ngModel)]="Recieveport" name="Recieve" placeholder=""
+                required>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+
+            <mat-form-field>
+              <mat-label>Transfer Port</mat-label>
+              <input matInput type="number" min="0" max="99999" [(ngModel)]="TXport" name="tx" placeholder="">
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+
+            <mat-form-field>
+              <mat-label>Active Status</mat-label>
+              <mat-select [(value)]="IsActive" name="food">
+                <mat-option value="Enable">
+                  Enable
+                </mat-option>
+                <mat-option value="Disable">
+                  Disable
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+
+            <mat-form-field>
+              <mat-label>OS Type</mat-label>
+              <mat-select [(value)]="OSType" name="food">
+                <mat-option value="Windows">
+                  Windows
+                </mat-option>
+                <mat-option value="Linux">
+                  Linux
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <!-- <mat-form-field>
+                <mat-label>OS Type</mat-label>
+                <input matInput type="text" [(ngModel)]="OSType" name="os" placeholder="">
+              </mat-form-field> -->
+
+          <!-- <mat-form-field>
+                <mat-label>Remarks</mat-label>
+                <input matInput type="text" [(ngModel)]="Remark" name="remark" placeholder="">
+              </mat-form-field> -->
+        </div>
+
+      </form>
+    </div>
+    <div mat-dialog-actions style="justify-content: center;margin: 1vh 0;">
+      <button mat-raised-button color="primary" (click)="checkinspectorstatus()">Update</button>
+
+      <button mat-button matStepperPrevious style="border: 1px solid ;border-color: #9c27b0;"
+        (click)="onNoClick()">Close</button>
+    </div>
+
+
+
+  </mat-step>
+
+</mat-horizontal-stepper>

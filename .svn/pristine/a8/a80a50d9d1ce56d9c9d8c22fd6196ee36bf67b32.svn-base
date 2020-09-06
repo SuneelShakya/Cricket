@@ -1,0 +1,425 @@
+import { Injectable, Inject } from '@angular/core';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+
+@Injectable()
+export class GenericService {
+    IsLoginOk = false;
+    data: any;
+    constructor(
+        public http: HttpClient,
+        @Inject('BASE_URL') public AppUrl: string
+    ) { }
+    CheckLogin() {
+        if (localStorage.getItem('loginsuccess') == "success") {
+            this.IsLoginOk = true;
+        }
+        else {
+            this.IsLoginOk = false;
+        }
+    }
+    showTime() {
+        var date = new Date();
+        var h: any = date.getHours(); // 0 - 23
+        var m: any = date.getMinutes(); // 0 - 59
+        var s: any = date.getSeconds(); // 0 - 59
+        var session = "AM";
+        if (h == 0) {
+            h = 12;
+        }
+        if (h > 12) {
+            h = h - 12;
+            session = "PM";
+        }
+        h = (h < 10) ? "0" + h : h;
+        m = (m < 10) ? "0" + m : m;
+        s = (s < 10) ? "0" + s : s;
+        var time = h + ":" + m + ":" + s + " " + session;
+        document.getElementById("MyClockDisplay").innerText = time;
+        document.getElementById("MyClockDisplay").textContent = time;
+        setTimeout(this.showTime, 1000);
+    }
+    saveAsJson(data: any): Observable<any> {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/saveAsJson';
+        return http.post(url, data).pipe();
+    }
+
+    getJSON(jsonname: any, jsontype: any): Observable<any> {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/GetJson';
+        return http
+            .get(url, {
+                params: {
+                    filetype: jsontype,
+                    filename: jsonname
+                }
+            })
+            .pipe();
+    }
+
+    GetPresentCustomers(): Observable<any> {
+        const http = this.http;
+        const url = this.AppUrl + 'SampleData/GetPresentCustomers';
+        return http.get(url).pipe();
+    }
+
+    GetAppVersion(): Observable<any> {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/GetAppVersion';
+        return http
+            .get(url, {
+                params: {
+                    test: "a"
+                }
+            })
+            .pipe();
+    }
+    saveexcel(data: any): Observable<any> {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/InsertExcel';
+        return http.post(url, data).pipe();
+        //return http.get(url, { params: { month: data } }).pipe();
+    }
+    GetOperations(): Observable<any> {
+        const http = this.http;
+        const url = this.AppUrl + 'SampleData/GetOperations';
+        return http.get(url).pipe();
+    }
+
+
+    GetUserDevices(): Observable<any> {
+        const http = this.http;
+        const url = this.AppUrl + 'SampleData/GetUserDevices';
+        return http
+            .get(url, {
+                params: {
+                    Channel: "@", AllData: "1", status: "@", system: "@"
+                }
+            })
+            .pipe();
+    }
+
+    savefft(data: any): Observable<any> {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/City';
+        return http.get(url, data).pipe();
+    }
+    fetchdata() {
+        const http = this.http;
+        const url = this.AppUrl + 'SampleData/fetchdata';
+        return http.get(url).pipe();
+    }
+
+    uploadfile(fileToUpload: File, filename: any) {
+        const formData: FormData = new FormData();
+        fileToUpload = <File>fileToUpload;
+        formData.append('file', fileToUpload, filename);
+        const http = this.http;
+        const url = this.AppUrl + 'SampleData/readfile';
+        return http.post(url, formData).pipe();
+    }
+    getrealtimedata() {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/getrealtimedata';
+        return http.get(url).pipe();
+    }
+    gettotaldata(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/gettotaldata';
+        return http.get(url, { params: { month: data } }).pipe();
+    }
+
+    getsearchlogdata(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/getsearchlogdata';
+        return http.post(url, data).pipe();
+    }
+    gethistoricdata(data: any): Observable<any> {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/gethistoricdata';
+        return http.get(url, { params: { month: data } }).pipe();
+        // return http.get(url, data).pipe();
+    }
+    getalarmname(data: any): Observable<any> {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/getalarmname';
+        return http.get(url, { params: { month: data } }).pipe();
+        // return http.get(url, data).pipe();
+    }
+
+    savelogstate(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/savelogstate';
+        return http.post(url, data).pipe();
+    }
+
+    totalsearch(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/totalsearch';
+        return http.post(url, data).pipe();
+    }
+    getchannelwisedata(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/getchannelwisedata';
+        return http.get(url, { params: { month: data } }).pipe();
+    }
+
+    getlogdata(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/getlogdata';
+        return http.get(url, { params: { month: data } }).pipe();
+    }
+
+    getalarmwisedata(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/getalarmwisedata';
+        return http.get(url, { params: { month: data } }).pipe();
+    }
+    getexceldata(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/getexceldata';
+        return http.get(url, { params: { month: data } }).pipe();
+    }
+    getsatellitedata(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/getsatellitedata';
+        return http.get(url, { params: { month: data } }).pipe();
+    }
+
+
+    submitDBdata(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/submitDBdata';
+        return http.post(url, data).pipe();
+    }
+
+    CreateDB(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/CreateDB';
+        return http.post(url, data).pipe();
+    }
+
+    checkpackage() {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/checkpackage';
+        return http.get(url).pipe();
+    }
+    checkdb() {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/checkdb';
+        return http.get(url).pipe();
+    }
+
+    checkinspectorstatus(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/checkinspectorstatus';
+        return http.get(url, { params: { inspecdata: data } }).pipe();
+    }
+
+    Insertinspectordata(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/Insertinspectordata';
+        return http.post(url, data).pipe();
+    }
+
+    InsertComponentdata(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/InsertComponentdata';
+        return http.post(url, data).pipe();
+    }
+
+
+    Inserttransactiondata(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/Inserttransactiondata';
+        return http.post(url, data).pipe();
+    }
+
+    Insertcomponents(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/Insertcomponents';
+        return http.post(url, data).pipe();
+    }
+
+    Updatecomponents(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/Updatecomponents';
+        return http.post(url, data).pipe();
+    }
+
+    // Insertflowdata(data:any) {
+    //     const http = this.http;
+    //     const url = this.AppUrl + 'api/SampleData/Insertflowdata';
+    //     return http.get(url,{ params: { inspecdata: data } }).pipe();
+    // }
+    Insertflowdata(data: any): Observable<any> {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/Insertflowdata';
+        return http.post(url, data).pipe();
+    }
+    InsertGroupdata(data: any): Observable<any> {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/InsertGroupdata';
+        return http.post(url, data).pipe();
+    }
+    DeleteGroupdata(data: any): Observable<any> {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/DeleteGroupdata';
+        return http.post(url, data).pipe();
+    }
+    Insertprofiledata(data: any): Observable<any> {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/Insertprofiledata';
+        return http.post(url, data).pipe();
+    }
+
+    InsertUserdata(data: any): Observable<any> {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/InsertUserdata';
+        return http.post(url, data).pipe();
+    }
+
+    updateinspectordata(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/updateinspectordata';
+        return http.get(url, { params: { inspecdata: data } }).pipe();
+    }
+
+    updateflowdata(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/updateflowdata';
+        return http.get(url, { params: { inspecdata: data } }).pipe();
+    }
+
+
+
+    updatecomponentdata(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/updatecomponentdata';
+        return http.post(url, data).pipe();
+    }
+
+    fetchinspectordata() {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/fetchinspectordata';
+        return http.get(url).pipe();
+    }
+    fetchGroupdata() {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/fetchGroupdata';
+        return http.get(url).pipe();
+    }
+
+
+    fetchComponents(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/fetchComponents';
+        return http.get(url, { params: { binary: data } }).pipe();
+    }
+
+    Insertflowcomp(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/Insertflowcomp';
+        return http.post(url, data).pipe();
+    }
+
+
+
+    updateflowcomp(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/updateflowcomp';
+        return http.post(url, data).pipe();
+    }
+
+
+
+    fetchComponentdata() {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/fetchComponentdata';
+        return http.get(url).pipe();
+    }
+    fetchtransactiondata() {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/fetchtransactiondata';
+        return http.get(url).pipe();
+    }
+
+    fetchflowcomp(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/fetchflowcomp';
+        return http.get(url, { params: { id: data } }).pipe();
+    }
+
+    fetchUID(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/fetchUID';
+        return http.get(url, { params: { id: data } }).pipe();
+    }
+
+    fetchflowdata() {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/fetchflowdata';
+        return http.get(url).pipe();
+    }
+    fetchprofiledata() {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/fetchprofiledata';
+        return http.get(url).pipe();
+    }
+    fetchUserdata() {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/fetchUserdata';
+        return http.get(url).pipe();
+    }
+    fetchflowdetails(uid: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/fetchflowdetails';
+        return http.get(url, { params: { uid: uid } }).pipe();
+    }
+
+    fetchinspectorname() {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/fetchinspectorname';
+        return http.get(url).pipe();
+    }
+
+    fetchcomponentname() {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/fetchcomponentname';
+        return http.get(url).pipe();
+    }
+
+    deleteinspectordata(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/deleteinspectordata';
+        return http.get(url, { params: { id: data } }).pipe();
+    }
+
+
+    deletecomponentdata(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/deletecomponentdata';
+        return http.get(url, { params: { id: data } }).pipe();
+    }
+
+
+    deletecomponent(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/deletecomponent';
+        return http.get(url, { params: { id: data } }).pipe();
+    }
+
+    deleteflowdata(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/deleteflowdata';
+        return http.get(url, { params: { id: data } }).pipe();
+    }
+
+    deleteflowrow(data: any) {
+        const http = this.http;
+        const url = this.AppUrl + 'api/SampleData/deleteflowrow';
+        return http.get(url, { params: { id: data } }).pipe();
+    }
+
+}

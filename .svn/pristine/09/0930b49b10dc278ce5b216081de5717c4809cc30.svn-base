@@ -1,0 +1,164 @@
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { GenericService } from '../services/Generic.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+export interface DialogData {
+  Devices: any;
+  status: string;
+  data: string;
+  index: any;
+  Name: any;
+  animal: string;
+  name: string;
+}
+@Component({
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+})
+
+export class HomeComponent {
+  name: any;
+  animal: any;
+  firstFormGroup: FormGroup;
+  secondFormGroup: FormGroup;
+  username: any="";
+  password: any="";
+  Port: any="";
+  dbinfo: any=[];
+  IP: any;
+  Response: any;
+  splitdata: any;
+  DBname: any;
+  MAMDBuser: any;
+  DBCheck:any;
+  MAMDBpassword: any;
+  Inspectorname:any;
+  Binaryname:any;
+  Path:any;
+  SystemIP:any;
+  Recieveport:any;
+  TXport:any;
+  Comments:any;
+  tags:any;
+  inspectordata: any=[];
+  DBCreate: any;
+  version: any;
+  status: number;
+  Prerequisites:any=[];
+
+
+  constructor(public dialog: MatDialog,public objService: GenericService,private _snackBar: MatSnackBar,public router: Router) {}
+  ngOnInit() {
+    
+    this.checkpackage();
+
+  };
+
+  checkpackage(){
+    this.objService.checkpackage().subscribe((datas: any) => {
+       if (datas.result.length > 0) {
+         this.Response= datas.result.split("\n")
+         this.Response= this.Response.slice(0,-2)
+         for(var i=0;i<=this.Response.length;i++){
+          this.splitdata= this.Response[i].split(",,,");
+          this.Prerequisites.push({Name:this.splitdata[0],Status:this.splitdata[1]})
+          
+
+         }
+
+
+       }
+     });
+   }
+
+   checkinspectorstatus(){
+   //  this.inspectordata.push({InspectorIp:this.SystemIP,InspectorPort:this.Recieveport});
+   this.inspectordata=this.SystemIP+"$"+this.Recieveport+"$"+this.Inspectorname+"$"+this.Binaryname+"$"+this.TXport;
+    this.objService.checkinspectorstatus(this.inspectordata).subscribe((datas: any) => {
+       if (datas.result.length > 0) {
+         this.version= datas.result;
+         if(this.version=="false"){
+           this.status=0;
+         }
+         else{
+           this.status=1;
+         }
+       this.Insertinspectordata();
+
+
+       }
+     });
+   }
+
+   Insertinspectordata(){
+    //  this.inspectordata.push({InspectorIp:this.SystemIP,InspectorPort:this.Recieveport});
+    this.inspectordata=this.Inspectorname+"$"+this.Binaryname+"$"+this.SystemIP+"$"+this.Recieveport+"$"+this.TXport+"$"+this.status+"$"+this.version;
+     this.objService.Insertinspectordata(this.inspectordata).subscribe((datas: any) => {
+        if (datas.result.length > 0) {
+          this.Response= datas.result;
+          this.Response= this.Response
+        
+ 
+ 
+        }
+      });
+    }
+
+  
+
+
+  submitDBdata(){
+   
+
+    this.objService.submitDBdata({
+     Username: this.username,IP:this.IP,Password:this.password,Port:this.Port,DBname:this.DBname,MAMDBuser:this.MAMDBuser,MAMDBpassword:this.MAMDBpassword
+    }).subscribe((datas: any) => {
+      
+        this.DBCheck = datas.trim();
+        if(this.DBCheck!="true"){
+          this.openSnackBar("No Such Database Exits","Warning");
+        }
+        else{
+          this.openSnackBar("DataBase Exits","Success");
+
+        }
+      
+    });
+    
+  }
+
+
+  CreateDB(){
+   
+
+    this.objService.CreateDB({
+     Username: this.username,IP:this.IP,Password:this.password,Port:this.Port,DBname:this.DBname,MAMDBuser:this.MAMDBuser,MAMDBpassword:this.MAMDBpassword
+    }).subscribe((datas: any) => {
+      
+        this.DBCreate = datas.trim();
+        if(this.DBCreate!="true"){
+          this.openSnackBar("Database Creation Failed","Warning");
+        }
+        else{
+          this.openSnackBar("DataBase Created","Success");
+          
+          this.router.navigateByUrl('/counter');
+
+
+        }
+      
+    });
+    
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
+
+
+
+}

@@ -1,0 +1,345 @@
+<mat-horizontal-stepper #stepper>
+  <!-- [stepControl]="ThirdFormGroup" -->
+  <mat-step>
+    <div class="col-md-12">
+      <div class="row">
+        <!-- <div class="col" style="width: 30%;flex: 0 0 30%;">
+                    <img src="../../assets/originalmamc.png" style="height: 4vh; margin-bottom: 6vh;">
+                    <ul>
+                         <li style="font-size: 14px;" >Check Pre-Requisites</li> 
+                        <li style="text-decoration: solid;font-weight: 700;font-size: 14px;">Create New Inspector</li>
+                    </ul>
+                </div> -->
+        <div class="col">
+          <h1 mat-dialog-title *ngIf="update!='edit'">Create New Component</h1>
+          <h1 mat-dialog-title *ngIf="update=='edit'">Edit Component</h1>
+
+          <div mat-dialog-content>
+
+
+            <ng-template matStepLabel>Fill out Event Details</ng-template>
+            <div class="row">
+              <div class="col-md-4">
+                <mat-form-field class="p-1">
+                  <mat-label>Event Type</mat-label>
+                  <mat-select [(ngModel)]="EventType" required selected >
+                    <mat-option value="Archive">
+                      Archive
+                    </mat-option>
+                    <mat-option value="DeepArchive">
+                      Deep Archive
+                    </mat-option>
+                    <mat-option value="HouseKeeping">
+                      House Keeping
+                    </mat-option>
+                    <mat-option value="MissingTransfer">
+                      Missing Transfer
+                    </mat-option>
+                    <mat-option value="Asrun">
+                      Asrun
+                    </mat-option>
+                    <mat-option value="Duration">
+                      Duration
+                    </mat-option>
+                    <mat-option value="SOM">
+                      SOM
+                    </mat-option>
+                    <mat-option value="Size">
+                      Size
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-4" >
+                <mat-form-field class="p-1">
+                  <input required  type="text" [(ngModel)]="EventName" matInput
+                    placeholder="Event Name" >
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-4" *ngIf="EventType!='DeepArchive' && EventType!='Archive' && EventType!='HouseKeeping'" >
+                <mat-form-field class="p-1">
+                  <mat-label>Event</mat-label>
+                  <mat-select [(ngModel)]="Event" [disabled]="isprofile" required
+                    (selectionChange)="getExtensions($event.value)">
+                    <mat-option value="PRI">Primary</mat-option>
+                    <mat-option value="SEC">Secondary</mat-option>
+                    <mat-option value="SUB">Subtitle</mat-option>
+                    <!-- <mat-option value="GFX">Graphics</mat-option> -->
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4" *ngIf="EventType!='DeepArchive' && EventType!='Archive' && EventType!='HouseKeeping'">
+                <mat-form-field class="p-1">
+                  <mat-label>Device Category</mat-label>
+                  <mat-select [(ngModel)]="DeviceCategory" [disabled]="isprofile">
+                    <mat-option value="MAIN">MAIN</mat-option>
+                    <mat-option value="BACKUP">BACKUP</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field class="p-1">
+                  <mat-label>Source</mat-label>
+                  <mat-select [(ngModel)]="Source" required (selectionChange)="getExtensions($event.value)" >
+                    <mat-option *ngFor="let dv of allDevices" [value]="dv.uid">
+                      {{ dv.devicename }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field class="p-1">
+                  <mat-label>Destination</mat-label>
+                  <mat-select [(ngModel)]="Destination"  required>
+                    <mat-option *ngFor="let dv of allDevices" [value]="dv.uid">
+                      {{ dv.devicename }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field class="p-1">
+                  <mat-label>Component</mat-label>
+                  <mat-select [(ngModel)]="Component" required>
+                    <mat-option *ngFor="let dv of components" [value]="dv.UID">
+                      {{ dv.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field class="p-1">
+                  <mat-label>Profile</mat-label>
+                  <mat-select [(ngModel)]="Profile" required >
+                    <mat-option *ngFor="let dv of profiledata" [value]="dv.UID">
+                      {{ dv.Name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4" *ngIf="EventType!='DeepArchive' && EventType!='Archive' && EventType!='HouseKeeping'">
+                <mat-form-field class="p-1">
+                  <input [(ngModel)]="MissingHours" pattern="^(0|([01]?\d|2[0-2])-([1]?\d|2[0-3])|2[4])$" autocomplete="off" type="text" matInput
+                    placeholder="Missing Hours(HH-HH)" 
+                    (keypress)="'return event.charCode >= 48 && event.charCode <=57'">
+                </mat-form-field>
+              </div>
+              <div class="col-md-4" *ngIf="EventType!='DeepArchive' && EventType!='Archive' && EventType!='HouseKeeping'">
+                <mat-form-field class="p-1">
+                  <mat-label>On-Air Datetime</mat-label>
+                  <mat-select [(ngModel)]="OnAir" [disabled]="isprofile">
+                    <mat-option value="0">Disable</mat-option>
+                    <mat-option value="1">Enable</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4" *ngIf="EventType!='DeepArchive' && EventType!='Archive' && EventType!='HouseKeeping'">
+                <mat-form-field class="p-1">
+                  <mat-label>Email Configuration</mat-label>
+                  <mat-select [(ngModel)]="Email" [disabled]="isprofile">
+                    <mat-option value="false">Disable</mat-option>
+                    <mat-option value="true">Enable</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4" *ngIf="EventType!='DeepArchive' && EventType!='Archive' && EventType!='HouseKeeping'">
+                <mat-form-field class="p-1">
+                  <mat-label>Channel</mat-label>
+                  <mat-select [(ngModel)]="Channel" [disabled]="isprofile" required>
+                    <mat-option *ngFor="let dv of channelData" [value]="dv.ChannelUID">
+                      {{ dv.Abbreviation }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4" *ngIf="EventType=='DeepArchive'">
+                <mat-form-field class="p-1">
+                  <input required type="text" [(ngModel)]="Size" matInput placeholder="Size">
+                </mat-form-field>
+              </div>
+              <div class="col-md-4" *ngIf="EventType=='HouseKeeping'">
+                <mat-form-field class="p-1">
+                  <mat-label>Deep Archive</mat-label>
+                  <mat-select [(ngModel)]="deeparchive">
+                    <mat-option value="0">Disable</mat-option>
+                    <mat-option value="1">Enable</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4" *ngIf="EventType=='HouseKeeping'">
+                <mat-form-field class="p-1">
+                  <mat-label>Delete Media</mat-label>
+                  <mat-select [(ngModel)]="deletemedia">
+                    <mat-option value="0">Disable</mat-option>
+                    <mat-option value="1">Enable</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4" *ngIf="EventType=='HouseKeeping'">
+                <mat-form-field class="p-1">
+                  <mat-select [(ngModel)]="IngestHours" placeholder="Ingest Hours">
+                    <mat-option *ngFor="let dv of objService.hrsList" [value]="dv.label">
+                      {{ (dv.label!='1')?dv.label+' Hours':dv.label+' Hour' }}
+                    </mat-option>
+                  </mat-select>
+                  <!-- <input autocomplete="off" type="number" min="1" matInput placeholder="Check Hours"
+                    formControlName="HoursDate"
+                    (keypress)="'return event.charCode >= 48 && event.charCode <=57'"> -->
+                </mat-form-field>
+              </div>
+              <div class="col-md-4" *ngIf="EventType=='Archive' || EventType=='HouseKeeping'">
+                <mat-form-field class="p-1">
+                  <mat-label>Playlist</mat-label>
+                  <mat-select [(ngModel)]="Playlist">
+                    <mat-option value="0">Disable</mat-option>
+                    <mat-option value="1">Enable</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4" *ngIf="EventType=='Archive' || EventType=='HouseKeeping'">
+                <mat-form-field class="p-1">
+                  <mat-select [(ngModel)]="PlaylistDays" placeholder="Check Playlist Days">
+                    <mat-option *ngFor="let dv of objService.daysList" [value]="dv.value">
+                      {{ dv.label }}
+                    </mat-option>
+                  </mat-select>
+                  <!-- <input autocomplete="off" type="number" min="1" matInput formControlName="PlaylistDays"
+                    (keypress)="'return event.charCode >= 48 && event.charCode <=57'"> -->
+                </mat-form-field>
+              </div>
+              <div class="col-md-4" *ngIf="EventType!='HouseKeeping'">
+                <mat-form-field class="p-1">
+                  <mat-label>Extension</mat-label>
+                  <mat-select multiple [(ngModel)]="Extension" required>
+                    <mat-option *ngFor="let dv of Extentions" [value]="dv.value">
+                      {{ dv.label }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4" *ngIf="EventType!='HouseKeeping'">
+                <mat-form-field class="p-1">
+                  <mat-label>Transfer Profile</mat-label>
+                  <mat-select [(ngModel)]="transferprofile" required>
+                    <mat-option *ngFor="let rs of transferprofiles" [value]="rs.UID">
+                      {{ rs.profilename }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4" *ngIf="EventType=='Archive' || EventType=='HouseKeeping'">
+                <mat-form-field class="p-1">
+                  <mat-label>Asrun</mat-label>
+                  <mat-select [(ngModel)]="Asrun">
+                    <mat-option value="0">Disable</mat-option>
+                    <mat-option value="1">Enable</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4" *ngIf="EventType=='Archive' || EventType=='HouseKeeping'">
+                <mat-form-field class="p-1">
+                  <mat-select [(ngModel)]="AsrunDays" placeholder="Check Asrun Days">
+                    <mat-option *ngFor="let dv of objService.daysList" [value]="dv.value">
+                      {{ dv.label }}
+                    </mat-option>
+                  </mat-select>
+                  <!-- <input autocomplete="off" type="number" min="1" matInput placeholder="Check Asrun Days"
+                    formControlName="AsrunDays"
+                    (keypress)="'return event.charCode >= 48 && event.charCode <=57'"> -->
+                </mat-form-field>
+              </div>
+              <div class="col-md-4" *ngIf="EventType=='Archive' || EventType==''">
+                <mat-form-field class="p-1">
+                  <mat-select [(ngModel)]="Hours" placeholder="Check Hours">
+                    <mat-option *ngFor="let dv of objService.hrsList" [value]="dv.label">
+                      {{ (dv.label!='1')?dv.label+' Hours':dv.label+' Hour' }}
+                    </mat-option>
+                  </mat-select>
+                  <!-- <input autocomplete="off" type="number" min="1" matInput placeholder="Check Hours"
+                    formControlName="HoursDate"
+                    (keypress)="'return event.charCode >= 48 && event.charCode <=57'"> -->
+                </mat-form-field>
+              </div>
+              <div class="col-md-4" *ngIf="EventType=='Archive' || EventType==''">
+                <mat-form-field class="p-1">
+                  <mat-label>Preview</mat-label>
+                  <mat-select [(ngModel)]="Preview">
+                    <mat-option value="0">Disable</mat-option>
+                    <mat-option value="1">Enable</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4" *ngIf="EventType=='DeepArchive'">
+                <mat-form-field class="p-1">
+                  <input required autocomplete="off" type="number" [(ngModel)]="datecreatedtime" [min]="1" matInput
+                    placeholder="Date Created Time" (keypress)="'return event.charCode >= 48 && event.charCode <=57'">
+                </mat-form-field>
+              </div>
+              <div class="col-md-4" *ngIf="EventType=='DeepArchive'">
+                <mat-form-field class="p-1">
+                  <mat-label>Date Created Standard</mat-label>
+                  <mat-select [(ngModel)]="datecreatedstandard">
+                    <mat-option>Select</mat-option>
+                    <mat-option value="SECOND" [hidden]="true">Second</mat-option>
+                    <mat-option value="MINUTE" [hidden]="true">Minute</mat-option>
+                    <mat-option value="HOUR">Hour</mat-option>
+                    <mat-option value="DAY">Day</mat-option>
+                    <mat-option value="WEEK">Week</mat-option>
+                    <mat-option value="MONTH">Month</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field class="p-1">
+                  <input required autocomplete="off" type="number" [(ngModel)]="jobtime" [min]="1" matInput
+                    placeholder="Job Execution Time" (keypress)="'return event.charCode >= 48 && event.charCode <=57'">
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field class="p-1">
+                  <mat-label>Job Execution Standard</mat-label>
+                  <mat-select [(ngModel)]="jobexecutionstandard">
+                    <mat-option>Select</mat-option>
+                    <mat-option value="SECOND" [hidden]="true">Second</mat-option>
+                    <mat-option value="MINUTE" [hidden]="true">Minute</mat-option>
+                    <mat-option value="HOUR">Hour</mat-option>
+                    <mat-option value="DAY">Day</mat-option>
+                    <mat-option value="WEEK">Week</mat-option>
+                    <mat-option value="MONTH">Month</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <mat-form-field class="p-1">
+                  <mat-label>Status</mat-label>
+                  <mat-select [(ngModel)]="status">
+                    <mat-option value="0">Disable</mat-option>
+                    <mat-option value="1">Enable</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <!-- <mat-form-field>
+                <mat-label>Reference</mat-label>
+                <input matInput [(ngModel)]="Reference" name="pass" placeholder="">
+              </mat-form-field> -->
+            </div>
+          </div>
+          <div mat-dialog-actions style="justify-content: center;margin-top: 2.5vh">
+            <!-- <button mat-raised-button color="primary" *ngIf="DBCheck=='true'" (click)="CreateDB()">Submit</button> -->
+            <button mat-raised-button color="primary" *ngIf="update!='edit'"
+              (click)="InsertComponentdata('Insert')">Submit</button>
+            <button mat-raised-button color="primary" *ngIf="update=='edit'" (click)="InsertComponentdata('Update')">Update</button>
+            <button mat-button style="border: 1px solid ;border-color: #9c27b0;" (click)="onNoClick()">Close</button>
+
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </mat-step>
+
+</mat-horizontal-stepper>

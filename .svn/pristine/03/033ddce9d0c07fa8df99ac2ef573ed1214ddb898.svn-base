@@ -1,0 +1,36 @@
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { GenericService } from '../services/Generic.service';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
+})
+export class LoginComponent {
+  objcls: login;
+  constructor(
+    public router: Router, public _objGenericService: GenericService
+  ) {
+    this.objcls = new login();
+    this._objGenericService.IsLoginOk = false;
+  }
+  CheckLogin() {
+    if (this.objcls.Uid == "admin" && this.objcls.Pwd == "admin") {
+      this._objGenericService.GetServerUrl().subscribe(datas => {
+        this._objGenericService.serverurl = datas;
+        localStorage.setItem('ServerUrl', datas);
+      });
+      this._objGenericService.IsLoginOk = true;
+      localStorage.setItem('loginsuccess', 'success');
+      //this.router.navigateByUrl("/home");
+      this.router.navigateByUrl("/excelmapping");
+    }
+  }
+}
+class login {
+  Uid: any = "";
+  Pwd: any = "";
+}
+
+

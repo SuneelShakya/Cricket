@@ -1,0 +1,194 @@
+<mat-horizontal-stepper [linear]="isLinear" #stepper style="margin-top: 50px;">
+    <mat-step [stepControl]="firstFormGroup">
+        <form >        
+            <div class="col-md-12">
+            <div class="row">
+                <div class="col" style="width: 30%;flex: 0 0 30%;">
+                    <img src="../../assets/originalmamc.png" style="height: 4vh; margin-bottom: 6vh;">
+                    <ul>
+                        <li style="text-decoration: solid;font-weight: 700;font-size: 14px;">Check Pre-Requisites</li>
+                        <li style="font-size: 14px;">Check Database</li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <h1 mat-dialog-title>Check of Pre-Requisites</h1>
+                    <div mat-dialog-content style="height: 40vh;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Current Version</th>
+                                    <th>Required Version</th>
+                                    <th>Status</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of Prerequisites" style="font-size: 14px;">
+                                    <td>{{item.Name}}</td>
+                                    <td>{{item.PresentValue}}</td>
+                                    <td>{{item.Required}}</td>
+                                    <td><img src="../../assets/{{item.Status}}.svg" style="height: 3vh;"></td>
+                                        
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div mat-dialog-actions style="justify-content: center;">
+                        <button mat-button (click)="onNoClick()" style="border: 1px solid ;border-color: #9c27b0;">Back</button>
+                        <button mat-raised-button color="primary" matStepperNext cdkFocusInitial>Next</button>
+                        <!-- <button mat-raised-button color="primary" (click)="checkpackage()"  cdkFocusInitial>Check</button> -->
+                      </div>
+        
+                </div>
+            </div>
+        </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col" style="width: 30%;flex: 0 0 30%;">
+                    <img src="../../assets/originalmamc.png" style="height: 4vh; margin-bottom: 6vh;">
+                    <ul>
+                        <li style="font-size: 14px;" >Check Pre-Requisites</li>
+                        <li style="text-decoration: solid;font-weight: 700;font-size: 14px;">Configure Database</li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <h1 mat-dialog-title>Configure Database</h1>
+
+                    <div mat-dialog-content style="height: 40vh;">
+
+
+                    <form >
+                        <ng-template matStepLabel>Fill out Database Details</ng-template>
+                        <mat-form-field>
+                          <mat-label>Database Host IP</mat-label>
+                          <input matInput  [(ngModel)]="IP" name="ip" placeholder=""
+                                 required>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Database Port</mat-label>
+                            <input matInput  [(ngModel)]="Port" name="port" placeholder=""
+                                   required>
+                          </mat-form-field>
+
+                          <mat-form-field *ngIf="DBCheck=='true'" >
+                            <mat-label>Database Name</mat-label>
+                            <input matInput  [(ngModel)]="DBname" name="dbname" placeholder=""
+                                   required>
+                          </mat-form-field>
+                        
+                          <mat-form-field>
+                            <mat-label>Database Root User</mat-label>
+                            <input matInput  [(ngModel)]="username" name="user" placeholder=""
+                                   required>
+                          </mat-form-field>
+                          <mat-form-field>
+                            <mat-label>Database Root Password</mat-label>
+                            <input matInput  [(ngModel)]="password" name="pass" type="password" placeholder=""
+                                   required>
+                          </mat-form-field>
+                        
+                          <mat-form-field *ngIf="DBCheck=='true'">
+                            <mat-label>MAM Database User</mat-label>
+                            <input matInput  [(ngModel)]="MAMDBuser" name="mpass" placeholder=""
+                                   required>
+                          </mat-form-field>
+                          <mat-form-field *ngIf="DBCheck=='true'">
+                            <mat-label>MAM Database Password</mat-label>
+                            <input matInput  [(ngModel)]="MAMDBpassword" type="password" name="mpass" placeholder=""
+                                   required>
+                          </mat-form-field>
+                        </form>
+
+                        </div>
+                        <div mat-dialog-actions style="justify-content: center;">
+                          <button mat-button matStepperPrevious style="border: 1px solid ;border-color: #9c27b0;">Back</button>
+                          <button mat-raised-button color="primary" *ngIf="DBCheck=='true'" (click)="CreateDB()">Create</button>
+                          <button mat-raised-button color="primary" *ngIf="DBCheck!='true'" (click)="submitDBdata()">Submit</button>
+                          <!-- <button mat-raised-button color="primary"  matStepperNext cdkFocusInitial>Next</button> -->
+
+                        </div>
+                
+            </div>
+            </div>
+        </div>
+      
+    </mat-step>
+
+    <mat-step [stepControl]="ThirdFormGroup">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col" style="width: 30%;flex: 0 0 30%;">
+                    <img src="../../assets/originalmamc.png" style="height: 4vh; margin-bottom: 6vh;">
+                    <ul>
+                        <li style="font-size: 14px;" >Check Pre-Requisites</li>
+                        <li style="text-decoration: solid;font-weight: 700;font-size: 14px;">Configure Database</li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <h1 mat-dialog-title>Create New Inspector</h1>
+
+                    <form >
+                        <ng-template matStepLabel>Fill out Inspector Details</ng-template>
+                        <mat-form-field>
+                          <mat-label>Name</mat-label>
+                          <input matInput  [(ngModel)]="Inspectorname" name="ip" placeholder=""
+                                 required>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Binary Name</mat-label>
+                            <input matInput  [(ngModel)]="Binaryname" name="port" placeholder=""
+                                   required>
+                          </mat-form-field>
+
+                          <mat-form-field >
+                            <mat-label>Path</mat-label>
+                            <input matInput  [(ngModel)]="Path" name="dbname" placeholder=""
+                                   required>
+                          </mat-form-field>
+                        
+                          <mat-form-field>
+                            <mat-label>System IP</mat-label>
+                            <input matInput  [(ngModel)]="SystemIP" name="user" placeholder=""
+                                   required>
+                          </mat-form-field>
+                          <mat-form-field>
+                            <mat-label>Recieve Port</mat-label>
+                            <input matInput  [(ngModel)]="Recieveport" name="pass" placeholder=""
+                                   required>
+                          </mat-form-field>
+                        
+                          <mat-form-field >
+                            <mat-label>TX Port</mat-label>
+                            <input matInput  [(ngModel)]="TXport" name="pass" placeholder=""
+                                   required>
+                          </mat-form-field>
+                          <mat-form-field >
+                            <mat-label>Comments</mat-label>
+                            <input matInput  [(ngModel)]="Comments" name="pass" placeholder=""
+                                   required>
+                          </mat-form-field>
+                          <mat-form-field >
+                            <mat-label>Tags</mat-label>
+                            <input matInput  [(ngModel)]="tags" name="pass" placeholder=""
+                                   required>
+                          </mat-form-field>
+                        <div mat-dialog-actions style="justify-content: center;">
+                          <button mat-button matStepperPrevious style="border: 1px solid ;border-color: #9c27b0;">Back</button>
+                          <!-- <button mat-raised-button color="primary" *ngIf="DBCheck=='true'" (click)="CreateDB()">Submit</button> -->
+                          <button mat-raised-button color="primary"  (click)="checkinspectorstatus()">Submit</button>
+                        </div>
+                      </form>
+                </div>
+            </div>
+        </div>
+      
+    </mat-step>
+   
+  </mat-horizontal-stepper>
+
+

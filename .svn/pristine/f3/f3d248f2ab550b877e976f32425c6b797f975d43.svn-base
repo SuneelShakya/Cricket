@@ -1,0 +1,122 @@
+import { Component, Inject, OnInit } from '@angular/core';
+import { GenericService } from '../services/Generic.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+//import * as $ from 'jquery';
+@Component({
+  selector: 'app-profile',
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.css']
+
+})
+export class ProfileComponent implements OnInit {
+  objCls: ProfileProperties = new ProfileProperties();
+  componentdata: any = [];
+  popup: any = "";
+  BtnText: any = "";
+  flowdata: any;
+  EditMainIndex: any;
+  deleteuid: any;
+  isLoading: boolean;
+  constructor(
+    public objService: GenericService, private _snackBar: MatSnackBar) { }
+  ngOnInit() {
+    this.fetchdata();
+  };
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
+  Reset() {
+    //this.CancelEditPartial();
+    this.objCls = new ProfileProperties();
+    this.popup = "";
+    this.BtnText = "";
+    this.fetchdata();
+  }
+  fetchdata() {
+    this.objService.fetchprofiledata().subscribe((datas: any) => {
+      //var x = JSON.parse(datas);
+      if (datas.ResultData.length > 0)
+        this.flowdata = datas.ResultData;
+    });
+  }
+  Editmain(obj, i) {
+    this.EditMainIndex = i;
+    this.objCls.UID = obj.UID;
+    this.objCls.Name = obj.Name;
+    this.objCls.ProfileType = obj.ProfileType;
+    this.objCls.Inputfile = obj.Inputfile;
+    this.objCls.Outputfile = obj.Outputfile;
+    this.objCls.Parameters = obj.Parameters;
+    this.objCls.IsActive = obj.IsActive;
+    this.popup = "Edit";
+    this.BtnText = "Update";
+    this.openDialog('open');
+  }
+  saveFlow() {
+    this.isLoading = true;
+    this.objCls.OperationName = this.BtnText;
+    this.objService.Insertprofiledata(this.objCls).subscribe((datas: any) => {
+      if (datas.toLowerCase() == "success") {
+        this.openSnackBar("New Profile " + this.objCls.OperationName + " successfully", "Success");
+        this.Reset();
+        this.openDialog("close");
+        this.isLoading = false;
+      }
+      else if (datas.toLowerCase() == "fail") {
+        this.openSnackBar("New Profile not " + this.objCls.OperationName + "", "Warning");
+        this.isLoading = false;
+      }
+    });
+  }
+  deleteFlow() {
+    this.isLoading = true;
+    this.objCls.OperationName = "Delete";
+    this.objCls.UID = this.deleteuid;
+    this.objService.Insertprofiledata(this.objCls).subscribe((datas: any) => {
+      if (datas.toLowerCase() == "success") {
+        this.openSnackBar("Profile Deleted successfully", "Success");
+        this.Reset();
+        //this.openDialog("close");
+        this.HideDialog();
+        this.isLoading = false;
+      }
+      else if (datas.toLowerCase() == "fail") {
+        this.openSnackBar("Profile not deleted due to system error", "Error");
+        this.isLoading = false;
+      }
+    });
+  }
+  AddNew(val) {
+    this.objCls = new ProfileProperties();
+    this.popup = "Create New";
+    this.BtnText = "Save";
+    this.openDialog(val);
+  }
+
+  openDialog(val) {
+    var modal = document.getElementById("entryModal");
+    modal.style.display = val == 'open' ? "block" : "none";
+  }
+  Deletemain(val) {
+    var modal = document.getElementById("deleteModal");
+    modal.style.display = "block";
+    this.deleteuid = val;
+  }
+  HideDialog() {
+    var modal = document.getElementById("deleteModal");
+    modal.style.display = "none";
+  }
+}
+
+class ProfileProperties {
+  UID: any = "0";
+  Name: any = "";
+  IsActive: any = "";
+  ProfileType: any = "";
+  Inputfile: any = "";
+  Outputfile: any = "";
+  Parameters: any = "";
+  OperationName: any = "";
+}

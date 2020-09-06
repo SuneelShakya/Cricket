@@ -1,0 +1,151 @@
+<mat-horizontal-stepper #stepper>
+  <!-- [stepControl]="ThirdFormGroup" -->
+  <mat-step > 
+    <div class="col-md-12">
+      <div class="row">
+        <!-- <div class="col" style="width: 30%;flex: 0 0 30%;">
+                    <img src="../../assets/originalmamc.png" style="height: 4vh; margin-bottom: 6vh;">
+                    <ul>
+                         <li style="font-size: 14px;" >Check Pre-Requisites</li> 
+                        <li style="text-decoration: solid;font-weight: 700;font-size: 14px;">Create New Inspector</li>
+                    </ul>
+                </div> -->
+        <div class="col">
+          <h1 mat-dialog-title *ngIf="update!='edit'" >Create New Component</h1>
+          <h1 mat-dialog-title *ngIf="update=='edit'" >Edit Component</h1>
+
+          <div mat-dialog-content>
+
+
+            <ng-template matStepLabel>Fill out Component Details</ng-template>
+            <div class="row">
+              <div class="col-md-4">
+              <mat-form-field>
+                <mat-label>Name</mat-label>
+                <input matInput [(ngModel)]="componentname" name="ip" placeholder="" required>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+
+              <mat-form-field>
+                <mat-label>Binary Name</mat-label>
+                <input matInput [disabled]="update=='edit'" [(ngModel)]="Binaryname" name="port" placeholder=""
+                  required>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+
+              <mat-form-field>
+                <mat-label>Path</mat-label>
+                <input matInput [(ngModel)]="path" name="pass" placeholder="" required>
+              </mat-form-field>
+            </div>
+            </div>
+
+              <div class="row">
+                <div class="col-md-4">
+
+                <mat-form-field>
+                  <mat-label>OS Type</mat-label>
+                  <mat-select [(value)]="OSType" name="food">
+                    <mat-option value="Windows">
+                      Windows
+                    </mat-option>
+                    <mat-option value="Linux">
+                      Linux
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+             </div>
+             <div class="col-md-4">
+
+              <mat-form-field>
+                <mat-label>Type</mat-label>
+                <mat-select [(value)]="type" name="food">
+                  <mat-option *ngIf="OSType=='Windows'" value="Python">
+                    Python Script
+                  </mat-option>
+                  <mat-option *ngIf="OSType=='Windows'" value="VBS">
+                    VBS
+                  </mat-option>
+                  <mat-option *ngIf="OSType=='Windows'" value="Batch">
+                    Batch File
+                  </mat-option>
+                  <mat-option *ngIf="OSType=='Windows'" value="Exe">
+                    EXE
+                  </mat-option>
+                  <mat-option *ngIf="OSType=='Linux'" value="Shell">
+                    Shell
+                  </mat-option>
+                  <mat-option *ngIf="OSType=='Linux'" value="Python">
+                    Python
+                  </mat-option>
+                  <mat-option *ngIf="OSType=='Linux'" value="Binary">
+                    Binary
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              
+            </div>
+            <div class="col-md-4">
+
+              <mat-form-field>
+                <mat-label>Active Status</mat-label>
+                <mat-select [(value)]="EDStatus" name="food">
+                  <mat-option value="Enable">
+                    Enable
+                  </mat-option>
+                  <mat-option value="Disable">
+                    Disable
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              
+            </div>
+              </div>
+          <div class="row">
+            <!-- <div class="col-md-4">
+
+                <mat-form-field>
+                  <mat-label>Version</mat-label>
+                  <input matInput [(ngModel)]="version" name="pass" placeholder="" required>
+                </mat-form-field>
+               </div> -->
+               <div class="col-md-4">
+
+              <mat-form-field>
+                <mat-label>Status</mat-label>
+                <mat-select [(value)]="status" name="status">
+                  <mat-option value="1">
+                    True
+                  </mat-option>
+                  <mat-option value="0">
+                    False
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              </div>
+              <!-- <mat-form-field>
+                <mat-label>Reference</mat-label>
+                <input matInput [(ngModel)]="Reference" name="pass" placeholder="">
+              </mat-form-field> -->
+            </div>
+          </div>
+          <div mat-dialog-actions style="justify-content: center;margin-top: 2.5vh">
+            <!-- <button mat-raised-button color="primary" *ngIf="DBCheck=='true'" (click)="CreateDB()">Submit</button> -->
+            <button mat-raised-button color="primary" *ngIf="update!='edit'"
+              (click)="InsertComponentdata()">Submit</button>
+            <button mat-raised-button color="primary" *ngIf="update=='edit'"
+              (click)="EditComponent()">Update</button>
+            <button mat-button style="border: 1px solid ;border-color: #9c27b0;" (click)="onNoClick()">Close</button>
+
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </mat-step>
+
+</mat-horizontal-stepper>

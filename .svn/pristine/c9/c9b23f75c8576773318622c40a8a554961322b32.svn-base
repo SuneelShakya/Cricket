@@ -1,0 +1,343 @@
+using System;
+using System.Net.Http;
+using System.Net;
+using Newtonsoft.Json;
+using System.IO;
+using System.Text;
+using System.Linq;
+using System.Data;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+
+namespace Mam_Configuration_Demo
+{
+    public enum RequestType
+    {
+        POST,
+        GET,
+        PUT,
+        DELETE
+    }
+    public enum RequestURL
+    {
+        MamServerUrl,
+        OffcomService
+    }
+
+    public enum DB
+    {
+        GetData = 0, //For SELECT Statement
+        GetDataAsync = 1,  //For asynchronous SELECT Statement
+        ExecuteScalar = 2, //For Scalar SELECT Statement
+        ExecuteQuery = 3,   //For INSERT/UPDATE/DELETE Statement. Will give number of rows affected
+        ExecuteQueryPost = 4,   //For INSERT/UPDATE/DELETE Statement, when large statement is to be sent. Will give number of rows affected
+        ExecuteMultiQueries = 5 //For Executing multiple queries, use it with ServiceRequest.MakeMultiRequest ONLY
+    }
+
+    public static class ServiceRequest
+    {
+        //  static string DBServiceUrl = "http://192.168.15.71:5121";
+
+
+        public static string MakeRequestNamanApi(this string url, string postData = null, bool isPythonServer = false, bool isOfcom = false)
+        {
+            try
+            {
+                var IsAuthenticated = true;
+                if (IsAuthenticated && !isPythonServer && !isOfcom)
+                {
+                    string[] ignore = { "GetOfcomData", "GetAllOfcomData","PlaylistBasedReconcile",
+                    "GetAllData", "SignupWithPredefinedDetails", "SubtitleConvertProcess", "BulkUploadUpdate", "SubtitleBulkPath",
+                    "TCBulkFilePath","SingleTCProcess","SubtitleSignup", "SubtitleUserUpdate" , "SendDetails","GetUsernames","ResetLink","ResetMailBMSPassword","CheckIfDbExist","CreateDb","InspectorControl"};
+
+                    var IsIgnore = false;
+                    if (ignore.Any(x => url.StartsWith(x)))
+                        IsIgnore = true;
+
+                    if (url != "Login" && url != "GetADdns" && url.StartsWith("LoginHistory") == false && IsIgnore == false)
+                    {
+                        if (url.EndsWith("/"))
+                            url = url.Substring(0, url.LastIndexOf("/"));
+
+                        // var UserIdForHash = AppHttpContext.CurrentUserId();
+                        // var ConsumerKeyForHash = AppHttpContext.CurrentConsumerKey();
+                        var TimeStampForHash = DateTime.Now.ToString("yyyyMMddHHmmss");
+                        var UnixTimestamp = (Int64)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                        // var CalculatedHash = MD5Hash(ConsumerKeyForHash + MD5Hash(ConsumerKeyForHash + url + "/" + UnixTimestamp));
+                        url += "/@/@/@";
+                    }
+                }
+                //To get the userid for hash                                
+
+                {
+                    url = Program.DBServiceUrl + "/" + url;
+                }
+
+                HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
+                if (!string.IsNullOrEmpty(postData))
+                {
+                    var data = Encoding.ASCII.GetBytes(postData);
+                    request.Method = "POST";
+                    request.ContentType = isPythonServer == true ? "application/json" : "application/x-www-form-urlencoded";
+                    request.ContentLength = data.Length;
+                    request.Proxy = null;
+
+                    using (var stream = request.GetRequestStream())
+                        stream.Write(data, 0, data.Length);
+                }
+
+                using (var response = (HttpWebResponse)(request.GetResponseAsync().Result))
+                {
+                    if (response.StatusCode != HttpStatusCode.OK)
+                        Console.WriteLine("Status is not ok. STATUS: " + response.StatusDescription);
+
+                    using (var stream = response.GetResponseStream())
+                    {
+                        var reader = new System.IO.StreamReader(stream, Encoding.UTF8);
+                        return reader.ReadToEndAsync().Result;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return (ex.Message);
+            }
+        }
+
+
+        public async static Task<string> MakeRequest(string logcode, string query, string url, DB DbCall, bool isPost = false)
+        {
+            var requestUrl = string.Join("/", Program.DBServiceUrl, url);
+            // query = query.Trim().EncodeToBase64(logcode);
+
+            if (!isPost)
+                requestUrl = string.Join("", requestUrl, query);
+
+            requestUrl = string.Join("/", requestUrl);
+
+            string StrNotify = "URL: " + requestUrl;
+            Console.WriteLine(StrNotify);
+
+            try
+            {
+                HttpWebRequest request = WebRequest.Create(requestUrl) as HttpWebRequest;
+                if (isPost)
+                {
+                    var data = Encoding.ASCII.GetBytes(query);
+                    request.Method = "POST";
+                    request.ContentType = "application/x-www-form-urlencoded";
+                    request.ContentLength = data.Length;
+                    request.Proxy = null;
+                    using (var stream = request.GetRequestStream())
+                        stream.Write(data, 0, data.Length);
+                }
+
+                //Task<WebResponse> responseTask = request.GetResponseAsync();
+
+                // using (WebResponse response = await responseTask)
+                // {
+                //     using (var stream = response.GetResponseStream())
+                //     {
+                //         var reader = new StreamReader(stream, Encoding.UTF8);
+                //         var responseString = reader.ReadToEndAsync().Result;
+                //         return responseString;
+                //     }
+                // }
+                using (var response = (HttpWebResponse)(request.GetResponseAsync().Result))
+                {
+                    if (response.StatusCode != HttpStatusCode.OK)
+                        Console.WriteLine("Status is not ok. STATUS: " + response.StatusDescription);
+
+                    using (var stream = response.GetResponseStream())
+                    {
+                        var reader = new System.IO.StreamReader(stream, Encoding.UTF8);
+                        return reader.ReadToEndAsync().Result;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex.Message);
+                // Log.Write(LogType.Info, logcode, "Error: " + ex.Message);
+                // Log.Write(LogType.Error, logcode, StrNotify + ex.ExtractError());
+                if(ex.Message.Contains("One or more errors occurred. (The remote server returned an error: (503) Service Unavailable.)"))
+                {
+                    return "Cannot Communicate with Core";
+                }
+                return "";
+            }
+        }
+
+
+
+        public async static Task<string> MakeRequestinsert(string logcode, DB DbCall, string query, bool isPost = false)
+        {
+
+            var requestUrl = string.Join("/", Program.DBServiceUrl, DbCall.ToString());
+
+            query = query.Trim().EncodeToBase64(logcode);
+
+            if (!isPost)
+                requestUrl = string.Join("/", requestUrl, query);
+
+            requestUrl = string.Join("/", requestUrl, logcode.EncodeToBase64(logcode));
+
+            string StrNotify = "URL: " + requestUrl;
+            //Console.WriteLine(StrNotify);
+            //Log.Write(LogType.Info, logcode, StrNotify);
+
+            try
+            {
+                HttpWebRequest request = WebRequest.Create(requestUrl) as HttpWebRequest;
+
+                if (isPost)
+                {
+                    var data = Encoding.ASCII.GetBytes(query);
+                    request.Method = "POST";
+                    request.ContentType = "application/x-www-form-urlencoded";
+                    request.ContentLength = data.Length;
+                    request.Proxy = null;
+
+                    using (var stream = request.GetRequestStream())
+                        stream.Write(data, 0, data.Length);
+                }
+
+                Task<WebResponse> responseTask = request.GetResponseAsync();
+                using (WebResponse response = await responseTask)
+                {
+                    using (var stream = response.GetResponseStream())
+                    {
+                        var reader = new StreamReader(stream, Encoding.UTF8);
+                        var responseString = reader.ReadToEnd();
+                        return responseString;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log.Write(LogType.Info, logcode, "Error: " + ex.Message);
+                // Log.Write(LogType.Error, logcode, StrNotify + ex.StackTrace);
+                return "";
+            }
+        }
+
+
+        public async static Task<string> MakeRequestLocal(string logcode, string query, DB DbCall, bool isPost = false)
+        {
+            // string ApiUrl = "http://192.168.15.130:1200";
+            string ApiUrl = Program.ServerUrl;
+            var requestUrl = string.Join("/", ApiUrl, DbCall.ToString());
+            query = query.Trim().EncodeToBase64(logcode);
+
+            if (!isPost)
+                requestUrl = string.Join("/", requestUrl, query);
+
+            requestUrl = string.Join("/", requestUrl, logcode.EncodeToBase64(logcode));
+
+            string StrNotify = "URL: " + requestUrl;
+            Console.WriteLine(StrNotify);
+
+            try
+            {
+                HttpWebRequest request = WebRequest.Create(requestUrl) as HttpWebRequest;
+                if (isPost)
+                {
+                    var data = Encoding.ASCII.GetBytes(query);
+                    request.Method = "POST";
+                    request.ContentType = "application/x-www-form-urlencoded";
+                    request.ContentLength = data.Length;
+                    request.Proxy = null;
+                    using (var stream = request.GetRequestStream())
+                        stream.Write(data, 0, data.Length);
+                }
+
+                //Task<WebResponse> responseTask = request.GetResponseAsync();
+
+                // using (WebResponse response = await responseTask)
+                // {
+                //     using (var stream = response.GetResponseStream())
+                //     {
+                //         var reader = new StreamReader(stream, Encoding.UTF8);
+                //         var responseString = reader.ReadToEndAsync().Result;
+                //         return responseString;
+                //     }
+                // }
+                using (var response = (HttpWebResponse)(request.GetResponseAsync().Result))
+                {
+                    if (response.StatusCode != HttpStatusCode.OK)
+                        Console.WriteLine("Status is not ok. STATUS: " + response.StatusDescription);
+
+                    using (var stream = response.GetResponseStream())
+                    {
+                        var reader = new System.IO.StreamReader(stream, Encoding.UTF8);
+                        return reader.ReadToEndAsync().Result;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex.Message);
+                // Log.Write(LogType.Info, logcode, "Error: " + ex.Message);
+                // Log.Write(LogType.Error, logcode, StrNotify + ex.ExtractError());
+                return "";
+            }
+        }
+
+
+        public static string EncodeToBase64(this string plainText, string logcode = "")
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+            return System.Convert.ToBase64String(plainTextBytes);
+        }
+        public async static Task<string> MakeRequest(string logcode, DB DbCall, string query, bool isPost = false)
+        {
+            var requestUrl = string.Join("/", Program.DBServiceUrl, DbCall.ToString());
+
+            query = query.Trim().EncodeToBase64(logcode);
+
+            if (!isPost)
+                requestUrl = string.Join("/", requestUrl, query);
+
+            requestUrl = string.Join("/", requestUrl, logcode.EncodeToBase64(logcode));
+
+            string StrNotify = "URL: " + requestUrl;
+            //Console.WriteLine(StrNotify);
+            //Log.Write(LogType.Info, logcode, StrNotify);
+
+            try
+            {
+                HttpWebRequest request = WebRequest.Create(requestUrl) as HttpWebRequest;
+
+                if (isPost)
+                {
+                    var data = Encoding.ASCII.GetBytes(query);
+                    request.Method = "POST";
+                    request.ContentType = "application/x-www-form-urlencoded";
+                    request.ContentLength = data.Length;
+                    request.Proxy = null;
+
+                    using (var stream = request.GetRequestStream())
+                        stream.Write(data, 0, data.Length);
+                }
+
+                Task<WebResponse> responseTask = request.GetResponseAsync();
+                using (WebResponse response = await responseTask)
+                {
+                    using (var stream = response.GetResponseStream())
+                    {
+                        var reader = new StreamReader(stream, Encoding.UTF8);
+                        var responseString = reader.ReadToEnd();
+                        return responseString;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return "";
+            }
+        }
+    }
+}

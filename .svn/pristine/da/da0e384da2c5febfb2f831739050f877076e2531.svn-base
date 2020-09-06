@@ -1,0 +1,103 @@
+<app-nav-menu></app-nav-menu>
+
+<mat-expansion-panel style="margin-top: 2vh;background: #ffffff;" [disabled]="true" [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <div class="container-fluid table-management pt20">
+        <div class="header-top">
+          <div class="">
+            <div class="row" style="background-color: #274b7d;">
+              <div class="col-md-6 hearder-right-agile" style="color: white;">
+                <div class="d-flex ">
+                  <div class="login-wthree my-auto1">
+                    <span class="top-heading">Inspector Management</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-panel-title>
+
+  </mat-expansion-panel-header>
+  <div class="col-md-12" style="display: flex;margin: 2vh 0;">
+    <div class="col-md-9">
+
+      <a href="javascript:void(0)">
+        <button class="button tv-btn" (click)="openDialog()"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Create
+          New</button>
+      </a>
+    </div>
+    <div class="col-md-3">
+
+      <div id="custom-search-input">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText">
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="button"> <i class="fa fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <button  type="button" class="btn btn-success"  (click)="openDialog()" style="margin-right: 1vw">Create New</button> -->
+  <!-- <button mat-raised-button color="primary"  (click)="checkinspectorstatus()" style="margin-right: 1vw">Edit</button>
+    <button mat-raised-button color="accent"  (click)="checkinspectorstatus()">Clone</button> -->
+
+
+  <div class="panel-body" style="max-height: 64vh;overflow: auto;margin: 0 24px 16px">
+    <table class="ResponsivetableCss" style="width: 100%;">
+      <thead>
+        <tr>
+          <th style="width: 2%;">Sno</th>
+          <th style="width: 10%;">Name</th>
+          <th style="width: 10%;">Binary Name</th>
+          <th style="width: 10%;">System IP</th>
+          <th style="width: 10%;">Recieve Port</th>
+          <th style="width: 10%;">Transfer Port</th>
+          <th style="width: 7%;">Version</th>
+          <th style="width: 5%;text-align: center;">Status</th>
+          <th style="width: 8%;">Active Status</th>
+          <th style="width: 7%;">OS Type</th>
+          <th style="width: 10%;">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of inspectordata | searchFilter : searchText; let i = index">
+          <td data-label="Sno">{{i+1}}</td>
+          <td data-label="Name">{{item.Name | NullValues }}</td>
+          <td data-label="Binary Name">{{item.BinaryName | NullValues }}</td>
+          <td data-label="System IP">{{item.SystemIP | NullValues }}</td>
+          <td data-label="Recieve Port">{{item.PortRx | NullValues }}</td>
+          <td data-label="Transfer Port">{{item.PortTx | NullValues }}</td>
+          <td data-label="Version">{{item.Version| NullValues }}</td>
+          <td data-label="Status" style="text-align: center;"><img src="../../assets/{{item.status}}.svg"
+              style="height: 2vh;"></td>
+          <td data-label="Enable/Disable">{{item.IsActive| NullValues }}</td>
+          <td data-label="OS Type">{{item.OSType| NullValues }}</td>
+          <td data-label="Action">
+            <a title="Edit" class="btn-table" (click)="openeditDialog(i)"
+              style="padding-right: 10px;cursor: pointer;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+            <a title="Clone" class="btn-table" (click)="clone(i)" style="padding-right: 10px;cursor: pointer;"><i
+                class="fa fa-clone" aria-hidden="true"></i></a>
+            <a title="Delete" class="btn-table" (click)="delete(i)" style="padding-right: 10px;cursor: pointer;"><i class="fa fa-trash"
+                aria-hidden="true"></i></a>
+             <a title="Refresh" class="btn-table" (click)="Refresh(i)" style="cursor: pointer;"><i class="fa fa-refresh"
+                  aria-hidden="true"></i></a>
+          </td>
+
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</mat-expansion-panel>
+
+<footer class="footer" id="footerChart">
+ 
+  <span class="float-right" id="copyright">© Planetcast Media Services Limited, 2020. All Rights Reserved. | 20.20.7.1</span>
+
+</footer>

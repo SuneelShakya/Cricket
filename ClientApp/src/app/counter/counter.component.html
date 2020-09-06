@@ -1,0 +1,149 @@
+<div class="col-md-12">
+    <div class="row">
+      <div class="MAM-logo" class="col-sm-4">
+        <div class="logo-center">
+          <div class="cloud-logo" >
+            <mat-icon class="logo-icon">
+                <img  src="../../assets/originalmamc.png" style="height: 35px;">
+            </mat-icon>
+            <mat-card-title></mat-card-title>
+          </div>
+          <div class="mamicon">&nbsp;</div>
+          <img style="height: 35px;" >
+        </div>
+      </div>
+      <div class="divider" style="height: 50vh; width:1px; border: 0.5px inset #a4a8a9; margin: auto 0;">
+      </div>
+      <div class="col-sm-2"></div>
+      <div class="col-sm-5" style="display: flex;
+      align-items: center;
+      justify-content: center;">
+        <mat-horizontal-stepper #stepper style="display: contents;" #stepper>
+          
+          <mat-step>
+            <div class="form-data">
+  
+              <form>
+                <div class="signin" style="text-align: center; width: 100%;">
+                  <!-- <mat-label *ngIf="loginfailcounter>0">You have made {{loginfailcounter}} unsuccessful attempt(s). The
+                    maximum retry attempts allowed for login
+                    are 4.</mat-label> -->
+                  <!-- <mat-label *ngIf="autoRefreshTimer">{{'Wait For '+lefttime +" seconds! then try login again"}}
+                  </mat-label> -->
+                  <h3 class="signup" style="width: 100%;">Sign in</h3> 
+                  <!-- Don't have an account? <a href="javascript:void(0)"
+                    >Sign Up</a> -->
+                </div>
+                <p>
+                  <mat-form-field appearance="outline">
+                    <input matInput type="text" [(ngModel)]="user" name="user"  id="UN" onpaste="return false;"
+                      onCopy="return false" placeholder="Username" #Username />
+                  </mat-form-field>
+                </p>
+  
+                <p>
+                  <mat-form-field appearance="outline">
+                    <input matInput type="password" id="pwd" [(ngModel)]="password" name="pass" 
+                      placeholder="Password" 
+                      onpaste="return false;" onCopy="return false" #Password />
+                    <button mat-button matSuffix mat-icon-button >
+                      <!-- <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon> -->
+                    </button>
+                  </mat-form-field>
+                </p>
+                <!-- <p> -->
+                  <!-- <mat-form-field>
+                    <mat-select placeholder="Domain" name="domain" [(ngModel)]="Domain"
+                      (ngModelChange)='onOptionsSelected($event)'>
+                      <mat-option value="Local"> Local</mat-option> -->
+                      <!-- <mat-option value="planetc.net">planetc.net</mat-option> -->
+                      <!-- <mat-option *ngFor="let item of dnslist; let d = index" [value]="item">{{item.AD_DNS}}</mat-option>
+                    </mat-select>
+                  </mat-form-field> -->
+                <!-- </p> -->
+                <!-- <div class="row" [hidden]="true">
+                  <div class="col-sm-9">
+                    <div class="captcha w-100">{{ captcha }}</div>
+                  </div>
+                  <div class="col-sm-2">
+                    <button type="button" mat-icon-button (click)="generateRandom()">
+                      <mat-icon>refresh</mat-icon>
+                    </button>
+                  </div>
+                </div> -->
+                <!-- <mat-form-field [hidden]="true">
+                  <input type="text" matInput #Captcha placeholder="Enter Captcha" required />
+                </mat-form-field> -->
+                <!-- <div class="button">
+                  <mat-checkbox  name="checkbox" 
+                    matTooltip="Remenber for 30 Days">Remember me</mat-checkbox>
+                  <button class="forgetpwd"  (click)="forgetpassword(Username)">Forgot
+                    password?</button>
+                </div> -->
+                <div class="login" style="width:100%;">
+                  <button mat-raised-button  color="primary"
+                    style="text-align: center;width:100%;" (click)="login()">
+                    <!-- <mat-icon>vpn_key</mat-icon> -->
+                    &nbsp;&nbsp;Login
+                  </button>
+                </div>
+              </form>
+            </div>
+          </mat-step>
+          <mat-step>
+            <div class="form-data">
+              <form>
+                <div class="signin" style="text-align: center; width: 100%;">
+                  <h3 class="signup" style="width: 100%;">Reset Your Password?</h3>
+                </div>
+                <p>
+                  <mat-form-field appearance="outline">
+                    <input matInput   placeholder="Current Password"
+                      id="oldPassword" />
+                    <!-- <button mat-button matSuffix mat-icon-button (click)="HideShowPwdresetlink('oldPassword')"> -->
+                      <!-- <mat-icon *ngIf="chgtype1=='password'">visibility_off</mat-icon>
+                      <mat-icon *ngIf="chgtype1=='text'">visibility</mat-icon> -->
+                    <!-- </button> -->
+                  </mat-form-field>
+                </p>
+                <p>
+                  <mat-form-field appearance="outline">
+                    <input matInput type="password"  placeholder="New Password"
+                      id="newPassword" />
+                    <!-- <button mat-button matSuffix mat-icon-button (click)="HideShowPwdresetlink('newPassword')"> -->
+                      <!-- <mat-icon *ngIf="chgtype2=='password'">visibility_off</mat-icon>
+                      <mat-icon *ngIf="chgtype2=='text'">visibility</mat-icon> -->
+                    <!-- </button> -->
+                  </mat-form-field>
+                </p>
+  
+                <!-- <p>
+                  <mat-form-field appearance="outline">
+                    <input matInput type="password"  placeholder="Confirm Password"
+                      (keyup.enter)="ResetPwd(stepper)" id="confirmPassword" />
+                    <button mat-button matSuffix mat-icon-button (click)="HideShowPwdresetlink('confirmPassword')"> -->
+                      <!-- <mat-icon *ngIf="chgtype3=='password'">visibility_off</mat-icon>
+                      <mat-icon *ngIf="chgtype3=='text'">visibility</mat-icon> -->
+                    <!-- </button>
+                  </mat-form-field>
+                </p> -->
+                <!-- <div class="RequestLink" style="width:100%;">
+                  <button mat-raised-button color="primary" style="text-align: center;width:100%;"
+                    (click)="ResetPwd(stepper)">
+                    &nbsp;&nbsp;Reset Password
+                  </button>
+                </div> -->
+                &nbsp;&nbsp;
+              </form>
+            </div>
+          </mat-step>
+        </mat-horizontal-stepper>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer" id="footerChart">
+ 
+    <span class="float-right" id="copyright">© Planetcast Media Services Limited, 2020. All Rights Reserved. | 20.20.08.01</span>
+
+</footer>

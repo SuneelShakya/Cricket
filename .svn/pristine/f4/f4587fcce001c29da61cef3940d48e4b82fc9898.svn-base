@@ -1,0 +1,101 @@
+import { Component } from '@angular/core';
+import { GenericService } from '../services/Generic.service';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-counter-component',
+  templateUrl: './counter.component.html',
+  styleUrls: ['./counter.component.css']
+})
+export class CounterComponent {
+  public currentCount = 0;
+  user: any;
+  password: any;
+  inspectordata: any;
+  localdata: any;
+
+  public incrementCounter() {
+    this.currentCount++;
+  }
+  constructor(public objService: GenericService,public router: Router) {}
+  ngOnInit() {
+    this.CheckDb();
+  }
+
+  login(){
+    // if(this.user=="admin" && this.password=="admin")
+      this.objService.loginservice(this.user,this.password).subscribe((datas: any) => {
+        localStorage.setItem("user",this.user);
+
+        if(datas.ResultData.length>0)
+        this.localdata=datas.ResultData
+        localStorage.setItem("timezone",this.localdata[0].timezone);
+
+        for(let i=0;i<this.localdata.length;i++){
+         if (this.localdata[i].Menu =="Component"){
+           this.objService.componentread = this.localdata[i].Read;
+           this.objService.componentwrite = this.localdata[i].Write;
+           this.objService.componentdelete = this.localdata[i].Delete;
+           localStorage.setItem("componentread",this.localdata[i].Read)
+           localStorage.setItem("componentwrite",this.localdata[i].Write)
+           localStorage.setItem("componentdelete",this.localdata[i].Delete)
+
+         }
+        else if (this.localdata[i].Menu =="Inspector"){
+          this.objService.inspectorread = this.localdata[i].Read;
+          this.objService.inspectorwrite = this.localdata[i].Write;
+          this.objService.inspectordelete = this.localdata[i].Delete;
+          localStorage.setItem("inspectorread",this.localdata[i].Read)
+           localStorage.setItem("inspectorwrite",this.localdata[i].Write)
+           localStorage.setItem("inspectordelete",this.localdata[i].Delete)
+
+        }
+        else if (this.localdata[i].Menu =="Profile"){
+          this.objService.profileread = this.localdata[i].Read;
+          this.objService.profilewrite = this.localdata[i].Write;
+          this.objService.profiledelete = this.localdata[i].Delete;
+          localStorage.setItem("profileread",this.localdata[i].Read)
+           localStorage.setItem("profilewrite",this.localdata[i].Write)
+           localStorage.setItem("profiledelete",this.localdata[i].Delete)
+
+        }
+        else if (this.localdata[i].Menu =="WorkFlow"){
+          this.objService.workflowread = this.localdata[i].Read;
+          this.objService.workflowwrite = this.localdata[i].Write;
+          this.objService.workflowdelete = this.localdata[i].Delete;
+          localStorage.setItem("workflowread",this.localdata[i].Read)
+           localStorage.setItem("workflowwrite",this.localdata[i].Write)
+           localStorage.setItem("workflowdelete",this.localdata[i].Delete)
+
+        }
+        else if (this.localdata[i].Menu =="Transaction"){
+          this.objService.transactionread = this.localdata[i].Read;
+          this.objService.transactionwrite = this.localdata[i].Write;
+          this.objService.transactiondelete = this.localdata[i].Delete;
+          localStorage.setItem("transactionread",this.localdata[i].Read)
+           localStorage.setItem("transactionwrite",this.localdata[i].Write)
+           localStorage.setItem("transactiondelete",this.localdata[i].Delete)
+
+        }
+    
+        }
+      this.router.navigateByUrl('/fetch-data');
+    });
+    }
+  
+  CheckDb(){
+    this.objService.checkdb().subscribe((datas: any) => {
+      if (datas.result.length > 0) {
+        this.inspectordata = JSON.parse(datas.result)
+        this.inspectordata = this.inspectordata.ResultData;
+      }
+    if(this.inspectordata[0].response =='not found'){
+      this.router.navigateByUrl('/home');
+    }
+    else{
+      console.log("db exists");
+    }
+      
+    });
+  }
+}

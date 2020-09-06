@@ -1,0 +1,4 @@
+<h6>Do you want delete this {{this.data.Name[this.data.index].Name}}?</h6>
+<button mat-raised-button color="warn" (click)="deleteinspectordata()" style="margin-right: 1vw;margin-top: 2vh;" >Yes</button>
+
+<button mat-raised-button (click)="onNoClick()">No</button>

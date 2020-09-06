@@ -1,0 +1,513 @@
+import { Component, Inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { GenericService } from '../services/Generic.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { DialogData } from '../home/home.component';
+import { FormBuilder } from '@angular/forms';
+import { reference } from '@angular/core/src/render3';
+
+@Component({
+  selector: 'app-Component-data',
+  templateUrl: './Component-data.component.html',
+  styleUrls: ['./Component-data.component.css']
+
+})
+export class ComponentDataComponent {
+  public forecasts: WeatherForecast[];
+  componentdata: any;
+  name: any;
+  animal: any;
+  EditIndex: any;
+  Response: any;
+  searchText:any;
+  constructor(
+    public objService: GenericService,public dialog: MatDialog,private _snackBar: MatSnackBar,public router: Router) {}
+  
+    ngOnInit() {
+      this.fetchcomponentdata();
+    };
+  fetchcomponentdata(){
+
+      this.objService.fetchComponentdata().subscribe((datas: any) => {
+         if (datas.result.length > 0) {
+          this.componentdata = JSON.parse(datas.result)
+          this.componentdata = this.componentdata.ResultData;
+          
+         }
+       });
+    
+  }
+
+  clone(val:any){
+    // this.componentdata[val].shift();
+    this.componentdata.splice(val+1,0,{UID:"nouid",name:this.componentdata[val].name,binaryname:this.componentdata[val].binaryname,path:this.componentdata[val].path,Type:this.componentdata[val].Type,version:this.componentdata[val].version,status:this.componentdata[val].status,Reference:this.componentdata[val].Reference})
+  }
+
+
+  
+
+  openDialog(index:any,data): void {
+    const dialogRef = this.dialog.open(Componentdialog, {
+      width: '800px',
+      height:'600px',
+      data: {index:index,Name:this.componentdata,status:data}
+    });
+
+}
+
+openeditDialog(data:any): void {
+  const dialogRef = this.dialog.open(Componenteditdialog, {
+    width: '800px',
+    height:'600px',
+    data: {index:data,Name:this.componentdata}
+  });
+
+}
+
+opendeleteDialog(data:any): void {
+  const dialogRef = this.dialog.open(Componentdeletedialog, {
+    width: '400px',
+    height:'150px',
+    data: {index:data,Name:this.componentdata}
+  });
+
+}
+
+}
+
+@Component({
+  selector: 'dialog-overview-component-dialog',
+  templateUrl: 'Component-dialog.component.html',
+})
+export class Componentdialog {
+  
+  username: any="";
+  password: any="";
+  Port: any="";
+  dbinfo: any=[];
+  IP: any;
+  Response: any;
+  splitdata: any;
+  DBname: any;
+  MAMDBuser: any;
+  DBCheck:any;
+  MAMDBpassword: any;
+  componentname:any;
+  Binaryname:any;
+  nameparameter:any;
+  argvalue:any;
+  detail:any;
+  TXport:any;
+  Comments:any;
+  tags:any;
+  inspectordata: any=[];
+  DBCreate: any;
+  version: any;
+  status: number;
+  componentdata: any=[];
+  ArgArray: any=[];
+  path: string;
+  type: string;
+  Reference: string;
+  editstatus:any;
+  ArgtableArray: any=[];
+  update: string;
+  componentArray: any=[];
+  UID:any=[];
+  deleteindex: any;
+  constructor(
+    public dialogRef: MatDialogRef<Componentdialog>,private _formBuilder: FormBuilder,public objService: GenericService,private _snackBar: MatSnackBar,public router: Router,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    ngOnInit() {
+      if( this.data.status=="edit"){
+        this.update=this.data.status
+        this.edit();
+      }
+    };
+    Prerequisites:any=[];
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+
+  fetchcomponents(){
+
+    this.objService.fetchComponents(this.data.Name[this.data.index].binaryname).subscribe((datas: any) => {
+       if (datas.result.length > 0) {
+        this.componentArray = JSON.parse(datas.result)
+        this.componentArray = this.componentArray.ResultData;
+        this.ArgArray=this.componentArray;
+        for(var i=0;i<this.componentArray.length;i++){
+          this.UID.push(this.componentArray[i].UID)
+
+        }
+
+       }
+     });
+   
+
+}
+
+  //  checkinspectorstatus(){
+  //  //  this.inspectordata.push({InspectorIp:this.SystemIP,InspectorPort:this.Recieveport});
+  //  this.inspectordata=this.argvalue+"$"+this.componentname+"$"+this.Binaryname+"$"+this.TXport;
+  //   this.objService.checkinspectorstatus(this.inspectordata).subscribe((datas: any) => {
+  //      if (datas.result.length > 0) {
+  //        this.version= datas.result;
+  //        if(this.version=="false"){
+  //          this.status=0;
+  //        }
+  //        else{
+  //          this.status=1;
+  //        }
+  //      this.InsertComponentdata();
+
+
+  //      }
+  //    });
+  //  }
+
+   InsertComponentdata(){
+    //  this.inspectordata.push({InspectorIp:this.SystemIP,InspectorPort:this.Recieveport});
+    this.componentdata.push({ComponentName:this.componentname,BinaryName:this.Binaryname,Path:this.path,Type:this.type,Version:this.version,Status:this.status,Reference:this.Reference})
+    // this.componentdata=this.componentname+"$"+this.Binaryname+"$"+this.path+"$"+this.type+"$"+this.version+"$"+this.status+"$"+reference;
+     this.objService.InsertComponentdata(this.componentdata).subscribe((datas: any) => {
+        if (datas.result.length > 0) {
+          this.Response= datas.result;
+          this.Response= this.Response
+          this.openSnackBar("Component Created","Successfully");
+          
+          this.dialogRef.close()
+          this.router.navigateByUrl('/counter', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['/Component-data']);
+
+        });
+        this.Insertcomponents();
+        }
+      });
+      this.componentdata=[];
+    }
+
+    Insertcomponents(){
+      for(var i=0;i<this.ArgArray.length;i++){
+        if(this.ArgArray[i].insertid=="nouid"){
+        this.ArgtableArray.push({BinaryName:this.Binaryname,NameParameter:this.ArgArray[i].NameParameter,ArgumentValue:this.ArgArray[i].ArgumentValue,Detail:this.ArgArray[i].Detail})
+      }
+    }
+      
+       this.objService.Insertcomponents(this.ArgtableArray).subscribe((datas: any) => {
+          if (datas.result.length > 0) {
+            this.Response= datas.result;
+            this.Response= this.Response
+            this.openSnackBar("Component Created","Successfully");
+            
+            this.dialogRef.close()
+            this.router.navigateByUrl('/counter', { skipLocationChange: true }).then(() => {
+              this.router.navigate(['/Component-data']);
+          });
+          }
+        });
+        this.componentdata=[];
+      }
+
+
+      Updatecomponentdata(){
+        //  this.inspectordata.push({InspectorIp:this.SystemIP,InspectorPort:this.Recieveport});
+        if(this.data.Name[this.data.index].UID =="nouid"){
+        this.InsertComponentdata();
+        // this.Insertcomponents();
+        }
+        // else if(this.ArgArray[])
+        else{
+    this.componentdata.push({ComponentName:this.componentname,BinaryName:this.Binaryname,Path:this.path,Type:this.type,Version:this.version,Status:this.status,Reference:this.Reference,UID:this.data.Name[this.data.index].UID})
+        
+        // this.componentdata=this.componentname+"$"+this.Binaryname+"$"+this.nameparameter+"$"+this.argvalue+"$"+this.detail+"$"+this.data.Name[this.data.index].UID;
+    
+         this.objService.updatecomponentdata(this.componentdata).subscribe((datas: any) => {
+            if (datas.length > 0) {
+              this.Response= datas.result;
+              this.Response= this.Response
+    
+              //  this.fetch.fetchinspectordata();
+              this.openSnackBar("Component Updated","Successfully");
+                
+               this.dialogRef.close();
+               this.router.navigateByUrl('/counter', { skipLocationChange: true }).then(() => {
+                this.router.navigate(['/Component-data']);
+            });
+            
+              this.Updatecomponents();
+     
+            }
+          });
+        }
+      }
+
+
+      Updatecomponents(){
+        if(this.deleteindex!=null|| this.deleteindex!=undefined){
+          this.deletecomponentdata();
+        }
+        for(var i=0;i<this.ArgArray.length;i++){
+          if(this.ArgArray[i].insertid=="nouid"){
+            this.Insertcomponents();
+          }
+          else{
+          this.ArgtableArray.push({BinaryName:this.Binaryname,NameParameter:this.ArgArray[i].NameParameter,ArgumentValue:this.ArgArray[i].ArgumentValue,Detail:this.ArgArray[i].Detail,UID:this.UID[i]})
+        }
+      }
+        
+         this.objService.Updatecomponents(this.ArgtableArray).subscribe((datas: any) => {
+            if (datas.result.length > 0) {
+              this.Response= datas.result;
+              this.Response= this.Response
+              this.openSnackBar("Component Created","Successfully");
+              
+              this.dialogRef.close()
+              this.router.navigateByUrl('/counter', { skipLocationChange: true }).then(() => {
+                this.router.navigate(['/Component-data']);
+            });
+            
+            }
+          });
+          this.ArgtableArray=[];
+        }
+
+        deletecomponentdata(){
+          //  this.inspectordata.push({InspectorIp:this.SystemIP,InspectorPort:this.Recieveport});
+      
+          
+           this.objService.deletecomponent(this.deleteindex).subscribe((datas: any) => {
+              if (datas.result.length > 0) {
+                this.Response= datas.result;
+                this.Response= this.Response
+                // this.openSnackBar("Inspector Created","Successfully");
+                
+                
+              }
+          
+      
+            });
+          }
+
+    Addrow(){
+      this.ArgArray.push({ArgumentValue:this.argvalue,NameParameter:this.nameparameter,Detail:this.detail,insertid:"nouid"})
+      this.argvalue="";
+      this.nameparameter="";
+      this.detail="";
+    }
+
+    Deleterow(val:any){
+      this.deleteindex=this.ArgArray[val].UID
+      this.ArgArray.splice(val,1);
+
+    }
+
+    editrow(val){
+      let index = this.ArgArray.findIndex((record: any) => record.UID == this.ArgArray[val].Component);
+    
+      this.nameparameter=this.ArgArray[val].NameParameter
+      this.argvalue=this.ArgArray[val].ArgumentValue
+      this.detail=this.ArgArray[val].Detail
+      this.ArgArray.splice(val,1);
+
+    }
+  
+    edit(){
+      this.fetchcomponents();
+      
+      this.componentname=this.data.Name[this.data.index].name;
+      this.Binaryname=this.data.Name[this.data.index].binaryname;
+       this.path=this.data.Name[this.data.index].path;
+      this.type=this.data.Name[this.data.index].Type;
+      this.version=this.data.Name[this.data.index].version;
+      this.status=this.data.Name[this.data.index].status;
+      this.Reference=this.data.Name[this.data.index].Reference;
+
+      
+    
+    
+      }
+
+  
+
+
+  
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
+
+}
+
+
+@Component({
+  selector: 'dialog-overview-Component-dialog',
+  templateUrl: 'Componentedit-dialog.component.html',
+})
+export class Componenteditdialog {
+  
+  username: any="";
+  password: any="";
+  Port: any="";
+  dbinfo: any=[];
+  IP: any;
+  Response: any;
+  splitdata: any;
+  DBname: any;
+  MAMDBuser: any;
+  DBCheck:any;
+  MAMDBpassword: any;
+  componentname:any;
+  Binaryname:any;
+  nameparameter:any;
+  SystemIP:any;
+  argvalue:any;
+  detail:any;
+  Comments:any;
+  tags:any;
+  inspectordata: any=[];
+  DBCreate: any;
+  version: any;
+  status: number;
+  componentdata: string;
+  constructor(
+    public dialogRef: MatDialogRef<Componenteditdialog>,private _formBuilder: FormBuilder,public objService: GenericService,private _snackBar: MatSnackBar,public router: Router,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    ngOnInit() {
+      this.edit();
+    };
+    Prerequisites:any=[];
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  edit(){
+  this.data;
+  this.componentname=this.data.Name[this.data.index].Name;
+  this.Binaryname=this.data.Name[this.data.index].BinaryName;
+  this.nameparameter=this.data.Name[this.data.index].NameParameter;
+  // this.Path=this.data.Name[this.data.index].Path;
+  this.argvalue=this.data.Name[this.data.index].ArgumentValue;
+  this.detail=this.data.Name[this.data.index].Detail;
+  
+
+
+  }
+
+  
+  
+
+  //  checkinspectorstatus(){
+  //  //  this.inspectordata.push({InspectorIp:this.SystemIP,InspectorPort:this.Recieveport});
+  //  this.inspectordata=this.SystemIP+"$"+this.argvalue+"$"+this.componentname+"$"+this.Binaryname+"$"+this.detail+"$"+this.data.Name[this.data.index].UID;;
+  //   this.objService.checkinspectorstatus(this.inspectordata).subscribe((datas: any) => {
+  //      if (datas.result.length > 0) {
+  //        this.version= datas.result;
+  //        if(this.version=="false"){
+  //          this.status=0;
+  //        }
+  //        else{
+  //          this.status=1;
+  //        }
+  //      this.Insertinspectordata();
+
+
+  //      }
+  //    });
+  //  }
+
+   Updatecomponentdata(){
+    //  this.inspectordata.push({InspectorIp:this.SystemIP,InspectorPort:this.Recieveport});
+    
+    this.componentdata=this.componentname+"$"+this.Binaryname+"$"+this.nameparameter+"$"+this.argvalue+"$"+this.detail+"$"+this.data.Name[this.data.index].UID;
+
+     this.objService.updatecomponentdata(this.componentdata).subscribe((datas: any) => {
+        if (datas.result.length > 0) {
+          this.Response= datas.result;
+          this.Response= this.Response
+
+          //  this.fetch.fetchinspectordata();
+          this.openSnackBar("Component Updated","Successfully");
+            
+           this.dialogRef.close();
+           this.router.navigateByUrl('/counter', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['/Component-data']);
+        });
+        
+          
+ 
+        }
+      });
+    }
+
+  
+
+
+  
+
+
+  
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
+
+
+}
+
+@Component({
+  selector: 'dialog-overview-component-dialog',
+  templateUrl: 'Componentdelete-dialog.component.html',
+})
+export class Componentdeletedialog {
+  Response: any;
+  constructor(
+    public dialogRef: MatDialogRef<Componenteditdialog>,private _formBuilder: FormBuilder,public objService: GenericService,private _snackBar: MatSnackBar,public router: Router,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    ngOnInit() {
+    
+    };
+    Prerequisites:any=[];
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  deletecomponentdata(val:any){
+    //  this.inspectordata.push({InspectorIp:this.SystemIP,InspectorPort:this.Recieveport});
+
+    
+     this.objService.deletecomponentdata(this.data.Name[this.data.index].binaryname).subscribe((datas: any) => {
+        if (datas.result.length > 0) {
+          this.Response= datas.result;
+          this.Response= this.Response
+          this.openSnackBar("Inspector Created","Successfully");
+          this.dialogRef.close();
+          this.router.navigateByUrl('/counter', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['/Component-data']);
+        });
+          
+        }
+        
+
+      });
+    }
+
+    openSnackBar(message: string, action: string) {
+      this._snackBar.open(message, action, {
+        duration: 2000,
+      });
+    }
+}
+interface WeatherForecast {
+  dateFormatted: string;
+  temperatureC: number;
+  temperatureF: number;
+  summary: string;
+}

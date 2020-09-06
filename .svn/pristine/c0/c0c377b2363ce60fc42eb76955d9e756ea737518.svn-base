@@ -1,0 +1,155 @@
+<app-nav-menu></app-nav-menu>
+<br>
+<div style="width:99vw">
+    <div class="row" style="background-color: #274b7d;color:white;line-height: 50px;">
+        <div class="col-sm-9" style="margin-left: 20px;font-size: 20px;">
+            Profile Management
+        </div>
+        <mat-progress-bar mode="buffer" color="warn" *ngIf="isLoading"></mat-progress-bar>
+        <!-- <div class="col-sm-2">
+        <span style="float:right;">
+            Hi.
+        </span>
+    </div> -->
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-2" style="margin-left: 40px;">
+            <button class="button tv-btn" (click)="AddNew('open')"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;
+                Create New</button>
+        </div>
+        <div class="col-sm-6"></div>
+        <div class="col-sm-2" style="float:right;">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button"> <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div style="max-height: 64vh;overflow: auto;padding: 0 24px 16px;">
+        <table class="table table-bordered table-hover specialCollapse">
+            <thead>
+                <tr>
+                    <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;"><small
+                            style="font-size: 100%;">Sno</small></th>
+                    <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                        <small style="font-size: 100%;">Name</small></th>
+                    <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                        <small style="font-size: 100%;">Parameters</small></th>
+                    <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                        <small style="font-size: 100%;">Profile Type</small></th>
+                    <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                        <small style="font-size: 100%;">Input File</small></th>
+                    <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;text-align: center;">
+                        <small style="font-size: 100%;">Output File</small></th>
+                    <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                        <small style="font-size: 100%;">Created Date</small></th>
+                    <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                        <small style="font-size: 100%;">Enable/Disable</small></th>
+                    <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                        <small style="font-size: 100%;">Action</small></th>
+                </tr>
+            </thead>
+            <tbody style="font-size: 16px;">
+                <tr *ngFor="let item of flowdata | searchFilter : searchText; let i = index">
+                    <td><small>{{i+1}}</small></td>
+                    <td><small>{{item.Name | NullValues }}</small></td>
+                    <td><small>{{item.Parameters| NullValues }}</small></td>
+                    <td><small>{{item.ProfileType | NullValues }}</small></td>
+                    <td><small>{{item.Inputfile | NullValues }}</small></td>
+                    <td><small>{{item.Outputfile | NullValues }}</small></td>
+                    <td><small>{{item.Date | NullValues | date:'dd-MM-yyyy' }}</small></td>
+                    <td><small>{{(item.IsActive=='1')?'Enable':'Disable' | NullValues }}</small></td>
+                    <td>
+                        <i title="Edit" style="cursor: pointer;" class="fa fa-pencil-square-o"
+                            (click)="Editmain(item,i)"></i>&nbsp;
+                        <!-- <i title="Clone" style="cursor: pointer;" class="fa fa-clone"></i>&nbsp; -->
+                        <i title="Delete" style="cursor: pointer;" class="fa fa-trash"
+                            (click)="Deletemain(item.UID)"></i>
+                    </td>
+
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="deleteModal" class="modal" style="width:20%;margin-left:40%;padding-top: 30vh!important;">
+    <mat-card class="modal-content">
+        <mat-card-header>
+            <!-- <div mat-card-avatar class="example-header-image"></div> -->
+            <!-- <mat-card-title>Create New Inspector</mat-card-title> -->
+            <mat-card-subtitle>Delete Flow Confirmation</mat-card-subtitle>
+        </mat-card-header>
+        <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+        <mat-card-content>
+            Do You Want to Delete this Record??
+        </mat-card-content>
+        <mat-card-actions style="margin: 20px;">
+            <div style="float: right;">
+                <button class="btn btn-primary btn-sm" (click)="deleteFlow()">Yes</button>
+                &nbsp;&nbsp;
+                <button class="btn btn-danger btn-sm" (click)="HideDialog()">No</button>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+</div>
+<div id="entryModal" class="mymodal">
+    <mat-card class="modal-content">
+        <mat-card-header>
+            <!-- <div mat-card-avatar class="example-header-image"></div> -->
+            <!-- <mat-card-title>Create New Inspector</mat-card-title> -->
+            <mat-card-subtitle>{{popup}} Flow</mat-card-subtitle>
+        </mat-card-header>
+        <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+        <mat-card-content>
+            <div class="row">
+                <div class="col-sm-4">
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="objCls.Name" placeholder="Profile Name" required>
+                    </mat-form-field>
+                </div>
+                <div class=" col-sm-4">
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="objCls.ProfileType" placeholder="Profile Type" required>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="objCls.Parameters" placeholder="Parameters" required>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="objCls.Inputfile" placeholder="Input file">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <mat-form-field>
+                        <input matInput [(ngModel)]="objCls.Outputfile" placeholder="Output file">
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-4">
+                    <mat-form-field>
+                        <mat-select [(ngModel)]="objCls.IsActive" placeholder="Active Status">
+                            <mat-option [value]="">Select</mat-option>
+                            <mat-option [value]="1">Enable</mat-option>
+                            <mat-option [value]="0">Disable</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions style="margin: 20px;">
+            <div style="float: right;">
+                <button class="btn btn-primary btn-sm" (click)="saveFlow()">{{BtnText}}</button>
+                &nbsp;&nbsp;
+                <button class="btn btn-danger btn-sm" (click)="openDialog('close')">Close</button>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+</div>

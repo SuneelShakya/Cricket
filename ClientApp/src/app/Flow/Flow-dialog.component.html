@@ -1,0 +1,128 @@
+<mat-horizontal-stepper [linear]="true" #stepper style="margin-top: 50px;">
+  <!-- [stepControl]="ThirdFormGroup" -->
+    <mat-step >
+        <div class="col-md-12">
+            <div class="row">
+                <!-- <div class="col" style="width: 30%;flex: 0 0 30%;">
+                    <img src="../../assets/originalmamc.png" style="height: 4vh; margin-bottom: 6vh;">
+                    <ul>
+                         <li style="font-size: 14px;" >Check Pre-Requisites</li> 
+                        <li style="text-decoration: solid;font-weight: 700;font-size: 14px;">Create New Inspector</li>
+                    </ul>
+                </div> -->
+                <div class="col">
+                    <h1 mat-dialog-title>Create New WorkFlow</h1>
+                    <div mat-dialog-content style="height: 60vh;">
+
+                
+                        <ng-template matStepLabel>Fill out WorkFlow Details</ng-template>
+                        <div class="row">
+                        <mat-form-field>
+                          <mat-label>Name</mat-label>
+                          <input matInput  [(ngModel)]="flowname" name="flowname" placeholder=""
+                                 required>
+                        </mat-form-field>
+                        
+                          
+                            <mat-form-field>
+                              <mat-label>Inspector</mat-label>
+                              <mat-select [(ngModel)]="selectedinspectorname" disableRipple name="inspector"  >
+                                <mat-option *ngFor="let item of inspectorname" value="{{item.UID}}">
+                                  {{item.Name}}
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+
+                          <div class="row">
+                            <mat-form-field  >
+                              <mat-label>Component</mat-label>
+                              <mat-select [(ngModel)]="selectedcomponent" id="myselect"   disableRipple name="component" (selectionChange)="getindex($event)" >
+                                <mat-option *ngFor="let item of componentname;let i = index" [value]="i">
+                                  {{item.Name}}
+                                </mat-option>
+                              </mat-select>
+                            </mat-form-field>
+
+                           
+                        
+                           <mat-form-field>
+                            <mat-label>Sequence No</mat-label>
+                            <input matInput  [(ngModel)]="seqno" name="sequence" placeholder=""
+                                   required>
+                        </mat-form-field>
+                          <!-- <a title="Add" class="btn-table" (click)="Addrow(i)" style="padding-right: 5px;cursor: pointer;margin-top: 2vh;"><i class="fa fa-plus" aria-hidden="true"></i></a> -->
+
+                        </div>
+                        <div class="row">
+                          <table *ngIf="ArgArray.length>0">
+                              <thead>
+                                <tr>
+                                  <th class="col-md-1 col-sm-1 col-xs-1" style="width: 4%;position: sticky;top: 0;background-color: darkgrey;color: aliceblue;"><small style="font-size: 100%;">Sno</small></th>
+                                  <th class="col-md-1" style="width: 15%;position: sticky;top: 0;background-color: darkgrey;color: aliceblue;" ><small style="font-size: 100%;">Component</small></th>
+                                  <th class="col-md-2"style="width: 15%;position: sticky;top: 0;background-color: darkgrey;color: aliceblue;" ><small style="font-size: 100%;">Sequence No</small></th>
+                                  <th class="col-md-2"style="width: 15%;position: sticky;top: 0;background-color: darkgrey;color: aliceblue;" ><small style="font-size: 100%;">Action</small></th>
+                                 
+                                </tr>
+                              </thead>
+                              <tbody style="font-size: 16px;">
+                                <tr *ngFor="let item of ArgArray; let i = index" >
+                                  <td><small>{{i+1}}</small></td>
+                                  <td><small>{{item.name | NullValues}}</small></td>
+                                  <td><small>{{item.SeqNo | NullValues}}</small></td>
+                
+                                  <td>	
+  
+                                      <a title="Edit" class="btn-table" (click)="editrow(i)" style="padding-right: 5px;cursor: pointer;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                    <a title="Delete" class="btn-table" (click)="Deleterow(i)" style="cursor: pointer;" ><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                  </td>
+                          
+                                </tr>
+                                        
+                              </tbody>
+                            </table>
+                            </div>
+                         <!-- <mat-form-field>
+                            <mat-label>Component 3</mat-label>
+                            <input matInput  [(ngModel)]="component3" name="component3" placeholder=""
+                                   required>
+                          </mat-form-field> -->
+                          <div class="row" style="margin-top: 3vh;">
+
+                          <mat-form-field>
+                            <mat-label>System</mat-label>
+                            <input matInput  [(ngModel)]="systemid" name="systemid" placeholder=""
+                                   required>
+                          </mat-form-field>
+                          <mat-form-field>
+                            <mat-label>Version</mat-label>
+                            <input matInput  [(ngModel)]="version" name="version" placeholder=""
+                                   required>
+                          </mat-form-field>
+                          <mat-form-field>
+                            <mat-label>Status</mat-label>
+                            <input matInput  [(ngModel)]="status" name="status" placeholder=""
+                                   required>
+                          </mat-form-field>
+                        </div>
+                          
+                        
+              
+                      </div>
+                <div mat-dialog-actions style="justify-content: center;">
+                    <button mat-button  style="border: 1px solid ;border-color: #9c27b0;" (click)="onNoClick()">Close</button>
+                    <!-- <button mat-raised-button color="primary" *ngIf="DBCheck=='true'" (click)="CreateDB()">Submit</button> -->
+                    <button mat-raised-button color="primary" *ngIf="update!='edit'" (click)="Insertflowcomp()">Submit</button>
+                    <button mat-raised-button color="primary" *ngIf="update=='edit'" (click)="Updateflowdata()">Update</button>
+
+                  </div>
+            </div>
+        </div>
+
+        </div>
+      
+    </mat-step>
+   
+  </mat-horizontal-stepper>
+
+

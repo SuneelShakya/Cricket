@@ -1,0 +1,171 @@
+table
+{
+    width: 100%!important;
+}
+
+.search-container input {
+    padding: 6px 10px;
+    font-size: 17px;
+    border: none;
+  }
+.search-container button {
+    float: right;
+    padding: 6px 10px;
+    margin-right: 16px;
+    background: rgb(94, 62, 62);
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+  }
+  .search-container button:hover {
+    background: slateblue;
+  }
+#Search {
+	font-family: verdana,arial,sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width: 1px;
+    border-collapse: collapse;
+    background:#20262e;
+}
+#Search th {
+	padding: 0px;
+    border-color: #a9c6c9;
+    font-weight: normal;
+    font-size: 13px;
+    background:transparent;
+    color: white;
+    text-transform: capitalize;
+    text-align: left;
+}
+#Search td {
+	/* border-bottom: 0.5px solid #ddd; */
+	padding: 2px;
+    font-size: 12px;
+    color: white;
+}
+#Search tr {
+    background-color: transparent;
+}
+
+.ResponsivetableCss {
+    border-collapse: collapse;
+    line-height: 30px;
+    text-align: left !important;
+    font-size: 12px;
+    /* height: 30px; */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.ResponsivetableCss th {
+    border-bottom: 2px solid #8691a0;
+    border-width: thin;
+    font-weight: normal;
+    font-size: 12px;
+    background-color: #333;
+    color: white;
+    text-transform: capitalize;
+    text-align: center;
+    border: 0.5px solid gray;
+}
+.ResponsivetableCss td {
+    border-collapse: collapse;
+    font-size: 11px;
+    color: white;
+    border: 0.5px solid gray;
+    padding: 7px;
+}
+.ResponsivetableCss tr{
+    background-color: #212529;
+}
+.ResponsivetableCss tr:nth-child(odd){
+    background-color: #333;
+}
+
+/* .ResponsivetableCss tr:nth-child(even){background-color: transparent} */
+
+.ResponsivetableCss tr:hover {background-color: #343b42;}
+
+.barExtraCss
+{
+    color:black;
+}
+.barExtraCss1
+{
+    width:50%;height:10px;margin-top:10px;margin-bottom:0px;
+}
+.DynColWidth
+{
+    width: 10%;
+}
+.DynColWidth1
+{
+    width: 5%;
+}
+.show
+{
+    display: block;
+}
+.hide
+{
+    display: none;
+}
+.textalign
+{
+    text-align: center;
+}
+@media screen and (max-width: 680px) {
+    .ResponsivetableCss {
+                  border: 0;
+              }
+              
+                  .ResponsivetableCss caption {
+                      font-size: 1em;
+                  }
+                  .ResponsivetableCss thead {
+                      border: none;
+                      clip: rect(0 0 0 0);
+                      height: 1px;
+                      margin: -1px;
+                      overflow: hidden;
+                      padding: 0;
+                      position: absolute;
+                      width: 1px;
+                  }
+
+                  .ResponsivetableCss tr {
+                      /* border-bottom: 3px solid #ddd; */
+                      display: block;
+                      margin-bottom: .625em;
+                      align-self: auto;
+                  }
+
+                  .ResponsivetableCss td {
+                      /* border-bottom: 1px solid #ddd; */
+                      display: block;
+                      font-size: .9em;
+                      text-align: right;
+                      width: 100%;
+                  }
+
+                      .ResponsivetableCss td::before {
+                          content: attr(data-label);
+                          float: left;
+                          font-weight: normal;
+                          text-transform: uppercase;
+                          vertical-align: middle;
+                      }
+                      .ResponsivetableCss td:last-child {
+                          border-bottom: 0;
+                      }
+          }
+
+.showcursor
+{
+    cursor: pointer;
+}
+.compad
+{
+    padding: 5px;
+}

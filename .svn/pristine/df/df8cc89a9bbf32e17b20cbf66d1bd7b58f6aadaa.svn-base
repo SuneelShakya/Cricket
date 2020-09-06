@@ -1,0 +1,32 @@
+<div class="demo" id="myTopnav">
+  <a href="javascript:void(0)" routerLink="/fetch-data">
+    <button mat-stroked-button>
+      Inspector
+    </button>
+  </a>
+  <a href="javascript:void(0)" routerLink="/Component-data">
+    <button mat-stroked-button>
+      Component
+    </button>
+  </a>
+  <a href="javascript:void(0)" routerLink="/profile-data">
+    <button mat-stroked-button>
+      Profile
+    </button>
+  </a>
+  <a href="javascript:void(0)" routerLink="/Flow-data">
+    <button mat-stroked-button>
+      Workflow
+    </button>
+  </a>
+  <a href="javascript:void(0)" id="floatclass" routerLink="/counter">
+    <button mat-stroked-button>
+      <i class="fa fa-sign-out"></i> Log Out
+    </button>
+  </a>
+  <a href="javascript:void(0);" class="icon" (click)="myFunction()">
+    <button mat-stroked-button>
+      <i class="fa fa-bars fa-2x"></i>
+    </button>
+  </a>
+</div>

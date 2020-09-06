@@ -1,0 +1,191 @@
+<app-nav-menu></app-nav-menu>
+<mat-tab-group>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <i class="fa fa-users"></i>&nbsp;
+            Group
+        </ng-template>
+        <div style="width:99vw;overflow: hidden;">
+            <div class="row" style="background-color: #274b7d;color:white;line-height: 50px;">
+                <div class="col-sm-9" style="margin-left: 20px;font-size: 20px;">
+                    Group Management
+                </div>
+                <mat-progress-bar mode="buffer" color="warn" *ngIf="isLoading"></mat-progress-bar>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-2" style="margin-left: 40px;">
+                    <button class="button tv-btn" (click)="AddNew('open')"><i class="fa fa-plus"
+                            aria-hidden="true"></i>&nbsp;
+                        Create New</button>
+                </div>
+                <div class="col-sm-7"></div>
+                <div class="col-sm-2" style="float:right;">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchText">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button"> <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div style="max-height: 64vh;overflow: auto;padding: 0 24px 16px;">
+                <table class="ResponsivetableCss">
+                    <thead>
+                        <tr>
+                            <th>Sno</th>
+                            <th>Group</th>
+                            <th>Menu</th>
+                            <th style="text-align: center;">Read</th>
+                            <th style="text-align: center;">Write</th>
+                            <th style="text-align: center;">Delete</th>
+                            <th>Created Date</th>
+                            <th>Enable/Disable</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody style="font-size: 16px;">
+                        <tr *ngFor="let item of flowdata | searchFilter : searchText; let i = index">
+                            <td data-label="Sno">{{i+1}}</td>
+                            <td data-label="Group">{{item.Name | NullValues }}</td>
+                            <td data-label="Menu">
+                                {{item.Menu | NullValues | ReplaceComma }}</td>
+                            <td data-label="Read" class="forcetext">
+                                <i class="fa fa-check" *ngIf="item.Read=='Y'"></i>
+                                <i class="fa fa-times" *ngIf="item.Read=='N'"></i>
+                            </td>
+                            <td data-label="Write" class="forcetext">
+                                <i class="fa fa-check" *ngIf="item.Write=='Y'"></i>
+                                <i class="fa fa-times" *ngIf="item.Write=='N'"></i>
+                            </td>
+                            <td data-label="Delete" class="forcetext">
+                                <i class="fa fa-check" *ngIf="item.Delete=='Y'"></i>
+                                <i class="fa fa-times" *ngIf="item.Delete=='N'"></i>
+                            </td>
+                            <td data-label="Date<">{{item.Date | NullValues | date:'dd-MM-yyyy HH:mm:ss' }}</td>
+                            <td data-label="Enable/Disable">{{(item.IsActive=='1')?'Enable':'Disable' | NullValues }}
+                            </td>
+                            <td data-label="Action">
+                                <i title="Edit" style="cursor: pointer;" class="fa fa-pencil-square-o"
+                                    (click)="Editmain(item,i)"></i>&nbsp;
+                                <!-- <i title="Clone" style="cursor: pointer;" class="fa fa-clone"></i>&nbsp; -->
+                                <i title="Delete" style="cursor: pointer;" class="fa fa-trash"
+                                    (click)="Deletemain(item.UID,item.Menu)"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <i class="fa fa-map"></i> &nbsp;
+            User-Group Mapping
+        </ng-template>
+        Content 2
+    </mat-tab>
+</mat-tab-group>
+
+<div id="deleteModal" class="mymodal">
+    <mat-card class="modal-content" style="width:30%;margin-left:35%;margin-right:30%;margin-top: 20%;">
+        <h6>Delete Group Confirmation</h6>
+        <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+        <mat-card-content>
+            Do You Want to Delete <b> {{Menu}}</b> Menu??
+        </mat-card-content>
+        <mat-card-actions style="margin: 20px;">
+            <div style="float: right;">
+                <button class="btn btn-primary btn-sm" (click)="deleteFlow()">Yes</button>
+                &nbsp;&nbsp;
+                <button class="btn btn-danger btn-sm" (click)="HideDialog()">No</button>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+</div>
+<div id="entryModal" class="mymodal">
+    <mat-card class="modal-content">
+        <h6>{{popup}} Group</h6>
+        <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+        <mat-card-content>
+            <div class="row">
+                <div class="col-sm-6">
+                    <mat-form-field *ngIf="hideonNew && objCls.Name!='-1'">
+                        <mat-select [(ngModel)]="objCls.Name" placeholder="Group Name" required
+                            [disabled]="EditMainIndex!='-1'" (selectionChange)="onselectChange($event)">
+                            <mat-option [value]="item" *ngFor="let item of BindGroupName; let i = index">{{item}}
+                            </mat-option>
+                            <mat-option value="-1">Add New Group</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="objCls.Name=='-1'">
+                        <input matInput [(ngModel)]="Name1" placeholder="Group Name" required>
+                        <button mat-icon-button matSuffix (click)="ResetBtn()" title="Cancel">
+                            <i class="fa fa-times-circle" aria-hidden="true"></i>
+                        </button>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-6">
+                    <mat-form-field>
+                        <mat-select [(ngModel)]="objCls.GroupActive" placeholder="Active Status">
+                            <mat-option value="">Select</mat-option>
+                            <mat-option value="1">Enable</mat-option>
+                            <mat-option value="0">Disable</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm-12" style="padding-left: 5px;padding-right: 5px;">
+                    <table class="ResponsivetableCss">
+                        <thead>
+                            <tr>
+                                <!-- <th>Sno</th> -->
+                                <th>Menu</th>
+                                <th>Read</th>
+                                <th>Write</th>
+                                <th>Delete</th>
+                                <th>Active</th>
+                            </tr>
+                        </thead>
+                        <tbody style="font-size: 16px;">
+                            <tr *ngFor="let item of Layouts; let i = index" [hidden]="item.hidden">
+                                <!-- <td data-label="Sno">{{i+1 }}</td> -->
+                                <td data-label="Menu">
+                                    {{item.Menu | NullValues }}
+                                </td>
+                                <td data-label="Read">
+                                    <mat-slide-toggle [checked]="item.Read=='Y'" color="primary"
+                                        (change)="setAll($event.checked,'Read',i)">
+                                    </mat-slide-toggle>
+                                </td>
+                                <td data-label="Write">
+                                    <mat-slide-toggle [checked]="item.Write=='Y'" color="primary"
+                                        (change)="setAll($event.checked,'Write',i)">
+                                    </mat-slide-toggle>
+                                </td>
+                                <td data-label="Delete">
+                                    <mat-slide-toggle [checked]="item.Delete=='Y'" color="primary"
+                                        (change)="setAll($event.checked,'Delete',i)">
+                                    </mat-slide-toggle>
+                                </td>
+                                <td data-label="Active">
+                                    <mat-slide-toggle [checked]="item.IsActive=='1'" color="primary"
+                                        (change)="setAll($event.checked,'IsActive',i)">
+                                    </mat-slide-toggle>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions style="margin: 20px;">
+            <div style="float: right;">
+                <button class="btn btn-primary btn-sm" (click)="saveFlow()">{{BtnText}}</button>
+                &nbsp;&nbsp;
+                <button class="btn btn-danger btn-sm" (click)="openDialog('close')">Close</button>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+</div>

@@ -1,0 +1,118 @@
+<!-- <mat-horizontal-stepper [linear]="isLinear" #stepper style="margin-top: 50px;">
+
+    <mat-step [stepControl]="ThirdFormGroup">
+        <div class="col-md-12">
+            <div class="row"> -->
+                <!-- <div class="col" style="width: 30%;flex: 0 0 30%;">
+                    <img src="../../assets/originalmamc.png" style="height: 4vh; margin-bottom: 6vh;">
+                    <ul>
+                         <li style="font-size: 14px;" >Check Pre-Requisites</li> 
+                        <li style="text-decoration: solid;font-weight: 700;font-size: 14px;">Create New Inspector</li>
+                    </ul>
+                </div> -->
+                <!-- <div class="col">
+                    <h1 mat-dialog-title>Edit Component</h1>
+                    <div mat-dialog-content style="height: 60vh;">
+
+                      <form >
+                        <ng-template matStepLabel>Fill out Inspector Details</ng-template>
+                        <mat-form-field>
+                          <mat-label>Name</mat-label>
+                          <input matInput  [(ngModel)]="componentname" name="ip" placeholder=""
+                                 required>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Binary Name</mat-label>
+                            <input matInput [(ngModel)]="Binaryname" name="port" placeholder=""
+                                   required>
+                          </mat-form-field>
+
+                          <mat-form-field >
+                            <mat-label>Name Parameter</mat-label>
+                            <input matInput  [(ngModel)]="nameparameter" name="dbname" placeholder=""
+                                   required>
+                          </mat-form-field>
+                        
+                          <mat-form-field>
+                            <mat-label>Argument Value</mat-label>
+                            <input matInput  [(ngModel)]="argvalue" name="user" placeholder=""
+                                   required>
+                          </mat-form-field>
+                          <mat-form-field>
+                            <mat-label>Detail</mat-label>
+                            <input matInput  [(ngModel)]="detail" name="pass" placeholder=""
+                                   required>
+                          </mat-form-field>
+                        
+                          
+                        
+                      </form>
+                      </div>
+                <div mat-dialog-actions style="justify-content: center;">
+                    <button mat-button matStepperPrevious style="border: 1px solid ;border-color: #9c27b0;" (click)="onNoClick()">Close</button>
+                    <button mat-raised-button color="primary" *ngIf="DBCheck=='true'" (click)="CreateDB()">Submit</button> 
+                    <button mat-raised-button color="primary"  (click)="Updatecomponentdata()">Update</button>
+                  </div>
+            </div>
+        </div>
+
+        </div>
+      
+    </mat-step>
+   
+  </mat-horizontal-stepper> -->
+
+
+  <div style="max-height: 64vh;overflow: auto;padding: 0 24px 16px;">
+    <table class="table table-bordered table-hover specialCollapse">
+        <thead>
+            <tr>
+                <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;"><small
+                        style="font-size: 100%;">Sno</small></th>
+                <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                    <small style="font-size: 100%;">Name</small></th>
+                <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                    <small style="font-size: 100%;">Inspector</small></th>
+                <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                    <small style="font-size: 100%;">System IP</small></th>
+                <!-- <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                    <small style="font-size: 100%;">System Name</small></th> -->
+                <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                    <small style="font-size: 100%;">Version</small></th>
+                <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;text-align: center;">
+                    <small style="font-size: 100%;">Status</small></th>
+                <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                    <small style="font-size: 100%;">Created Date</small></th>
+                <!-- <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                    <small style="font-size: 100%;">Enable/Disable</small></th> -->
+                <!-- <th style="position: sticky;top: 0;background-color: #274b7d;color: aliceblue;">
+                    <small style="font-size: 100%;">Action</small></th> -->
+            </tr>
+        </thead>
+        <tbody style="font-size: 16px;">
+            <tr *ngFor="let item of flowdata | searchFilter : searchText; let i = index">
+                <td><small>{{i+1}}</small></td>
+                <td><small>{{item.Name | NullValues }}</small></td>
+                <td><small>{{item.inspectorname | NullValues }}</small></td>
+                <td><small>{{item.SystemIP| NullValues }}</small></td>
+                <!-- <td><small>{{item.SystemName | NullValues }}</small></td> -->
+                <td><small>{{item.Version | NullValues }}</small></td>
+                <td style="text-align: center;"><small><img src="../../assets/{{item.status}}.svg"
+                            style="height: 2vh;"></small></td>
+                <td><small>{{item.Date | NullValues | date:'dd-MM-yyyy' }}</small></td>
+                <!-- <td><small>{{(item.IsActive=='1')?'Enable':'Disable' | NullValues }}</small></td> -->
+                <!-- <td>
+                    <i title="Edit" style="cursor: pointer;" class="fa fa-pencil-square-o"
+                        (click)="Editmain(item,i)"></i>&nbsp; -->
+                    <!-- <i title="Clone" style="cursor: pointer;" class="fa fa-clone"></i>&nbsp; -->
+                    <!-- <i title="Delete" style="cursor: pointer;" class="fa fa-trash"
+                        (click)="Deletemain(item.UID)"></i>
+                </td> -->
+
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+

@@ -1,0 +1,166 @@
+
+sign-up {
+  padding: 0 !important;
+}
+:host {
+  display: flex;
+  justify-content: center;
+}
+
+.form-data {
+  margin: 5vh 25px !important;
+}
+
+.mat-form-field {
+  width: 100%;
+  min-width: 300px;
+}
+.login {
+  padding-right: 1vw;
+}
+.outer {
+  display: table;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.middle {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.inner {
+  margin-left: auto;
+  margin-right: auto;
+  width: 400px;
+  /*whatever width you want*/
+}
+
+mat-card-title,
+mat-card-content {
+  display: flex;
+  justify-content: center;
+}
+
+.error {
+  padding: 16px;
+  width: 300px;
+  /* color: white;
+  background-color: red; */
+}
+
+.button {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.logo-icon {
+  font-size: 3rem;
+  /* margin-left: 40%; */
+}
+
+.edit-dialog {
+  width: 40vw;
+}
+
+.mat-radio-button {
+  margin: 0 12px;
+}
+
+/* .mat-checkbox {
+  margin: 0 12px;
+} */
+
+.captcha {
+  text-align: center;
+  line-height: 2em;
+  height: 2em;
+  width: 5em;
+  /* background-image:url("captcha1.PNG"); */
+  color: white;
+  font-family: cursive,'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: x-large;
+  font-weight: bolder;
+  outline: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  outline: 0;
+}
+
+.mamicon {
+  text-align: center;
+  line-height: 3em;
+  height: -webkit-fit-content;
+  /* background-image:url("Mam.png"); */
+  background-repeat: no-repeat;
+  font-size: x-large;
+  outline: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  outline: 0;
+}
+.logo-center {
+  margin: 40vh auto;
+  width: 50px;
+}
+
+button.forgetpwd{
+  background: transparent;
+  color: dodgerblue;
+  border: none;
+  outline: none;
+}
+
+
+@media (max-width: 992px)
+{
+  .col-sm-4{
+    display: none;
+  }
+  .divider{
+    display: none;
+  }
+
+  .form-data {
+    margin: 30vh auto !important;
+    width: 50%;
+  
+  }
+  .col-sm-2{
+    flex: 0 0 27%;
+    max-width: 27%;
+  }
+  
+}
+
+@media (max-width: 1700px)
+{
+  .button {
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+  }
+  .signup{
+    width: 300px !important;
+  }
+  .signin{
+    width: 300px !important;
+  }
+
+  .login{
+    width: 300px !important;
+  }
+  
+}

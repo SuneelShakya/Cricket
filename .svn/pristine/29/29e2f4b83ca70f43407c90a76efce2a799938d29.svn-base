@@ -1,0 +1,15 @@
+span.top-heading {
+  color: #3b72c0;
+  font-size: 20px;
+}
+
+.login-wthree.my-auto1 {
+  padding: 10px;
+}
+.header-top {
+  background-color: #e5e8ec;
+}
+
+.container-fluid {
+  padding: 0;
+}

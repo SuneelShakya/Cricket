@@ -1,0 +1,51 @@
+<div class="demo" id="myTopnav">
+  <a href="javascript:void(0)" routerLink="/fetch-data">
+    <button mat-button class="btn-sm">
+      Inspector
+    </button>
+  </a>
+  <a href="javascript:void(0)" routerLink="/Component-data">
+    <button mat-button class="btn-sm">
+      Component
+    </button>
+  </a>
+  <a href="javascript:void(0)" routerLink="/profile-data">
+    <button mat-button class="btn-sm">
+      Profile
+    </button>
+  </a>
+  <a href="javascript:void(0)" routerLink="/Flow-data">
+    <button mat-button class="btn-sm">
+      Workflow
+    </button>
+  </a>
+  <a href="javascript:void(0)" routerLink="/Transaction-data">
+    <button mat-button class="btn-sm">
+      Transaction
+    </button>
+  </a>
+  <a href="javascript:void(0)" routerLink="/group-data">
+    <button mat-button class="btn-sm">
+      Group
+    </button>
+  </a>
+  <a href="javascript:void(0)" id="floatclass" routerLink="/counter">
+    <button mat-button class="btn-sm">
+      <i class="fa fa-sign-out"></i> Log Out
+    </button>
+  </a>
+  <a href="javascript:void(0)" id="floatclass">
+    <!-- <mat-form-field> -->
+    <select [(ngModel)]="_objService.timezone" class="form-control" style="width:15vw"
+      (selectionChange)="SetTimeZone($event)" placeholder="Select Zone">
+      <option [value]="item.value" *ngFor="let item of _objService.TimeZones; let i = index">
+        {{item.name}}</option>
+    </select>
+    <!-- </mat-form-field> -->
+  </a>
+  <a href="javascript:void(0);" class="icon" (click)="myFunction()">
+    <button mat-button>
+      <i class="fa fa-bars fa-2x"></i>
+    </button>
+  </a>
+</div>

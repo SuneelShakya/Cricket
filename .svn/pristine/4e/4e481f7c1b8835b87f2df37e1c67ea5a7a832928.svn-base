@@ -1,0 +1,68 @@
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+
+import { AppComponent } from './app.component';
+import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { HomeComponent, Homedialog } from './home/home.component';
+import { CounterComponent } from './counter/counter.component';
+import { FetchDataComponent, Fetchdialog, Fetcheditdialog, Fetchdeletedialog } from './fetch-data/fetch-data.component';
+import { DemoMaterialModule } from './material-module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { GenericService } from './services/Generic.service';
+import { ComponentDataComponent, Componenteditdialog, Componentdialog, Componentdeletedialog } from './Component/Component-data.component';
+import { Flowdialog, Floweditdialog, FlowDataComponent, Flowdeletedialog } from './Flow/Flow-data.component';
+import { SearchFilterPipe, NullValues } from './app.shared.pipe';
+import { TagInputModule } from 'ngx-chips';
+
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    NavMenuComponent,
+    HomeComponent,
+    CounterComponent,
+    FetchDataComponent,
+    Homedialog,
+    Fetchdialog,
+    Fetcheditdialog,
+    ComponentDataComponent,
+    Componenteditdialog,
+    Componentdialog,
+    FlowDataComponent,
+    Flowdialog,
+    Floweditdialog,
+    SearchFilterPipe,
+    NullValues,
+    Fetchdeletedialog,
+    Componentdeletedialog,
+    Flowdeletedialog
+    
+  ],
+  imports: [
+    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    DemoMaterialModule,
+    BrowserAnimationsModule,
+    TagInputModule,
+
+
+    RouterModule.forRoot([
+      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: 'counter', component: CounterComponent },
+      { path: 'fetch-data', component: FetchDataComponent },
+      { path: 'Component-data', component: ComponentDataComponent },
+      { path: 'Flow-data', component: FlowDataComponent },
+
+
+    ])
+  ],
+  entryComponents:[Homedialog,Fetchdialog,Fetcheditdialog,Componenteditdialog,Componentdialog,Flowdialog,Floweditdialog,Fetchdeletedialog,Componentdeletedialog,Flowdeletedialog],
+  providers: [GenericService,FetchDataComponent],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
